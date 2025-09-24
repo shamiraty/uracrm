@@ -85,109 +85,10 @@
         .text-primary {
             color: #1e57a7 !important;
         }
-        
-        /* Loading Spinner Styles */
-        .spinner-overlay {
-            background: rgba(200, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(2px);
-        }
-        .spinner-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-        .spinner-ring {
-            position: absolute;
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
-        }
-        .spinner-ring-1 {
-            width: 80px;
-            height: 80px;
-            border: 4px solid transparent;
-            border-top: 4px solid #17479e;
-            border-right: 4px solid #164087;
-            animation-duration: 1.2s;
-        }
-        .spinner-ring-2 {
-            width: 60px;
-            height: 60px;
-            top: 10px;
-            left: 10px;
-            border: 3px solid transparent;
-            border-bottom: 3px solid #17479e;
-            border-left: 3px solid #164087;
-            animation-duration: 1.6s;
-            animation-direction: reverse;
-        }
-        .spinner-ring-3 {
-            width: 40px;
-            height: 40px;
-            top: 20px;
-            left: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid #17479e;
-            border-right: 2px solid #164087;
-            animation-duration: 0.8s;
-        }
-        .spinner-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 16px;
-            height: 16px;
-            background: linear-gradient(135deg, #17479e 0%, #164087 100%);
-            border-radius: 50%;
-            animation: pulse-glow 2s ease-in-out infinite;
-            box-shadow: 0 0 20px rgba(23, 71, 158, 0.4);
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 20px rgba(23, 71, 158, 0.4);
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.1);
-                box-shadow: 0 0 40px rgba(23, 71, 158, 0.8);
-            }
-        }
-        /* Responsive adjustments */
-        @media (max-width: 576px) {
-            .spinner-container {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .spinner-ring-1 { width: 60px; height: 60px; }
-            .spinner-ring-2 { width: 45px; height: 45px; top: 7.5px; left: 7.5px; }
-            .spinner-ring-3 { width: 30px; height: 30px; top: 15px; left: 15px; }
-        }
 </style>
 
 
 <!--added style-->
-
-<body>
-    <!-- Loading Spinner Overlay -->
-    <div id="loading-spinner" class="spinner-overlay position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="z-index: 9999;">
-        
-        <!-- Main Spinner Container -->
-        <div class="spinner-container">
-            <!-- Outer rotating rings -->
-            <div class="spinner-ring spinner-ring-1"></div>
-            <div class="spinner-ring spinner-ring-2"></div>
-            <div class="spinner-ring spinner-ring-3"></div>
-            
-            <!-- Central pulsing core -->
-            <div class="spinner-core"></div>
-        </div>
-    </div>
 
 <div class="wrapper">
     <div class="sidebar-wrapper">
@@ -296,24 +197,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-        <!-- Loading Spinner Script -->
-        <script>
-            $(document).ready(function() {
-                // Hide the spinner when the page is fully loaded
-                $(window).on('load', function() {
-                    $('#loading-spinner').fadeOut(500, function() {
-                        $(this).remove();
-                    });
-                });
-                
-                // Fallback: Hide spinner after maximum 5 seconds
-                setTimeout(function() {
-                    $('#loading-spinner').fadeOut(500, function() {
-                        $(this).remove();
-                    });
-                }, 5000);
-            });
-        </script>
 
         <script>
 
@@ -435,83 +318,6 @@ $(document).ready(function() {
 	<script src="{{ asset('assets/js/app.js') }}"></script>
     
     
-
-
-
-
-
-
-
-
-
-</script>
-<!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<!-- jQuery (Required for Toastr) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!-- Toastr CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<!-- jQuery (Required for Toastr) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Toastr JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        @if(session('message'))
-            var type = "{{ session('alert-type', 'info') }}"; // Chagua aina ya notification
-            toastr[type]("{{ session('message') }}", type.charAt(0).toUpperCase() + type.slice(1), {
-                closeButton: true,
-                progressBar: true,
-                positionClass: "toast-top-right",
-                timeOut: 9000
-            });
-        @endif
-
-        @if(session('success'))
-            toastr.success("{{ session('success') }}", "Success", {
-                closeButton: true,
-                progressBar: true,
-                positionClass: "toast-top-right",
-                timeOut: 9000
-            });
-        @endif
-
-        @if(session('error'))
-            toastr.error("{{ session('error') }}", "Error", {
-                closeButton: true,
-                progressBar: true,
-                positionClass: "toast-top-right",
-                timeOut: 9000
-            });
-        @endif
-
-        @if($errors->any())
-            @foreach ($errors->all() as $error)
-                toastr.error("{{ $error }}", "Error", {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-top-right",
-                    timeOut: 9000
-                });
-            @endforeach
-        @endif
-    });
-</script>
-
-
-
-
-
-
-
-
-
-
-
     
     @stack('scripts')
 

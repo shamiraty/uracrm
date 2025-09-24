@@ -739,12 +739,14 @@ private function constructMessageBasedOnType($data)
             'deduction',
             'refund',
             'withdrawals',
+            'withdrawal', // Add singular withdrawal relationship
             'membershipChanges',
             'condolence',
             'injury',
             'residentialDisaster',
             'sickLeave',
-            'uraMobile'
+            'uraMobile',
+            'benefit' // Add benefit relationship
         ]);
 
         $files = File::all();
@@ -756,67 +758,67 @@ private function constructMessageBasedOnType($data)
     public function update(Request $request, Enquiry $enquiry)
     {
         $rules = [
-            'date_received' => 'required|date',
-            'full_name' => 'required|string|max:255',
-            'force_no' => 'required|string|max:255',
-            'check_number' => 'required|string|max:255',
-            'account_number' => 'required|string|max:255',
-            'bank_name' => 'required|string|max:255',
-            'district' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
-            'type' => 'required|in:loan_application,refund,share_enquiry,retirement,deduction_add,withdraw_savings,withdraw_deposit,unjoin_membership,benefit_from_disasters',
+            'date_received' => 'sometimes|date',
+            'full_name' => 'sometimes|string|max:255',
+            'force_no' => 'sometimes|string|max:255',
+            'check_number' => 'sometimes|string|max:255',
+            'account_number' => 'sometimes|string|max:255',
+            'bank_name' => 'sometimes|string|max:255',
+            'district_id' => 'sometimes|string|max:255',
+            'phone' => 'sometimes|string|max:255',
+            'region_id' => 'sometimes|string|max:255',
+            'type' => 'sometimes|in:loan_application,refund,share_enquiry,retirement,deduction_add,withdraw_savings,withdraw_deposit,unjoin_membership,sick_for_30_days,residential_disaster,condolences,injured_at_work,join_membership,ura_mobile',
         ];
 
         // Add conditional rules based on the type
         switch ($request->input('type')) {
             case 'loan_application':
                 $rules = array_merge($rules, [
-                    'loan_type' => 'required|string|max:255',
-                    'loan_amount' => 'required|numeric',
-                    'loan_duration' => 'required|integer',
-                    'loan_category' => 'required|string',
+                    'loan_type' => 'sometimes|string|max:255',
+                    'loan_amount' => 'sometimes|numeric',
+                    'loan_duration' => 'sometimes|integer',
+                    'loan_category' => 'sometimes|string',
                 ]);
                 break;
 
             case 'refund':
                 $rules = array_merge($rules, [
-                    'refund_amount' => 'required|numeric',
-                    'refund_duration' => 'required|integer',
+                    'refund_amount' => 'sometimes|numeric',
+                    'refund_duration' => 'sometimes|integer',
                 ]);
                 break;
 
             case 'share_enquiry':
                 $rules = array_merge($rules, [
-                    'share_amount' => 'required|numeric',
+                    'share_amount' => 'sometimes|numeric',
                 ]);
                 break;
 
             case 'retirement':
                 $rules = array_merge($rules, [
-                    'date_of_retirement' => 'required|date',
-                    'retirement_amount' => 'required|numeric',
+                    'date_of_retirement' => 'sometimes|date',
+                    'retirement_amount' => 'sometimes|numeric',
                 ]);
                 break;
 
             case 'deduction_add':
                 $rules = array_merge($rules, [
-                    'from_amount' => 'required|numeric',
-                    'to_amount' => 'required|numeric',
+                    'from_amount' => 'sometimes|numeric',
+                    'to_amount' => 'sometimes|numeric',
                 ]);
                 break;
 
             case 'withdraw_savings':
                 $rules = array_merge($rules, [
-                    'withdraw_saving_amount' => 'required|numeric',
-                    'withdraw_saving_reason' => 'required|string|max:255',
+                    'withdraw_saving_amount' => 'sometimes|numeric',
+                    'withdraw_saving_reason' => 'sometimes|string|max:255',
                 ]);
                 break;
 
             case 'withdraw_deposit':
                 $rules = array_merge($rules, [
-                    'withdraw_deposit_amount' => 'required|numeric',
-                    'withdraw_deposit_reason' => 'required|string|max:255',
+                    'withdraw_deposit_amount' => 'sometimes|numeric',
+                    'withdraw_deposit_reason' => 'sometimes|string|max:255',
                 ]);
                 break;
 

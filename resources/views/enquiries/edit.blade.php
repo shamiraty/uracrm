@@ -1617,6 +1617,11 @@
             return;
         }
 
+        // Show confirmation popup warning dialog
+        if (!confirm('Please confirm that all information is accurate before submitting.')) {
+            return;
+        }
+
         // Removed loading overlay
 
         // Convert monetary fields back to numeric values
@@ -1711,8 +1716,41 @@
         }
 
         function handleFileSelection(file) {
-            fileNameSpan.textContent = file.name;
-            selectedFileDiv.style.display = 'block';
+            if (file.type === 'application/pdf' || file.type.startsWith('image/')) {
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    alert('File size must be less than 10MB');
+                    return;
+                }
+
+                const fileURL = URL.createObjectURL(file);
+                fileNameSpan.textContent = file.name;
+                selectedFileDiv.style.display = 'block';
+
+                // Add preview for new file
+                const previewContainer = document.createElement('div');
+                previewContainer.className = 'mt-3';
+                previewContainer.innerHTML = `
+                    <div class="new-file-preview" style="background: rgba(16, 220, 96, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid #10dc60;">
+                        <h6 style="color: #10dc60; margin-bottom: 1rem;"><i class="fas fa-upload me-2"></i>New Document Preview</h6>
+                        <div class="pdf-preview-frame">
+                            <iframe src="${fileURL}" width="100%" height="300" style="border: 1px solid #dee2e6; border-radius: 8px;"></iframe>
+                        </div>
+                    </div>
+                `;
+
+                // Remove any existing new file preview
+                const existingPreview = document.querySelector('.new-file-preview');
+                if (existingPreview) {
+                    existingPreview.parentNode.removeChild(existingPreview.parentNode);
+                }
+
+                // Add new preview after the selected file div
+                selectedFileDiv.parentNode.insertBefore(previewContainer, selectedFileDiv.nextSibling);
+            } else {
+                fileNameSpan.textContent = file.name;
+                selectedFileDiv.style.display = 'block';
+                alert('Please select a PDF or image file only');
+            }
         }
     }
 
