@@ -1,0 +1,51 @@
+4.1 Loan states
+
+State	Description	Action owner
+		
+Initiated	Created but not submitted	Employee
+Loan offer At FSP	Loan submitted to FSP by	FSP
+	employee	
+		
+FSP Rejected	Loan closed	Not Applicable
+Loan Offer at employee	FSP respond with loan offer	Employee
+		
+Employee Rejected	Loan Closed by FSP	
+Pending for approval	Employee accept offer and	Employer
+	submit to employer	
+		
+Employee canceled	Loan request canceled by	Employee
+	Employee(precondition=pendi	
+	ng for Approval)	
+		
+Employer Rejected	Loan Closed by Employer	Employer
+		
+Submitted for	Loan Approved waiting money	FSP
+disbursement	disbursement into Employee	
+	Account	
+		
+FSP Canceled	Loan request canceled by FSP	FSP
+		
+Completed	Loan Completed	FSP
+Waiting for liquidation	Loan Waiting to be liquidated	FSP
+		
+Disbursement Failure	Loan disbursement Failure	FSP
+		
+
+
+4.2 Loan state transition
+
+New Loan
+
+Initiated -> Loan offer At FSP -> FSP Rejected| Loan Offer at employee -> Employee
+
+Rejected| Pending for approval -> Employee canceled| Employer Rejected|
+
+Submitted for disbursement -> FSP Canceled| Completed
+
+Loan Take over
+
+Initiated -> Loan offer At FSP -> FSP Rejected| Loan Offer at employee -> Employee
+
+Rejected| Pending for approval -> Employee canceled| Employer Rejected ->
+
+Waiting for liquidation -> Submitted for disbursement ->FSP Canceled | Completed

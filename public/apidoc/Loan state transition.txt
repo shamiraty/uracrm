@@ -1,0 +1,17 @@
+Loan state transition
+
+New Loan
+
+Initiated -> Loan offer At FSP -> FSP Rejected| Loan Offer at employee -> Employee
+
+Rejected| Pending for approval -> Employee canceled| Employer Rejected|
+
+Submitted for disbursement -> FSP Canceled| Completed
+
+Loan Take over
+
+Initiated -> Loan offer At FSP -> FSP Rejected| Loan Offer at employee -> Employee
+
+Rejected| Pending for approval -> Employee canceled| Employer Rejected ->
+
+Waiting for liquidation -> Submitted for disbursement ->FSP Canceled | Completed 

@@ -1,0 +1,14 @@
+/* URASACCOS Theme CSS */
+:root {
+    --ura-primary: #1e3c72;
+    --ura-secondary: #2a5298;
+    --ura-accent: #00BCD4;
+    --ura-light: #E3F2FD;
+    --ura-dark: #0D47A1;
+    --ura-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+/* Placeholder for theme styles */
+body {
+    font-family: 'Roboto', sans-serif;
+}

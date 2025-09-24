@@ -1,0 +1,1788 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang2057{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fswiss\fprq2\fcharset0 Calibri;}{\f3\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red47\green84\blue150;\red0\green255\blue255;\red156\green194\blue229;\red222\green234\blue246;\red156\green194\blue228;}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\widctlpar\cf1\f0\fs32 2.2 New Loan\par
+\cf0\f1\fs20\par
+
+\pard\widctlpar\ri46\sl264\slmult1\f0\fs24 This part explain how employees will, after studying loan catalogs and choosing their preferred load category, request loan from FSP, FSP responses and the approval work flow from Employee to FSP to Employer and back to FSP for final approval and disbursement.\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard 
+{\pntext\f0 i.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pnlcrm{\pntxta.}}
+\widctlpar\fi-491\li720\tx720\f0\fs24 Employee login to government platforms\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 ii.\tab\fs24 Employee select product and FSP\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 iii.\tab\fs24 Employee applies for loan\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 iv.\tab\fs24 FSP receive and validate employee loan details\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 v.\tab\fs24 FSP decide and reply on loan offer to employee\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 vi.\tab\fs24 Employee receive loan offer\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 vii.\tab\fs24 Employee decides on the offer\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 viii.\tab\fs24 Employee submit loan application and deduction details to Employer\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 ix.\tab\fs24 Employer approves the loan application\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 x.\tab\fs24 Employer initiates loan deduction\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 xi.\tab\fs24 FSP and employee receive notification of initiated deduction\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 xii.\tab\fs24 FSP disburse loan\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li720\tx720 xiii.\tab\fs24 Employee receive amount credit notification\fs20\par
+
+\pard\widctlpar\f1\par
+
+\pard\widctlpar\ri-13\qc\cf1\f0\fs24 2.2.1 Possible Loan Charges Request from Employee to FSP\par
+
+\pard\widctlpar\cf0\f1\fs20\par
+\f0\fs24 This is on demand and sync API request to get possible loan charges from FSP\par
+\f1\fs20\par
+\trowd\trgaph10\trleft180\trrh405\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\li160\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li80 Item Name\cell 
+\pard\intbl\widctlpar\li60 Item description\cell 
+\pard\intbl\widctlpar\li80 Type\cell 
+\pard\intbl\widctlpar\li60 Optional\cell\row\trowd\trgaph10\trleft180\trrh157\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\b0\f1\fs13\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 1\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Check number\cell 
+\pard\intbl\widctlpar\li60 Employee identification\cell 
+\pard\intbl\widctlpar\li80 Number (9)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\f1 2\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Designation\cell 
+\pard\intbl\widctlpar\li60 Designation Identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(8)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 code\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 3\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Designation\cell 
+\pard\intbl\widctlpar\li60 Designation description\cell 
+\pard\intbl\widctlpar\li80 Varchar(255)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 name\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh372\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b 4\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Basic Salary\cell 
+\pard\intbl\widctlpar\li60 Basic salary\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 5\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Net salary\cell 
+\pard\intbl\widctlpar\li60 Amount after deduction\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\f1 6\cell 
+\pard\intbl\widctlpar\li80\b0\f0 One third\cell 
+\pard\intbl\widctlpar\li60 Minimum amount after\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\li60 deduction\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 5\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Deductible\cell 
+\pard\intbl\widctlpar\li60 Net salary \endash  1/3 amount\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b 6\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Retirement date\cell 
+\pard\intbl\widctlpar\li60 Current date \endash  date of birth\cell 
+\pard\intbl\widctlpar\li80 Number (3)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 (Month)\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 7\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Terms of\cell 
+\pard\intbl\widctlpar\li60 Permanent or Contractual\cell 
+\pard\intbl\widctlpar\li80 Varchar(30)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 employment\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b 8\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Requested\cell 
+\pard\intbl\widctlpar\li60 Loan amount\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 9\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Desired\cell 
+\pard\intbl\widctlpar\li60 Desired deduction amount\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 deductible\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh371\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b 10\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Tenure\cell 
+\pard\intbl\widctlpar\li60 Repayment period\cell 
+\pard\intbl\widctlpar\li80 Number (3)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh430\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 11\cell 
+\pard\intbl\widctlpar\li80\b0\f0 FSP code\cell 
+\pard\intbl\widctlpar\li60 FSP identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh371\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\f1 12\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Product code\cell 
+\pard\intbl\widctlpar\li60 Product identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(8)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 13\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Vote Code\cell 
+\pard\intbl\widctlpar\li60 Vote/institution identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 code\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b 14\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Total Employee\cell 
+\pard\intbl\widctlpar\li60 Total existing employee\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Deduction\cell 
+\pard\intbl\widctlpar\li60 deduction amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\qc\b\fs24 15\cell 
+\pard\intbl\widctlpar\li80\b0\f0 Job class code\cell 
+\pard\intbl\widctlpar\li60 Identifier for a Group of\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh359\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 Designations\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh20\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7760\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9200 
+\pard\intbl\widctlpar\fs2\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\par
+\fs20\par
+
+\pard\widctlpar\ri120\qc\b\f0\fs24 Message 03\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+
+\pard\widctlpar\li60 <Data>\par
+
+\pard\widctlpar\li720 <Header>\par
+
+\pard\widctlpar\li1440 <Sender>ESS_UTUMISHI</Sender>\par
+<Receiver>FSPSystem</Receiver>\par
+<FSPCode>1001</FSPCode>\par
+<MsgId>90769af68ef011ecb3a6432feaa9296f</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs23 <MessageType>LOAN_CHARGES_REQUEST</MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Header>\par
+
+\pard\widctlpar\li1440 <MessageDetails>\par
+
+\pard\widctlpar\li2160 <CheckNumber>111222333</CheckNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <DesignationCode>TZ800186</DesignationCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2120\f0\fs24 <DesignationName>ICTO II\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2200\f0\fs24 </DesignationName>\par
+
+\pard\widctlpar\li2160 <BasicSalary>5000.00</BasicSalary>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <NetSalary>10000.00</NetSalary>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <OneThirdAmount>12000.00</OneThirdAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <RequestedAmount>5000.00</RequestedAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <DeductibleAmount>12000.00</DeductibleAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2200\f0\fs24 <DesiredDeductibleAmount>12000.00\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2200\f0\fs24 </DesiredDeductibleAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <RetirementDate>3</RetirementDate>\par
+<TermsOfEmployment>Permanent and Pensionable\par
+
+\pard\widctlpar\li2260 </TermsOfEmployment>\par
+
+\pard\widctlpar\li2160 <Tenure>45</Tenure>\par
+<ProductCode>22346</ProductCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <VoteCode>32</VoteCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <TotalEmployeeDeduction>120000.00</TotalEmployeeDeduction>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2260\f0\fs24 <JobClassCode>JB0012</JobClassCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>Signature</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\fs21\par
+\f1\fs20\par
+\cf1\f0\fs24 2.2.2 Possible Loan Charges Response From FSP to Employee\par
+\cf0\f1\fs20\par
+\trowd\trgaph10\trleft260\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\li80\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li60 Item Name\cell Item description\cell Type\cell Optional\cell\row\trowd\trgaph10\trleft260\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\b0\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li60\b0 Desired\cell Desired deduction amount\cell Number(38,2)\cell YES\cell\row\trowd\trgaph10\trleft260\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 deductible\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9480 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li60\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0 2\cell 
+\pard\intbl\widctlpar\li60\b0 Total Insurance\cell Total Loan Insurance\cell Number(38,2)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 charges\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li60\b0 Total\cell Total Loan Processing Fees\cell Number(38,2)\cell YES\cell\row\trowd\trgaph10\trleft260\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 Processing\cell charges\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9480 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li60\f0 Fees\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0 4\cell 
+\pard\intbl\widctlpar\li60\b0 Total Interest\cell Total Loan Interest Rate\cell Number(38,2)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 Rate Amount\cell amount charges\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0\fs24 5\cell 
+\pard\intbl\widctlpar\li60\b0 Other Charges\cell Total Loan Other Charges\cell Number(38,2)\cell YES\cell\row\trowd\trgaph10\trleft260\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b 6\cell 
+\pard\intbl\widctlpar\li60\b0 Net Loan\cell Total Net Loan Amount\cell Number(38,2)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 Amount\cell employee can get\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0\fs24 7\cell 
+\pard\intbl\widctlpar\li60\b0 Total Amount To\cell Total Amount employee can\cell Number(38,2)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 Pay\cell pay back\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0 8\cell 
+\pard\intbl\widctlpar\li60\b0 Tenure\cell Repayment period\cell Number (3)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft260\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0\fs24 9\cell 
+\pard\intbl\widctlpar\li60\b0 Eligible Amount\cell Maximum loan employee can\cell Number(38,2)\cell YES\cell\row\trowd\trgaph10\trleft260\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9480 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 get\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\qc\b\f0 10\cell 
+\pard\intbl\widctlpar\li60\b0 Monthly Return\cell Amount employee can return\cell Number(38,2)\cell NO\cell\row\trowd\trgaph10\trleft260\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 Amount\cell in each month\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft260\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1080\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx3020\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx6400\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx8120\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9480 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\fs20\par
+\b\f0\fs24 Message 04\par
+\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li60\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Sender>ESS_UTUMISHI</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Receiver>FSPName</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <FSPCode>A1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MsgId>90769af68ef011ecb3a6432feaa9296f</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MessageType>LOAN_CHARGES_RESPONSE</MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <DesiredDeductibleAmount>5000.00</DesiredDeductibleAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <TotalInsurance>5000.00</TotalInsurance>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <TotalProcessingFees>100.00</TotalProcessingFees>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <TotalInterestRateAmount>5000.00</TotalInterestRateAmount>\par
+
+\pard\widctlpar\ri400\qc <OtherCharges>12000.00</OtherCharges>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <NetLoanAmount>12000.00</NetLoanAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <TotalAmountToPay>12000.00</TotalAmountToPay>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Tenure>36</Tenure>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <EligibleAmount>6731040.52</EligibleAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\ri1186\qr\f0\fs24 <MonthlyReturnAmount>10000.52</MonthlyReturnAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>Signature</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+
+\pard\widctlpar\ri-13\qc\cf1 2.2.3 Loan Offer Request From Employee to FSP\par
+
+\pard\widctlpar\cf0\f1\fs20\par
+\trowd\trgaph10\trleft180\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri221\qr\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li80 Item Name\cell 
+\pard\intbl\widctlpar\li60 Item description\cell 
+\pard\intbl\widctlpar\li80 Type\cell 
+\pard\intbl\widctlpar\li60 Optional\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\b0\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs22 1\cell 
+\pard\intbl\widctlpar\li80\b0\fs24 Check number\cell 
+\pard\intbl\widctlpar\li60 Employee identification\cell 
+\pard\intbl\widctlpar\li80 Number (9)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b 2\cell 
+\pard\intbl\widctlpar\li80\b0 First Name\cell 
+\pard\intbl\widctlpar\li60 Employee First Name\cell 
+\pard\intbl\widctlpar\li80 Varchar(30)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li80\b0 Middle Name\cell 
+\pard\intbl\widctlpar\li60 Employee Middle Name\cell 
+\pard\intbl\widctlpar\li80 Varchar(30)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh371\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri281\qr\fs22 4\cell 
+\pard\intbl\widctlpar\li80\fs24 Last Name\cell 
+\pard\intbl\widctlpar\li60 Employee Last Name\cell 
+\pard\intbl\widctlpar\li80 Varchar(30)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 5\cell 
+\pard\intbl\widctlpar\li80\b0 Sex\cell 
+\pard\intbl\widctlpar\li60 Employee sex\cell 
+\pard\intbl\widctlpar\li80 Varchar(1)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri221\qr\b 6\cell 
+\pard\intbl\widctlpar\li80\b0 Employment\cell 
+\pard\intbl\widctlpar\li60 Employee employment\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Date\cell 
+\pard\intbl\widctlpar\li60 date\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh431\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 7\cell 
+\pard\intbl\widctlpar\li80\b0 Marital Status\cell 
+\pard\intbl\widctlpar\li60 Employee marital status\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b 8\cell 
+\pard\intbl\widctlpar\li80\b0 Confirmation\cell 
+\pard\intbl\widctlpar\li60 Employee confirmation\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Date\cell 
+\pard\intbl\widctlpar\li60 date\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 9\cell 
+\pard\intbl\widctlpar\li80\b0 Bank Account\cell 
+\pard\intbl\widctlpar\li60 Employee bank account\cell 
+\pard\intbl\widctlpar\li80 Varchar(20)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Number\cell 
+\pard\intbl\widctlpar\li60 number\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0 10\cell 
+\pard\intbl\widctlpar\li80\b0 Nearest Branch\cell 
+\pard\intbl\widctlpar\li60 Employee nearest bank\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Name\cell 
+\pard\intbl\widctlpar\li60 branch\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 11\cell 
+\pard\intbl\widctlpar\li80\b0 Nearest Branch\cell 
+\pard\intbl\widctlpar\li60 Employee nearest bank\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Code\cell 
+\pard\intbl\widctlpar\li60 code\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh430\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 12\cell 
+\pard\intbl\widctlpar\li80\b0 Vote code\cell 
+\pard\intbl\widctlpar\li60 Employer identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(6)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b 13\cell 
+\pard\intbl\widctlpar\li80\b0 Vote name\cell 
+\pard\intbl\widctlpar\li60 Employer name\cell 
+\pard\intbl\widctlpar\li80 Varchar(255)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 14\cell 
+\pard\intbl\widctlpar\li80\b0 NIN\cell 
+\pard\intbl\widctlpar\li60 National identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(22)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 number\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0 15\cell 
+\pard\intbl\widctlpar\li80\b0 Designation\cell 
+\pard\intbl\widctlpar\li60 Designation Identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(8)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 code\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 16\cell 
+\pard\intbl\widctlpar\li80\b0 Designation\cell 
+\pard\intbl\widctlpar\li60 Designation description\cell 
+\pard\intbl\widctlpar\li80 Varchar(255)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 name\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0 17\cell 
+\pard\intbl\widctlpar\li80\b0 Basic Salary\cell 
+\pard\intbl\widctlpar\li60 Basic salary\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh430\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 18\cell 
+\pard\intbl\widctlpar\li80\b0 Net salary\cell 
+\pard\intbl\widctlpar\li60 Amount after deduction\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b 19\cell 
+\pard\intbl\widctlpar\li80\b0 One third\cell 
+\pard\intbl\widctlpar\li60 Minimum amount after\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\li60 deduction\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 22\cell 
+\pard\intbl\widctlpar\li140\b0 Total\cell 
+\pard\intbl\widctlpar\li60 Total existing employee\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Employee\cell 
+\pard\intbl\widctlpar\li60 deduction amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li80\f0 Deduction\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0\fs24 21\cell 
+\pard\intbl\widctlpar\li80\b0 Retirement date\cell 
+\pard\intbl\widctlpar\li60 Current date \endash  date of\cell 
+\pard\intbl\widctlpar\li80 Number (3)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 birth (Month)\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\qc\b\f0 22\cell 
+\pard\intbl\widctlpar\li80\b0 Terms of\cell 
+\pard\intbl\widctlpar\li60 Permanent or Contractual\cell 
+\pard\intbl\widctlpar\li80 Varchar(30)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 employment\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\ri-13\qc\f0\fs21\par
+
+\pard\widctlpar\f1\fs20\par
+\trowd\trgaph10\trleft180\trrh342\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 23\cell 
+\pard\intbl\widctlpar\li80\b0 Requested\cell 
+\pard\intbl\widctlpar\li60 Loan amount\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0 24\cell 
+\pard\intbl\widctlpar\li80\b0 Desired\cell 
+\pard\intbl\widctlpar\li60 Desired deduction amount\cell 
+\pard\intbl\widctlpar\li80 Number(38,2)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 deductible\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li80\f0 amount\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh430\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 25\cell 
+\pard\intbl\widctlpar\li80\b0 Tenure\cell 
+\pard\intbl\widctlpar\li60 Repayment period\cell 
+\pard\intbl\widctlpar\li80 Number (3)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b 28\cell 
+\pard\intbl\widctlpar\li80\b0 FSP code\cell 
+\pard\intbl\widctlpar\li60 FSP identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh430\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 29\cell 
+\pard\intbl\widctlpar\li80\b0 Product code\cell 
+\pard\intbl\widctlpar\li60 Product identification\cell 
+\pard\intbl\widctlpar\li80 Varchar(8)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b 30\cell 
+\pard\intbl\widctlpar\li80\b0 Interest rate\cell 
+\pard\intbl\widctlpar\li60 Interest rate amount\cell 
+\pard\intbl\widctlpar\li80 Number(3,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 31\cell 
+\pard\intbl\widctlpar\li80\b0 Processing fee\cell 
+\pard\intbl\widctlpar\li60 Cost of loan processing\cell 
+\pard\intbl\widctlpar\li80 Number(3,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 percentage\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh386\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0 32\cell 
+\pard\intbl\widctlpar\li80\b0 Insurance\cell 
+\pard\intbl\widctlpar\li60 Loan cover percentage\cell 
+\pard\intbl\widctlpar\li80 Number(3,2)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh335\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 33\cell 
+\pard\intbl\widctlpar\li80\b0 Physical\cell 
+\pard\intbl\widctlpar\li60 Physical address\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 address\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh68\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh335\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 34\cell 
+\pard\intbl\widctlpar\li80\b0 Telephone\cell 
+\pard\intbl\widctlpar\li60 Telephone number\cell 
+\pard\intbl\widctlpar\li80 Varchar(12)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 number\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh67\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh443\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 35\cell 
+\pard\intbl\widctlpar\li80\b0 Email address\cell 
+\pard\intbl\widctlpar\li60 Email address\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrt\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b 36\cell 
+\pard\intbl\widctlpar\li80\b0 Mobile number\cell 
+\pard\intbl\widctlpar\li60 Mobile number\cell 
+\pard\intbl\widctlpar\li80 Varchar(12)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh53\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh335\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 37\cell 
+\pard\intbl\widctlpar\li80\b0 Application\cell 
+\pard\intbl\widctlpar\li60 Loan application\cell 
+\pard\intbl\widctlpar\li80 Varchar(15)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 number\cell 
+\pard\intbl\widctlpar\li60 identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh68\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 38\cell 
+\pard\intbl\widctlpar\li80\b0 Loan Purpose\cell 
+\pard\intbl\widctlpar\li60 Reason for loan request\cell 
+\pard\intbl\widctlpar\li80 Varchar(250)\cell 
+\pard\intbl\widctlpar\li60 NO\cell\row\trowd\trgaph10\trleft180\trrh54\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh321\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 39\cell 
+\pard\intbl\widctlpar\li80\b0 Contract Start\cell 
+\pard\intbl\widctlpar\li60 Employee contract start\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh338\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Date\cell 
+\pard\intbl\widctlpar\li60 date(Optional)\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh67\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh323\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 40\cell 
+\pard\intbl\widctlpar\li80\b0 Contract End\cell 
+\pard\intbl\widctlpar\li60 Employee contract end\cell 
+\pard\intbl\widctlpar\li80 Varchar(10)\cell 
+\pard\intbl\widctlpar\li60 YES\cell\row\trowd\trgaph10\trleft180\trrh338\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li80\f0 Date\cell 
+\pard\intbl\widctlpar\li60 date(Optional)\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh68\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 41\cell 
+\pard\intbl\widctlpar\li80\b0 Swift Code\cell 
+\pard\intbl\widctlpar\li60 bank swift code\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 No\cell\row\trowd\trgaph10\trleft180\trrh61\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\fs5\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft180\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 42\cell 
+\pard\intbl\widctlpar\li80\b0 Funding\cell 
+\pard\intbl\widctlpar\li60 Employee source of\cell 
+\pard\intbl\widctlpar\li80 Varchar(50)\cell 
+\pard\intbl\widctlpar\li60 No\cell\row\trowd\trgaph10\trleft180\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li60\f0 salary payment\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft180\trrh56\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf3\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx1000\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx7580\clbrdrr\brdrw20\brdrs\brdrcf3\clbrdrb\brdrw20\brdrs\brdrcf3 \cellx9020 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\par
+\fs20\par
+\par
+
+\pard\widctlpar\ri-13\qc\b\f0\fs24 Message 05\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li60\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Sender>ESS_UTUMISHI</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Receiver>FSPSystem</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <FSPCode>1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MsgId>90769af68ef011ecb3a6432feaa9296f</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MessageType>LOAN_OFFER_REQUEST</MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <CheckNumber>111222333</CheckNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <FirstName>Juma</FirstName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <MiddleName>Ponda</MiddleName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <LastName>Mali</LastName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Sex>M</Sex>\par
+
+\pard\widctlpar\fi-785\li2940\ri106\sl324\slmult1 <BankAccountNumber>011445888578</BankAccountNumber> <EmploymentDate>2020-07-01</EmploymentDate> <MaritalStatus>Married</MaritalStatus>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <ConfirmationDate>2021-07-01</ConfirmationDate>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2220\f0\fs24 <TotalEmployeeDeduction>205500</TotalEmployeeDeduction>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <NearestBranchName>A Manyoni</NearestBranchName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <NearestBranchCode>AX002</NearestBranchCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <VoteCode>32</VoteCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <VoteName>XYZ</VoteName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <NIN>19870527111450000124</NIN>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <DesignationCode>TZ800186</DesignationCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <DesignationName>ICTOII</DesignationName>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <BasicSalary>5000.00</BasicSalary>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <NetSalary>100.00</NetSalary>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <OneThirdAmount>120000.00</OneThirdAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <RequestedAmount>5000.00</RequestedAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2300\f0\fs24 <DesiredDeductibleAmount>12000.00\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2260\f0\fs24 </DesiredDeductibleAmount>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <RetirementDate>3</RetirementDate>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <TermsOfEmployment>Permanent and Pensionable\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2260\f0\fs24 </TermsOfEmployment>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Tenure>45</Tenure>\par
+
+\pard\widctlpar\f1\fs20\par
+\par
+
+\pard\widctlpar\ri-13\qc\f0\fs21 13\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\ri786\sl336\slmult1\f0\fs23 <ProductCode>22346</ProductCode> <InterestRate>20.00</InterestRate> <ProcessingFee>200.00</ProcessingFee> <Insurance>500.00</Insurance> <PhysicalAddress>Arusha</PhysicalAddress> <EmailAddress>abc.abc@instution.com</EmailAddress> <MobileNumber>0758484339</MobileNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\ri406\sl324\slmult1\f0\fs24 <ApplicationNumber>0021000</ApplicationNumber> <LoanPurpose> Mkopo wakujenga nyumba </LoanPurpose> <ContractStartDate>2011-02-25</ContractStartDate> <ContractEndDate>2025-02-25 </ContractEndDate> <SwiftCode>AXB02</SwiftCode> <Funding>OS</Funding>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>Signature</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+\f1\fs20\par
+\par
+\cf1\f0\fs24 2.2.4 Loan Offer Approval Notification From FSP to ESS\par
+\cf0\f1\fs20\par
+
+\pard\widctlpar\ri1106\sl300\slmult1\f0\fs24 This is an API to notify ESS on submitted loan offer approval (Accepted or Rejected).\par
+
+\pard\widctlpar\f1\fs20\par
+\trowd\trgaph10\trleft160\trrh342\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\li100\b\f0\fs24 S/\cell 
+\pard\intbl\widctlpar\li280 Item Name\cell 
+\pard\intbl\widctlpar\li260 Item description\cell 
+\pard\intbl\widctlpar\li280 Type\cell\b0 Optional\cell\row\trowd\trgaph10\trleft160\trrh341\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\li100\b N\cell 
+\pard\intbl\widctlpar\b0\f1\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li280\b0 Application\cell 
+\pard\intbl\widctlpar\li260 Loan application\cell 
+\pard\intbl\widctlpar\li280 Varchar(18)\cell NO\cell\row\trowd\trgaph10\trleft160\trrh384\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8900 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 number\cell 
+\pard\intbl\widctlpar\li260 identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh277\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0 2\cell 
+\pard\intbl\widctlpar\li280\b0 Reason\cell 
+\pard\intbl\widctlpar\li260 Reason for offer\cell 
+\pard\intbl\widctlpar\li280 Varchar(150)\cell YES\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li260\f0 rejection\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh298\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li280\b0 FSP\cell 
+\pard\intbl\widctlpar\li420 Unique FSP\cell 
+\pard\intbl\widctlpar\li280 Varchar(20)\cell YES\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 Reference\cell 
+\pard\intbl\widctlpar\li420 Reference number\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li280\f0 number\cell 
+\pard\intbl\widctlpar\li420 corresponding to\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh308\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\cell\cell 
+\pard\intbl\widctlpar\li420\f0 request\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0 4\cell 
+\pard\intbl\widctlpar\li280\b0 Other\cell 
+\pard\intbl\widctlpar\li260 Other charges\cell 
+\pard\intbl\widctlpar\li280 Number(38,2)\cell YES\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 charges\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh56\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh275\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 5\cell 
+\pard\intbl\widctlpar\li280\b0 Approval\cell 
+\pard\intbl\widctlpar\li260 APPROVED||\cell 
+\pard\intbl\widctlpar\li280 Varchar(10)\cell NO\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8900 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li260\f0 REJECTED\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\ri160\qr\b\f0 6\cell 
+\pard\intbl\widctlpar\li280\b0 Loan\cell 
+\pard\intbl\widctlpar\li420 Unique FSP number\cell 
+\pard\intbl\widctlpar\li280 Varchar(20)\cell YES\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 Number\cell 
+\pard\intbl\widctlpar\li420 that identify loan\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\cell\cell 
+\pard\intbl\widctlpar\li420\f0 application\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh56\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8900 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\par
+
+\pard\widctlpar\ri-13\qc\b\f0\fs24 Message 06\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Sender>FSPSystem</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Receiver>ESS_UTUMISHI</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <FSPCode>1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <MsgId>FSP1234</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\fi-1439\li1440\ri740\sl252\slmult1\f0\fs24 <MessageType>LOAN_INITIAL_APPROVAL_NOTIFICATION</MessageType> </Header>\par
+
+\pard\widctlpar\li1440 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <ApplicationNumber>ESS1678796729374</ApplicationNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Reason>Ok</Reason>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <FSPReferenceNumber>TZ0010</FSPReferenceNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <LoanNumber>20070001</LoanNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <TotalAmountToPay>2500000.58</TotalAmountToPay>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <OtherCharges>2500.05</OtherCharges>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Approval>APPROVED</Approval>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>XYZ</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+\f1\fs20\par
+\cf1\f0\fs24 2.2.5 Loan Verification and Approval\par
+\cf0\f1\fs20\par
+\f0\fs22 Loan Approval Status Notification to FSP\par
+\f1\fs20\par
+\trowd\trgaph10\trleft160\trrh406\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri140\qr\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li280 Item Name\cell Item description\cell Type\cell 
+\pard\intbl\widctlpar\li60 Optional\cell\row\trowd\trgaph10\trleft160\trrh42\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\b0\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh275\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri60\qr\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li180\b0 Application\cell 
+\pard\intbl\widctlpar\li280 Loan application\cell 
+\pard\intbl\widctlpar\li260 Varchar(15)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9280 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li180\f0 number\cell 
+\pard\intbl\widctlpar\li280 identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh363\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri60\qr\b\f0 2\cell 
+\pard\intbl\widctlpar\li180\b0 Reason\cell 
+\pard\intbl\widctlpar\li280 Reason for offer rejection\cell 
+\pard\intbl\widctlpar\li260 Varchar(150)\cell 
+\pard\intbl\widctlpar\li280 YES\cell\row\trowd\trgaph10\trleft160\trrh41\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh298\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri60\qr\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li180\b0 FSP Reference\cell 
+\pard\intbl\widctlpar\li240 Unique FSP Reference\cell 
+\pard\intbl\widctlpar\li260 Varchar(20)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh227\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\f1\fs19\cell 
+\pard\intbl\widctlpar\li180\f0\fs24 number\cell 
+\pard\intbl\widctlpar\li240 number corresponding to\cell 
+\pard\intbl\widctlpar\f1\fs19\cell\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9280 
+\pard\intbl\widctlpar\fs24\cell\cell 
+\pard\intbl\widctlpar\li240\f0 request\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh360\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri180\qr\b\f0 4\cell 
+\pard\intbl\widctlpar\b0 Approval\cell APPROVED || REJECTED\cell Varchar(10)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh201\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\f1\fs17\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh264\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\ri180\qr\b\f0\fs24 5\cell 
+\pard\intbl\widctlpar\b0 Loan Number\cell Unique FSP number that\cell Varchar(20)\cell 
+\pard\intbl\widctlpar\li100 YES\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\f1\cell\cell\f0 identify loan application\cell\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh155\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2900\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx6040\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9280 
+\pard\intbl\widctlpar\fs13\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\ri200\qc\b\f0\fs24 Message 07\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li340\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li920\f0\fs24 <Sender>ESS_UTUMISHI</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li920\f0\fs24 <Receiver>FSPSystem</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li920\f0\fs24 <FSPCode>A1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li920\f0\fs24 <MsgId>FSP1234</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <MessageType>LOAN_FINAL_APPROVAL_NOTIFICATION</\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li780\f0\fs24 </Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li780\f0\fs24 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1320\ri1620\sl240\slmult1\f0\fs24 <ApplicationNumber>ESS101</ApplicationNumber> <Reason>Not allowed</Reason> <FSPReferenceNumber>TZ001</FSPReferenceNumber> <LoanNumber>20070001</LoanNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1460\ri2360\sl252\slmult1\f0\fs23 <Approval>APPROVED || REJECTED</Approval> </MessageDetails></Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>XYZ</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Document>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li180\cf1\f0\fs24 2.2.6 Disbursement Notification from FSP to ESS\par
+
+\pard\widctlpar\cf0\f1\fs20\par
+\par
+\trowd\trgaph10\trleft160\trrh406\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri160\qr\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li280 Item Name\cell Item description\cell Type\cell\b0 Optional\cell\row\trowd\trgaph10\trleft160\trrh42\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh275\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri180\qr\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li280\b0 Application\cell Loan application\cell Varchar(15)\cell NO\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 number\cell identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh298\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri180\qr\b\f0 2\cell 
+\pard\intbl\widctlpar\li280\b0 FSP\cell 
+\pard\intbl\widctlpar\li60 Unique FSP Reference\cell 
+\pard\intbl\widctlpar\li280 Varchar(20)\cell NO\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 Reference\cell 
+\pard\intbl\widctlpar\li60 number corresponding to\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh352\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\cell 
+\pard\intbl\widctlpar\li280\f0 number\cell 
+\pard\intbl\widctlpar\li60 request\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri180\qr\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li280\b0 Loan\cell 
+\pard\intbl\widctlpar\li60 Unique FSP number that\cell 
+\pard\intbl\widctlpar\li280 Varchar(20)\cell NO\cell\row\trowd\trgaph10\trleft160\trrh388\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 Number\cell 
+\pard\intbl\widctlpar\li60 identify loan application\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri180\qr\b\f0 4\cell 
+\pard\intbl\widctlpar\li280\b0 Total Amount\cell 
+\pard\intbl\widctlpar\li60 Total Amount to pay\cell 
+\pard\intbl\widctlpar\li280 Number(38,2\cell YES\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 to pay\cell 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 )\cell 
+\pard\intbl\widctlpar\f1\cell\row\trowd\trgaph10\trleft160\trrh56\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh275\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\ri180\qr\b\f0\fs24 5\cell 
+\pard\intbl\widctlpar\li280\b0 Disbursemen\cell 
+\pard\intbl\widctlpar\li60 Disbursement date\cell 
+\pard\intbl\widctlpar\li280 String\cell NO\cell\row\trowd\trgaph10\trleft160\trrh360\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9200 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 t date\cell 
+\pard\intbl\widctlpar\f1\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh20\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx920\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2740\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7660\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9200 
+\pard\intbl\widctlpar\fs2\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\par
+
+\pard\widctlpar\ri140\qc\f0\fs21\par
+
+\pard\widctlpar\f1\fs20\par
+\b\f0\fs24 Message 08\par
+\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li140\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li60\f0\fs24 <Header>\par
+
+\pard\widctlpar\li1440 <Sender>FSPSystem</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Receiver>ESS_UTUMISHI</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <FSPCode>1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MsgId>FSP1234</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <MessageType>LOAN_DISBURSEMENT_NOTIFICATION</MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li800\f0\fs24 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1060\ri1100\sl276\slmult1\f0\fs24 <ApplicationNumber>1002</ApplicationNumber> <Reason>I have desired not to apply</Reason> <FSPReferenceNumber>TZ001</FSPReferenceNumber> <LoanNumber>20070001</LoanNumber> <TotalAmountToPay>2500000</TotalAmountToPay> <DisbursementDate>2022-05-26T21:32:52</DisbursementDate>\par
+
+\pard\widctlpar\li800 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li260\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>XYZ</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+\f1\fs20\par
+\cf1\f0\fs24 2.2.7 Disbursement Failure Notification from FSP to ESS\par
+\cf0\f1\fs20\par
+\par
+\trowd\trgaph10\trleft160\trrh427\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\ri60\qr\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li60 Item Name\cell 
+\pard\intbl\widctlpar\li280 Item description\cell Type\cell\b0 Optional\cell\row\trowd\trgaph10\trleft160\trrh51\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\f1\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh286\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\ri80\qr\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li280\b0 Application\cell Loan application\cell 
+\pard\intbl\widctlpar\li80 Varchar(15)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh395\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx9100 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li280\f0 number\cell identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh308\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\ri80\qr\b\f0 2\cell 
+\pard\intbl\widctlpar\li280\b0 Reason\cell Description\cell 
+\pard\intbl\widctlpar\li80 Varchar(255)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh227\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\f1\fs19\cell\cell 
+\pard\intbl\widctlpar\li280\f0\fs24 why\cell 
+\pard\intbl\widctlpar\f1\fs19\cell\cell\row\trowd\trgaph10\trleft160\trrh252\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\fs21\cell\cell 
+\pard\intbl\widctlpar\li280\f0\fs24 disburseme\cell 
+\pard\intbl\widctlpar\f1\fs21\cell\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\fs24\cell\cell 
+\pard\intbl\widctlpar\li280\f0 nt failure\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh66\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2720\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5860\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7560\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx9100 
+\pard\intbl\widctlpar\fs5\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\par
+
+\pard\widctlpar\ri40\qc\b\f0\fs24 Message 09\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Sender>FSPSystem</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <Receiver>ESS_UTUMISHI</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <FSPCode>1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\f0\fs24 <MsgId>FSP12346</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\ri1366\sl264\slmult1\f0\fs23 <MessageType>LOAN_DISBURSEMENT_FAILURE_NOTIFICATION</ MessageType>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 </Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li2160\ri1486\sl276\slmult1\f0\fs24 <ApplicationNumber>A1002</ApplicationNumber> <Reason>technical error</Reason>\par
+
+\pard\widctlpar\li1440 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>XYZ</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+\f1\fs20\par
+\cf1\f0\fs24 2.2.8 Loan Cancellation\par
+\cf0\f1\fs20\par
+
+\pard\widctlpar\li360\ri346\sl264\slmult1\qj\f0\fs24 Employees has the ability at any particular time, before Employer Approval, to cancel their loan request and inform all involved parties i.e Employer and FSP. Below is the flow corresponding to this process: -\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard 
+{\pntext\f0 i.\tab}{\*\pn\pnlvlbody\pnf0\pnindent0\pnstart1\pnlcrm{\pntxta.}}
+\widctlpar\fi-491\li1080\tx1080\f0\fs24 Employee login to government platforms\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li1080\ri186\sl240\slmult1\tx1080 ii.\tab\fs24 Employee request cancellation (Precondition = Loan status is pending for approval)\fs20\par
+
+\pard\widctlpar\fi-491\li1080\tx1080 iii.\tab\fs24 ESS cancel loan request within the system\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li1080\tx1080 iv.\tab\fs24 ESS send cancel notification to FSP\fs20\par
+
+\pard\widctlpar\par
+
+\pard\widctlpar\fi-491\li1080\tx1080 v.\tab\fs24 FSP acknowledges the receipt of the cancellation of loan\fs20\par
+
+\pard\widctlpar\f1\par
+
+\pard\widctlpar\li260\f0\fs24 Employee Cancellation Notification To FSP\par
+
+\pard\widctlpar\f1\fs20\par
+\trowd\trgaph10\trleft160\trrh406\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\ri80\qr\b\f0\fs24 S/N\cell 
+\pard\intbl\widctlpar\li280 Item Name\cell Item description\cell Type\cell Optional\cell\row\trowd\trgaph10\trleft160\trrh42\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\b0\f1\fs3\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh275\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\ri100\qr\b\f0\fs24 1\cell 
+\pard\intbl\widctlpar\li60\b0 Application\cell 
+\pard\intbl\widctlpar\li80 Loan application\cell 
+\pard\intbl\widctlpar\li260 Varchar(15)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8960 
+\pard\intbl\widctlpar\f1\cell 
+\pard\intbl\widctlpar\li60\f0 number\cell 
+\pard\intbl\widctlpar\li80 identification\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\ri100\qr\b\f0 2\cell 
+\pard\intbl\widctlpar\li260\b0 Reason\cell 
+\pard\intbl\widctlpar\li80 Reason for offer\cell 
+\pard\intbl\widctlpar\li260 Varchar(150)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li80\f0 cancellation\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh55\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row\trowd\trgaph10\trleft160\trrh298\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\ri100\qr\b\f0\fs24 3\cell 
+\pard\intbl\widctlpar\li60\b0 FSP Reference\cell 
+\pard\intbl\widctlpar\li80 Unique FSP Reference\cell 
+\pard\intbl\widctlpar\li260 Varchar(20)\cell 
+\pard\intbl\widctlpar\li280 NO\cell\row\trowd\trgaph10\trleft160\trrh227\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\f1\fs19\cell 
+\pard\intbl\widctlpar\li60\f0\fs24 number\cell 
+\pard\intbl\widctlpar\li80 number corresponding\cell 
+\pard\intbl\widctlpar\f1\fs19\cell\cell\row\trowd\trgaph10\trleft160\trrh385\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf4 \cellx8960 
+\pard\intbl\widctlpar\fs24\cell\cell 
+\pard\intbl\widctlpar\li80\f0 to request\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh322\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrt\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\ri100\qr\b\f0 4\cell 
+\pard\intbl\widctlpar\li60\b0 Loan Number\cell 
+\pard\intbl\widctlpar\li80 Unique FSP number\cell 
+\pard\intbl\widctlpar\li260 Varchar(20)\cell 
+\pard\intbl\widctlpar\li280 Yes\cell\row\trowd\trgaph10\trleft160\trrh276\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\f1\cell\cell 
+\pard\intbl\widctlpar\li80\f0 that identify loan\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh325\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\cell\cell 
+\pard\intbl\widctlpar\li80\f0 application\cell 
+\pard\intbl\widctlpar\f1\cell\cell\row\trowd\trgaph10\trleft160\trrh56\trpaddl10\trpaddr10\trpaddfl3\trpaddfr3
+\clbrdrl\brdrw20\brdrs\brdrcf5\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx840\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx2700\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx5500\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx7380\clbrdrr\brdrw20\brdrs\brdrcf5\clbrdrb\brdrw20\brdrs\brdrcf5 \cellx8960 
+\pard\intbl\widctlpar\fs4\cell\cell\cell\cell\cell\row 
+\pard\widctlpar\ri-13\qc\b\f0\fs24 Message 10\par
+
+\pard\widctlpar\b0\f1\fs20\par
+\f0\fs24 <Document>\par
+\f1\fs20\par
+
+\pard\widctlpar\li140\f0\fs24 <Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Header>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Sender>ESS_UTUMISHI</Sender>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Receiver>FSPSystem</Receiver>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1500\f0\fs24 <FSPCode>1001</FSPCode>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <MsgId>FSP1234</MsgId>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\ri206\sl276\slmult1\f0\fs24 <MessageType>LOAN_CANCELLATION_NOTIFICATION</MessageType> </Header>\par
+
+\pard\widctlpar\li980 <MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <ApplicationNumber>1002</ApplicationNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <Reason>reason</Reason>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <FSPReferenceNumber>TZ2001</FSPReferenceNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li1440\f0\fs24 <LoanNumber>20070001</LoanNumber>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li980\f0\fs24 </MessageDetails>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li260\f0\fs24 </Data>\par
+
+\pard\widctlpar\f1\fs20\par
+
+\pard\widctlpar\li720\f0\fs24 <Signature>XYZ</Signature>\par
+
+\pard\widctlpar\f1\fs20\par
+\f0\fs24 </Document>\par
+\f1\fs20\par
+
+\pard\sa200\sl276\slmult1\f3\fs22\lang9\par
+}
+ 
