@@ -566,6 +566,211 @@ private function createAssociatedModel(Enquiry $enquiry, $type, $data)
     }
 }
 
+private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
+{
+    switch ($type) {
+        case 'loan_application':
+            $enquiry->loanApplication()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'loan_type' => $data['loan_type'] ?? null,
+                    'loan_amount' => $data['loan_amount'] ?? 0,
+                    'loan_duration' => $data['loan_duration'] ?? 0,
+                    'loan_category' => $data['loan_category'] ?? null,
+                ]
+            );
+            break;
+
+        case 'withdraw_savings':
+            $enquiry->withdrawals()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id, 'type' => 'savings'],
+                [
+                    'amount' => $data['withdraw_saving_amount'] ?? 0,
+                    'reason' => $data['withdraw_saving_reason'] ?? 'None',
+                ]
+            );
+            break;
+
+        case 'withdraw_deposit':
+            $enquiry->withdrawals()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id, 'type' => 'deposit'],
+                [
+                    'amount' => $data['withdraw_deposit_amount'] ?? 0,
+                    'reason' => $data['withdraw_deposit_reason'] ?? 'None',
+                ]
+            );
+            break;
+
+        case 'refund':
+            $enquiry->refund()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'refund_amount' => $data['refund_amount'] ?? 0,
+                    'refund_duration' => $data['refund_duration'] ?? 0,
+                ]
+            );
+            break;
+
+        case 'share_enquiry':
+            $enquiry->share()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'share_amount' => $data['share_amount'] ?? 0,
+                ]
+            );
+            break;
+
+        case 'retirement':
+            $enquiry->retirement()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'date_of_retirement' => $data['date_of_retirement'] ?? null,
+                ]
+            );
+            break;
+
+        case 'deduction_add':
+            $enquiry->deduction()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'from_amount' => $data['from_amount'] ?? 0,
+                    'to_amount' => $data['to_amount'] ?? 0,
+                ]
+            );
+            break;
+
+        case 'condolences':
+            $enquiry->condolence()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'dependent_member_type' => $data['dependent_member_type'] ?? null,
+                    'gender' => $data['gender'] ?? null,
+                ]
+            );
+            break;
+
+        case 'injured_at_work':
+            $enquiry->injury()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'description' => $data['description'] ?? null,
+                ]
+            );
+            break;
+
+        case 'sick_for_30_days':
+            $enquiry->sickLeave()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'startdate' => $data['startdate'] ?? null,
+                    'enddate' => $data['enddate'] ?? null,
+                ]
+            );
+            break;
+
+        case 'unjoin_membership':
+            $enquiry->membershipChanges()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id, 'action' => 'unjoin'],
+                [
+                    'reason' => $data['unjoin_reason'] ?? null,
+                    'category' => $data['unjoin_category'] ?? null,
+                ]
+            );
+            break;
+
+        case 'join_membership':
+            $enquiry->membershipChanges()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id, 'action' => 'join'],
+                [
+                    'reason' => $data['join_reason'] ?? null,
+                    'category' => $data['join_category'] ?? null,
+                ]
+            );
+            break;
+
+        case 'residential_disaster':
+            $enquiry->residentialDisaster()->updateOrCreate(
+                ['enquiry_id' => $enquiry->id],
+                [
+                    'disaster_type' => $data['disaster_type'] ?? null,
+                ]
+            );
+            break;
+    }
+}
+
+/**
+ * Clean up old child table data when enquiry type changes
+ */
+private function cleanupOldChildTableData(Enquiry $enquiry, $oldType)
+{
+    switch ($oldType) {
+        case 'loan_application':
+            $enquiry->loanApplication()->delete();
+            break;
+
+        case 'withdraw_savings':
+            $enquiry->withdrawals()->where('type', 'savings')->delete();
+            break;
+
+        case 'withdraw_deposit':
+            $enquiry->withdrawals()->where('type', 'deposit')->delete();
+            break;
+
+        case 'refund':
+            $enquiry->refund()->delete();
+            break;
+
+        case 'share_enquiry':
+            $enquiry->share()->delete();
+            break;
+
+        case 'retirement':
+            $enquiry->retirement()->delete();
+            break;
+
+        case 'deduction_add':
+            $enquiry->deduction()->delete();
+            break;
+
+        case 'condolences':
+            $enquiry->condolence()->delete();
+            break;
+
+        case 'injured_at_work':
+            $enquiry->injury()->delete();
+            break;
+
+        case 'sick_for_30_days':
+            $enquiry->sickLeave()->delete();
+            break;
+
+        case 'unjoin_membership':
+            $enquiry->membershipChanges()->where('action', 'unjoin')->delete();
+            break;
+
+        case 'join_membership':
+            $enquiry->membershipChanges()->where('action', 'join')->delete();
+            break;
+
+        case 'residential_disaster':
+            $enquiry->residentialDisaster()->delete();
+            break;
+
+        case 'benefit_from_disasters':
+            $enquiry->benefit()->delete();
+            break;
+
+        case 'ura_mobile':
+            $enquiry->uraMobile()->delete();
+            break;
+
+        default:
+            // For any other types, try to clean up common relationships
+            break;
+    }
+}
+
 // private function handleFileUpload(Request $request, Enquiry $enquiry)
 // {
 //     if (!$request->hasFile('file_path')) {
@@ -824,15 +1029,15 @@ private function constructMessageBasedOnType($data)
 
             case 'unjoin_membership':
                 $rules = array_merge($rules, [
-                    'unjoin_reason' => 'required|string|max:255',
-                    'unjoin_category' => 'required|in:normal,job_termination',
+                    'unjoin_reason' => 'sometimes|string|max:255',
+                    'unjoin_category' => 'sometimes|in:normal,job_termination',
                 ]);
                 break;
 
             case 'benefit_from_disasters':
                 $rules = array_merge($rules, [
-                    'benefit_amount' => 'required|numeric',
-                    'benefit_description' => 'required|string|max:1000',
+                    'benefit_amount' => 'sometimes|numeric',
+                    'benefit_description' => 'sometimes|string|max:1000',
                     'benefit_remarks' => 'nullable|string|max:1000',
                 ]);
                 break;
@@ -844,8 +1049,27 @@ private function constructMessageBasedOnType($data)
         // Validate the request
         $validated = $request->validate($rules);
 
+        // Check if enquiry type has changed
+        $oldType = $enquiry->type;
+        $newType = $validated['type'] ?? $oldType;
+
         // Update the enquiry with validated data
         $enquiry->update($validated);
+
+        // If enquiry type changed, clean up old child table data
+        if ($oldType !== $newType) {
+            $this->cleanupOldChildTableData($enquiry, $oldType);
+        }
+
+        // Update associated models if type-specific data is provided
+        if (isset($validated['type'])) {
+            $this->updateOrCreateAssociatedModel($enquiry, $validated['type'], $validated);
+        }
+
+        // Handle file upload if applicable
+        if ($request->hasFile('file_path')) {
+            $this->handleFileUpload($request, $enquiry);
+        }
 
         // Redirect with success message
         return Redirect::route('enquiries.index')->with('success', 'Enquiry updated successfully!');

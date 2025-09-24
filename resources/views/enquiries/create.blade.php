@@ -134,11 +134,27 @@
     .step-item.completed {
         background: var(--ura-success);
         color: var(--ura-white);
+        box-shadow: 0 4px 12px rgba(16, 220, 96, 0.3);
+    }
+
+    .step-item.completed .step-number {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .step-item.completed .step-number::before {
+        content: "\f00c";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 12px;
+    }
+
+    .step-item.completed .step-number-text {
+        display: none;
     }
 
     .step-number {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -146,6 +162,20 @@
         font-size: 0.75rem;
         font-weight: 600;
         background: rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .step-item.active .step-number {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
     }
 
     .step-title {
@@ -433,37 +463,23 @@
         transform: none;
     }
 
-    /* Loading State */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(13, 42, 90, 0.9);
+    /* Button Loading State */
+    .btn-spinner {
         display: none;
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
     }
 
-    .loading-overlay.show {
-        display: flex;
+    .btn-modern.loading .btn-text {
+        display: none;
     }
 
-    .loading-content {
-        text-align: center;
-        color: var(--ura-white);
+    .btn-modern.loading .btn-spinner {
+        display: inline-block;
     }
 
-    .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(255,255,255,0.2);
-        border-top: 4px solid var(--ura-accent);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1rem;
+    .btn-modern:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none !important;
     }
 
     @keyframes spin {
@@ -471,28 +487,71 @@
         100% { transform: rotate(360deg); }
     }
 
-    /* Review Section */
+    /* Enhanced Review Section */
     .review-card {
-        background: var(--ura-white);
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
+        background: linear-gradient(145deg, var(--ura-white), #f8f9ff);
+        border: 1px solid rgba(23, 71, 158, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px rgba(13, 42, 90, 0.08);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .review-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--ura-gradient-2);
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(13, 42, 90, 0.15);
+        border-color: var(--ura-accent);
     }
 
     .review-section-title {
         color: var(--ura-primary);
-        font-weight: 600;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 2px solid rgba(23, 71, 158, 0.1);
+        padding-bottom: 0.75rem;
+    }
+
+    .review-section-title::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: var(--ura-accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.3);
     }
 
     .review-item {
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f8fafc;
+        align-items: flex-start;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(23, 71, 158, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .review-item:hover {
+        background: rgba(23, 71, 158, 0.02);
+        border-radius: 8px;
+        margin: 0 -0.5rem;
+        padding: 0.75rem 0.5rem;
+        border-color: var(--ura-accent);
     }
 
     .review-item:last-child {
@@ -500,13 +559,61 @@
     }
 
     .review-label {
-        font-weight: 500;
+        font-weight: 600;
         color: var(--ura-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .review-label::before {
+        content: '•';
+        color: var(--ura-accent);
+        font-weight: bold;
     }
 
     .review-value {
-        color: #64748b;
+        color: #475569;
         text-align: right;
+        font-weight: 500;
+        max-width: 60%;
+        word-wrap: break-word;
+        background: rgba(135, 206, 235, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .review-highlight {
+        background: var(--ura-gradient-1);
+        color: var(--ura-white);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        margin: 1rem 0;
+        box-shadow: 0 4px 15px rgba(23, 71, 158, 0.3);
+    }
+
+    .review-summary {
+        background: var(--ura-gradient-2);
+        color: var(--ura-white);
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(23, 71, 158, 0.25);
+    }
+
+    .review-summary h5 {
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+    }
+
+    .review-summary p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 0.95rem;
     }
 
     /* Success Alert */
@@ -604,23 +711,33 @@
         <!-- Progress Steps -->
         <div class="step-progress">
             <div class="step-item active" data-step="1">
-                <div class="step-number">1</div>
+                <div class="step-number">
+                    <span class="step-number-text">1</span>
+                </div>
                 <div class="step-title"><i class="fas fa-user me-2"></i>Member Details</div>
             </div>
             <div class="step-item" data-step="2">
-                <div class="step-number">2</div>
+                <div class="step-number">
+                    <span class="step-number-text">2</span>
+                </div>
                 <div class="step-title"><i class="fas fa-question-circle me-2"></i>Enquiry Type</div>
             </div>
             <div class="step-item" data-step="3">
-                <div class="step-number">3</div>
+                <div class="step-number">
+                    <span class="step-number-text">3</span>
+                </div>
                 <div class="step-title"><i class="fas fa-map-marker-alt me-2"></i>Location</div>
             </div>
             <div class="step-item" data-step="4">
-                <div class="step-number">4</div>
+                <div class="step-number">
+                    <span class="step-number-text">4</span>
+                </div>
                 <div class="step-title"><i class="fas fa-paperclip me-2"></i>Documents</div>
             </div>
             <div class="step-item" data-step="5">
-                <div class="step-number">5</div>
+                <div class="step-number">
+                    <span class="step-number-text">5</span>
+                </div>
                 <div class="step-title"><i class="fas fa-eye me-2"></i>Review</div>
             </div>
         </div>
@@ -1242,21 +1359,18 @@
                     Next <i class="fas fa-arrow-right"></i>
                 </button>
                 <button type="button" class="btn-modern btn-primary" id="submit_btn" onclick="submitForm()" style="display: none;">
-                    <i class="fas fa-paper-plane"></i> Submit Enquiry
+                    <span class="btn-text">
+                        <i class="fas fa-paper-plane"></i> Submit Enquiry
+                    </span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Submitting...
+                    </span>
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Loading Overlay -->
-<div class="loading-overlay" id="loading_overlay">
-    <div class="loading-content">
-        <div class="loading-spinner"></div>
-        <h5>Submitting your enquiry...</h5>
-        <p>Please wait while we process your request</p>
-    </div>
-</div>
 
 <script>
     let currentStep = 1;
@@ -1299,7 +1413,7 @@
                 const enquiryType = document.getElementById('enquiry_type').value;
 
                 if (!enquiryType) {
-                    alert('Please select an enquiry type');
+                    showModernValidationDialog('Please select an enquiry type', 'warning');
                     return;
                 }
 
@@ -1320,7 +1434,7 @@
                     // Only require at least one field if there are fillable fields (exclude info-only sections)
                     const fillableFields = visibleTypeSection.querySelectorAll('input:not([readonly]), select, textarea');
                     if (fillableFields.length > 0 && !hasAtLeastOneValue) {
-                        alert('Please fill at least one field for the selected enquiry type');
+                        showModernValidationDialog('Please fill at least one field for the selected enquiry type', 'warning');
                         return;
                     }
                 }
@@ -1691,44 +1805,79 @@
 
     function generateReview() {
         const reviewContent = document.getElementById('review_content');
-        let html = '<div class="row g-3">';
+
+        // Create comprehensive review summary
+        let html = `
+            <div class="review-summary">
+                <h5><i class="fas fa-clipboard-check me-2"></i>Enquiry Summary</h5>
+                <p>Please review all information below before submitting your enquiry</p>
+            </div>
+            <div class="row g-3">
+        `;
 
         // Member Information
+        const fullName = document.getElementById('full_name').value;
+        const checkNumber = document.getElementById('check_number').value;
+        const phone = document.getElementById('phone').value;
+        const accountNumber = document.getElementById('account_number').value;
+        const bankName = document.getElementById('bank_name').selectedOptions[0]?.text || '';
+        const dateReceived = document.getElementById('date_received').value;
+
         html += `
             <div class="col-12">
                 <div class="review-card">
-                    <h6 class="review-section-title">Member Information</h6>
+                    <h6 class="review-section-title"><i class="fas fa-user me-2"></i>Member Information</h6>
                     <div class="review-item">
-                        <span class="review-label">Full Name:</span>
-                        <span class="review-value">${document.getElementById('full_name').value}</span>
+                        <span class="review-label">Full Name</span>
+                        <span class="review-value">${fullName}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Check Number:</span>
-                        <span class="review-value">${document.getElementById('check_number').value}</span>
+                        <span class="review-label">Check Number</span>
+                        <span class="review-value">${checkNumber}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Phone:</span>
-                        <span class="review-value">${document.getElementById('phone').value}</span>
+                        <span class="review-label">Phone Number</span>
+                        <span class="review-value">${phone}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Bank:</span>
-                        <span class="review-value">${document.getElementById('bank_name').selectedOptions[0]?.text || ''}</span>
+                        <span class="review-label">Account Number</span>
+                        <span class="review-value">${accountNumber}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Bank</span>
+                        <span class="review-value">${bankName}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Date Received</span>
+                        <span class="review-value">${dateReceived}</span>
                     </div>
                 </div>
             </div>
         `;
 
         // Enquiry Information
-        const selectedType = document.getElementById('enquiry_type').selectedOptions[0]?.text;
+        const selectedType = document.getElementById('enquiry_type').selectedOptions[0];
         if (selectedType) {
+            const enquiryTypeText = selectedType.text;
+            const enquiryTypeValue = selectedType.value;
+
             html += `
                 <div class="col-12">
                     <div class="review-card">
-                        <h6 class="review-section-title">Enquiry Information</h6>
+                        <h6 class="review-section-title"><i class="fas fa-question-circle me-2"></i>Enquiry Information</h6>
                         <div class="review-item">
-                            <span class="review-label">Type:</span>
-                            <span class="review-value">${selectedType}</span>
+                            <span class="review-label">Enquiry Type</span>
+                            <span class="review-value">${enquiryTypeText}</span>
                         </div>
+            `;
+
+            // Add type-specific fields based on enquiry type
+            const typeSpecificHtml = getTypeSpecificReviewHTML(enquiryTypeValue);
+            if (typeSpecificHtml) {
+                html += typeSpecificHtml;
+            }
+
+            html += `
                     </div>
                 </div>
             `;
@@ -1741,13 +1890,13 @@
             html += `
                 <div class="col-12">
                     <div class="review-card">
-                        <h6 class="review-section-title">Location</h6>
+                        <h6 class="review-section-title"><i class="fas fa-map-marker-alt me-2"></i>Location Information</h6>
                         <div class="review-item">
-                            <span class="review-label">Region:</span>
+                            <span class="review-label">Region</span>
                             <span class="review-value">${selectedRegion}</span>
                         </div>
                         <div class="review-item">
-                            <span class="review-label">District:</span>
+                            <span class="review-label">District</span>
                             <span class="review-value">${selectedDistrict}</span>
                         </div>
                     </div>
@@ -1755,18 +1904,310 @@
             `;
         }
 
+        // Documents Information
+        const fileInput = document.getElementById('attachment');
+        if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            html += `
+                <div class="col-12">
+                    <div class="review-card">
+                        <h6 class="review-section-title"><i class="fas fa-paperclip me-2"></i>Attached Documents</h6>
+                        <div class="review-item">
+                            <span class="review-label">File Name</span>
+                            <span class="review-value">${file.name}</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">File Size</span>
+                            <span class="review-value">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">File Type</span>
+                            <span class="review-value">PDF Document</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Final Review Highlight
+        html += `
+            <div class="col-12">
+                <div class="review-highlight">
+                    <i class="fas fa-info-circle me-2"></i>
+                    All information has been reviewed and is ready for submission
+                </div>
+            </div>
+        `;
+
         html += '</div>';
         reviewContent.innerHTML = html;
     }
 
+    function showModernValidationDialog(message, type = 'warning') {
+        // Remove any existing validation dialog
+        const existingDialog = document.querySelector('.modern-validation-overlay');
+        if (existingDialog) {
+            existingDialog.remove();
+        }
+
+        // Create modal overlay
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modern-validation-overlay';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 42, 90, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        `;
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.style.cssText = `
+            background: linear-gradient(145deg, #ffffff, #f8f9ff);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(13, 42, 90, 0.3);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        `;
+
+        // Determine icon and color based on type
+        let icon, iconColor, borderColor;
+        switch(type) {
+            case 'error':
+                icon = 'fas fa-exclamation-circle';
+                iconColor = '#f04141';
+                borderColor = '#f04141';
+                break;
+            case 'success':
+                icon = 'fas fa-check-circle';
+                iconColor = '#10dc60';
+                borderColor = '#10dc60';
+                break;
+            default: // warning
+                icon = 'fas fa-exclamation-triangle';
+                iconColor = '#ffce00';
+                borderColor = '#ffce00';
+        }
+
+        modalContainer.innerHTML = `
+            <div style="
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, ${iconColor}20, ${iconColor}10);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                border: 3px solid ${borderColor}40;
+            ">
+                <i class="${icon}" style="
+                    font-size: 2.5rem;
+                    color: ${iconColor};
+                    animation: pulse 1.5s infinite;
+                "></i>
+            </div>
+
+            <h4 style="
+                color: #17479e;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                font-size: 1.3rem;
+            ">Validation Required</h4>
+
+            <p style="
+                color: #475569;
+                font-size: 1.1rem;
+                line-height: 1.6;
+                margin-bottom: 2rem;
+            ">${message}</p>
+
+            <button onclick="closeValidationDialog()" style="
+                background: linear-gradient(135deg, #17479e, #87CEEB);
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 25px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(23, 71, 158, 0.3);
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(23, 71, 158, 0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(23, 71, 158, 0.3)'">
+                <i class="fas fa-check me-2"></i>
+                Got It
+            </button>
+        `;
+
+        modalOverlay.appendChild(modalContainer);
+        document.body.appendChild(modalOverlay);
+
+        // Add CSS animations if not already present
+        if (!document.getElementById('validationDialogStyles')) {
+            const style = document.createElement('style');
+            style.id = 'validationDialogStyles';
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px) scale(0.9);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    function closeValidationDialog() {
+        const dialog = document.querySelector('.modern-validation-overlay');
+        if (dialog) {
+            dialog.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                dialog.remove();
+            }, 300);
+        }
+    }
+
+    function getTypeSpecificReviewHTML(selectedType) {
+        let html = '';
+
+        switch(selectedType) {
+            case 'loan_application':
+                const loanCategory = document.querySelector('input[name="loan_category"]:checked')?.value || '';
+                const loanAmount = document.querySelector('input[name="loan_amount"]')?.value || '';
+                const loanDuration = document.querySelector('input[name="loan_duration"]')?.value || '';
+                if (loanCategory) {
+                    html += `<div class="review-item"><span class="review-label">Loan Category</span><span class="review-value">${loanCategory.replace('_', ' ').toUpperCase()}</span></div>`;
+                }
+                if (loanAmount) {
+                    html += `<div class="review-item"><span class="review-label">Loan Amount</span><span class="review-value">TSh ${parseFloat(loanAmount).toLocaleString()}</span></div>`;
+                }
+                if (loanDuration) {
+                    html += `<div class="review-item"><span class="review-label">Duration</span><span class="review-value">${loanDuration} months</span></div>`;
+                }
+                break;
+
+            case 'withdraw_savings':
+                const savingsAmount = document.querySelector('input[name="withdraw_saving_amount"]')?.value || '';
+                const savingsReason = document.querySelector('input[name="withdraw_saving_reason"]')?.value || '';
+                if (savingsAmount) {
+                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${parseFloat(savingsAmount).toLocaleString()}</span></div>`;
+                }
+                if (savingsReason) {
+                    html += `<div class="review-item"><span class="review-label">Reason</span><span class="review-value">${savingsReason}</span></div>`;
+                }
+                break;
+
+            case 'withdraw_deposit':
+                const depositAmount = document.querySelector('input[name="withdraw_deposit_amount"]')?.value || '';
+                const depositReason = document.querySelector('input[name="withdraw_deposit_reason"]')?.value || '';
+                if (depositAmount) {
+                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${parseFloat(depositAmount).toLocaleString()}</span></div>`;
+                }
+                if (depositReason) {
+                    html += `<div class="review-item"><span class="review-label">Reason</span><span class="review-value">${depositReason}</span></div>`;
+                }
+                break;
+
+            case 'retirement':
+                const retirementDate = document.querySelector('input[name="date_of_retirement"]')?.value || '';
+                if (retirementDate) {
+                    html += `<div class="review-item"><span class="review-label">Retirement Date</span><span class="review-value">${retirementDate}</span></div>`;
+                }
+                break;
+
+            case 'refund':
+                const refundAmount = document.querySelector('input[name="refund_amount"]')?.value || '';
+                const refundDuration = document.querySelector('input[name="refund_duration"]')?.value || '';
+                if (refundAmount) {
+                    html += `<div class="review-item"><span class="review-label">Refund Amount</span><span class="review-value">TSh ${parseFloat(refundAmount).toLocaleString()}</span></div>`;
+                }
+                if (refundDuration) {
+                    html += `<div class="review-item"><span class="review-label">Duration</span><span class="review-value">${refundDuration} months</span></div>`;
+                }
+                break;
+
+            case 'share_enquiry':
+                const shareAmount = document.querySelector('input[name="share_amount"]')?.value || '';
+                if (shareAmount) {
+                    html += `<div class="review-item"><span class="review-label">Share Amount</span><span class="review-value">TSh ${parseFloat(shareAmount).toLocaleString()}</span></div>`;
+                }
+                break;
+
+            case 'deduction_add':
+                const fromAmount = document.querySelector('input[name="from_amount"]')?.value || '';
+                const toAmount = document.querySelector('input[name="to_amount"]')?.value || '';
+                if (fromAmount && toAmount) {
+                    html += `<div class="review-item"><span class="review-label">Deduction Change</span><span class="review-value">From TSh ${parseFloat(fromAmount).toLocaleString()} to TSh ${parseFloat(toAmount).toLocaleString()}</span></div>`;
+                }
+                break;
+
+            case 'condolences':
+                const dependentType = document.querySelector('select[name="dependent_member_type"]')?.value || '';
+                const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+                if (dependentType) {
+                    html += `<div class="review-item"><span class="review-label">Dependent Type</span><span class="review-value">${dependentType.replace('_', ' ').toUpperCase()}</span></div>`;
+                }
+                if (gender) {
+                    html += `<div class="review-item"><span class="review-label">Gender</span><span class="review-value">${gender.toUpperCase()}</span></div>`;
+                }
+                break;
+
+            case 'injured_at_work':
+                const injuryDescription = document.querySelector('textarea[name="description"]')?.value || '';
+                if (injuryDescription) {
+                    html += `<div class="review-item"><span class="review-label">Injury Description</span><span class="review-value">${injuryDescription}</span></div>`;
+                }
+                break;
+
+            case 'sick_for_30_days':
+                const startDate = document.querySelector('input[name="startdate"]')?.value || '';
+                const endDate = document.querySelector('input[name="enddate"]')?.value || '';
+                if (startDate && endDate) {
+                    html += `<div class="review-item"><span class="review-label">Sick Leave Period</span><span class="review-value">From ${startDate} to ${endDate}</span></div>`;
+                }
+                break;
+        }
+
+        return html;
+    }
+
     function submitForm() {
         if (!document.getElementById('confirm_submission').checked) {
-            alert('Please confirm that all information is accurate before submitting.');
+            showModernValidationDialog('Please confirm that all information is accurate before submitting.', 'warning');
             return;
         }
 
-        // Show loading overlay
-        document.getElementById('loading_overlay').classList.add('show');
+        // Show loading state on button
+        const submitBtn = document.getElementById('submit_btn');
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
 
         // Convert monetary fields back to numeric values
         document.querySelectorAll('.monetary-input').forEach(input => {
@@ -1774,6 +2215,167 @@
                 input.value = input.value.replace(/,/g, '');
             }
         });
+
+        // Show modern confirmation dialog
+        showModernConfirmationDialog();
+    }
+
+    function showModernConfirmationDialog() {
+        // Create modal overlay
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modern-modal-overlay';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'modern-modal-container';
+        modalContainer.style.cssText = `
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        `;
+
+        modalContainer.innerHTML = `
+            <div class="modal-icon" style="margin-bottom: 1.5rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    background: linear-gradient(135deg, #17479e 0%, #87CEEB 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto;
+                    box-shadow: 0 10px 25px rgba(23, 71, 158, 0.3);
+                ">
+                    <i class="fas fa-paper-plane" style="font-size: 2rem; color: white;"></i>
+                </div>
+            </div>
+
+            <h3 style="
+                color: #17479e;
+                margin-bottom: 1rem;
+                font-weight: 700;
+                font-size: 1.5rem;
+            ">Submit Enquiry</h3>
+
+            <p style="
+                color: #64748b;
+                margin-bottom: 2rem;
+                font-size: 1.1rem;
+                line-height: 1.6;
+            ">Please confirm that all information is accurate before submitting your enquiry.</p>
+
+            <div class="modal-actions" style="
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+            ">
+                <button type="button" class="btn-cancel" style="
+                    padding: 0.875rem 2rem;
+                    background: #f1f5f9;
+                    color: #64748b;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 1rem;
+                " onmouseover="this.style.background='#e2e8f0'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#f1f5f9'; this.style.transform='translateY(0)'">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+
+                <button type="button" class="btn-confirm" style="
+                    padding: 0.875rem 2rem;
+                    background: linear-gradient(135deg, #17479e 0%, #1f5bb8 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 1rem;
+                    box-shadow: 0 4px 15px rgba(23, 71, 158, 0.4);
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(23, 71, 158, 0.6)'"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(23, 71, 158, 0.4)'">
+                    <i class="fas fa-check me-2"></i>Submit Enquiry
+                </button>
+            </div>
+        `;
+
+        // Add CSS animations
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(styleElement);
+
+        // Event listeners
+        const cancelBtn = modalContainer.querySelector('.btn-cancel');
+        const confirmBtn = modalContainer.querySelector('.btn-confirm');
+
+        cancelBtn.addEventListener('click', () => {
+            document.body.removeChild(modalOverlay);
+            document.head.removeChild(styleElement);
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            document.body.removeChild(modalOverlay);
+            document.head.removeChild(styleElement);
+            proceedWithSubmission();
+        });
+
+        // Close on overlay click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                document.body.removeChild(modalOverlay);
+                document.head.removeChild(styleElement);
+            }
+        });
+
+        modalOverlay.appendChild(modalContainer);
+        document.body.appendChild(modalOverlay);
+    }
+
+    function proceedWithSubmission() {
+        // Keep button in loading state
+        const submitBtn = document.getElementById('submit_btn');
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
 
         // Submit the form
         document.getElementById('enquiryForm').submit();

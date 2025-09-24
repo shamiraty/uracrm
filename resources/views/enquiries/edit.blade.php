@@ -135,6 +135,22 @@
     .step-item.completed {
         background: var(--ura-success);
         color: var(--ura-white);
+        box-shadow: 0 4px 12px rgba(16, 220, 96, 0.3);
+    }
+
+    .step-item.completed .step-number {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .step-item.completed .step-number::before {
+        content: "\f00c";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 14px;
+    }
+
+    .step-item.completed .step-number-text {
+        display: none;
     }
 
     .step-number {
@@ -147,6 +163,20 @@
         font-size: 0.8rem;
         font-weight: 600;
         background: rgba(255,255,255,0.2);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .step-item.active .step-number {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
     }
 
     .step-title {
@@ -342,37 +372,23 @@
         transform: none;
     }
 
-    /* Loading State */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(13, 42, 90, 0.9);
+    /* Button Loading State */
+    .btn-spinner {
         display: none;
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
     }
 
-    .loading-overlay.show {
-        display: flex;
+    .btn-modern.loading .btn-text {
+        display: none;
     }
 
-    .loading-content {
-        text-align: center;
-        color: var(--ura-white);
+    .btn-modern.loading .btn-spinner {
+        display: inline-block;
     }
 
-    .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid rgba(255,255,255,0.2);
-        border-top: 4px solid var(--ura-accent);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1rem;
+    .btn-modern:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none !important;
     }
 
     @keyframes spin {
@@ -380,28 +396,71 @@
         100% { transform: rotate(360deg); }
     }
 
-    /* Review Section */
+    /* Enhanced Review Section */
     .review-card {
-        background: var(--ura-white);
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
+        background: linear-gradient(145deg, var(--ura-white), #f8f9ff);
+        border: 1px solid rgba(23, 71, 158, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px rgba(13, 42, 90, 0.08);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+
+    .review-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--ura-gradient-2);
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(13, 42, 90, 0.15);
+        border-color: var(--ura-accent);
     }
 
     .review-section-title {
         color: var(--ura-primary);
-        font-weight: 600;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 2px solid rgba(23, 71, 158, 0.1);
+        padding-bottom: 0.75rem;
+    }
+
+    .review-section-title::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: var(--ura-accent);
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.3);
     }
 
     .review-item {
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f8fafc;
+        align-items: flex-start;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(23, 71, 158, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .review-item:hover {
+        background: rgba(23, 71, 158, 0.02);
+        border-radius: 8px;
+        margin: 0 -0.5rem;
+        padding: 0.75rem 0.5rem;
+        border-color: var(--ura-accent);
     }
 
     .review-item:last-child {
@@ -409,13 +468,61 @@
     }
 
     .review-label {
-        font-weight: 500;
+        font-weight: 600;
         color: var(--ura-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .review-label::before {
+        content: '•';
+        color: var(--ura-accent);
+        font-weight: bold;
     }
 
     .review-value {
-        color: #64748b;
+        color: #475569;
         text-align: right;
+        font-weight: 500;
+        max-width: 60%;
+        word-wrap: break-word;
+        background: rgba(135, 206, 235, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+    }
+
+    .review-highlight {
+        background: var(--ura-gradient-1);
+        color: var(--ura-white);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-align: center;
+        margin: 1rem 0;
+        box-shadow: 0 4px 15px rgba(23, 71, 158, 0.3);
+    }
+
+    .review-summary {
+        background: var(--ura-gradient-2);
+        color: var(--ura-white);
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin: 2rem 0;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(23, 71, 158, 0.25);
+    }
+
+    .review-summary h5 {
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+    }
+
+    .review-summary p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 0.95rem;
     }
 
     /* Alert Styles */
@@ -647,19 +754,27 @@
         <!-- Progress Steps -->
         <div class="step-progress">
             <div class="step-item active" data-step="1">
-                <div class="step-number">1</div>
+                <div class="step-number">
+                    <span class="step-number-text">1</span>
+                </div>
                 <div class="step-title"><i class="fas fa-user me-2"></i>Member Details</div>
             </div>
             <div class="step-item" data-step="2">
-                <div class="step-number">2</div>
+                <div class="step-number">
+                    <span class="step-number-text">2</span>
+                </div>
                 <div class="step-title"><i class="fas fa-question-circle me-2"></i>Enquiry Type</div>
             </div>
             <div class="step-item" data-step="3">
-                <div class="step-number">3</div>
+                <div class="step-number">
+                    <span class="step-number-text">3</span>
+                </div>
                 <div class="step-title"><i class="fas fa-paperclip me-2"></i>Documents</div>
             </div>
             <div class="step-item" data-step="4">
-                <div class="step-number">4</div>
+                <div class="step-number">
+                    <span class="step-number-text">4</span>
+                </div>
                 <div class="step-title"><i class="fas fa-eye me-2"></i>Review</div>
             </div>
         </div>
@@ -679,7 +794,7 @@
                             <label class="form-label">
                                 Date Received <span class="text-muted">(Cannot be modified)</span>
                             </label>
-                            <input type="date" class="form-control" id="date_received" name="date_received"
+                            <input type="text" class="form-control" id="date_received"
                                    value="{{ $enquiry->date_received }}" readonly>
                             <div class="error-message" id="date_received_error"></div>
                         </div>
@@ -1160,32 +1275,58 @@
 
                 <div class="row g-4">
                     @if($enquiry->file_path)
+                    <!-- Current Document Section - Show First -->
                     <div class="col-12">
-                        <div class="form-group">
-                            <label class="form-label">Current Uploaded Document</label>
-                            <div class="current-file-display">
-                                <div class="file-info">
-                                    <div class="d-flex align-items-center p-3 border rounded mb-3" style="background: rgba(135, 206, 235, 0.08);">
-                                        <i class="fas fa-file-pdf text-danger fa-2x me-3"></i>
-                                        <div class="flex-grow-1">
-                                            <div class="fw-bold">{{ basename($enquiry->file_path) }}</div>
-                                            <small class="text-muted">Uploaded: {{ $enquiry->created_at->format('M d, Y') }}</small>
-                                        </div>
-                                        <div class="file-actions">
-                                            <a href="{{ asset('storage/' . $enquiry->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">
-                                                <i class="fas fa-eye me-1"></i>View
-                                            </a>
-                                            <a href="{{ asset('storage/' . $enquiry->file_path) }}" download class="btn btn-sm btn-outline-success">
-                                                <i class="fas fa-download me-1"></i>Download
-                                            </a>
+                        <div class="current-document-section" style="background: linear-gradient(135deg, rgba(23, 71, 158, 0.05) 0%, rgba(135, 206, 235, 0.05) 100%); border-radius: 12px; padding: 1.5rem; border: 2px solid rgba(23, 71, 158, 0.1); margin-bottom: 2rem;">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="current-file-icon" style="width: 50px; height: 50px; background: linear-gradient(135deg, #17479e 0%, #87CEEB 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                                    <i class="fas fa-file-pdf" style="color: white; font-size: 1.25rem;"></i>
+                                </div>
+                                <div>
+                                    <h5 style="margin: 0; color: #17479e; font-weight: 600;">Current Document</h5>
+                                    <p style="margin: 0; color: #64748b; font-size: 0.9rem;">This is the document currently attached to this enquiry</p>
+                                </div>
+                            </div>
+
+                            <div class="current-file-info" style="background: white; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; border: 1px solid rgba(23, 71, 158, 0.1);">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-file-pdf text-danger fa-lg me-3"></i>
+                                        <div>
+                                            <div class="fw-bold" style="color: #1e293b;">{{ basename($enquiry->file_path) }}</div>
+                                            <small class="text-muted">Uploaded: {{ $enquiry->created_at->format('M d, Y H:i') }}</small>
                                         </div>
                                     </div>
-                                    <!-- Document Preview -->
-                                    <div class="pdf-preview-frame">
-                                        <iframe src="{{ asset('storage/' . $enquiry->file_path) }}" width="100%" height="400" style="border: 1px solid #dee2e6; border-radius: 8px;"></iframe>
+                                    <div class="file-actions">
+                                        <a href="{{ asset('storage/' . $enquiry->file_path) }}" target="_blank" class="btn btn-sm" style="background: #17479e; color: white; margin-right: 0.5rem;">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </a>
+                                        <a href="{{ asset('storage/' . $enquiry->file_path) }}" download class="btn btn-sm btn-success">
+                                            <i class="fas fa-download me-1"></i>Download
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Document Preview -->
+                            <div class="document-preview-section" style="background: white; border-radius: 8px; padding: 1rem; border: 1px solid rgba(23, 71, 158, 0.1);">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-eye me-2" style="color: #17479e;"></i>
+                                    <span style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Document Preview</span>
+                                </div>
+                                <div class="pdf-preview-frame">
+                                    <iframe src="{{ asset('storage/' . $enquiry->file_path) }}" width="100%" height="400" style="border: 1px solid #dee2e6; border-radius: 8px;"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Separator -->
+                    <div class="col-12">
+                        <div class="d-flex align-items-center my-3">
+                            <hr class="flex-grow-1" style="border-color: #e2e8f0;">
+                            <span style="padding: 0 1rem; color: #64748b; font-weight: 500; background: white;">OR</span>
+                            <hr class="flex-grow-1" style="border-color: #e2e8f0;">
                         </div>
                     </div>
                     @endif
@@ -1280,7 +1421,12 @@
                     Next <i class="fas fa-arrow-right"></i>
                 </button>
                 <button type="button" class="btn-modern btn-primary" id="update_btn" onclick="submitForm()" style="display: none;">
-                    <i class="fas fa-save"></i> Update Enquiry
+                    <span class="btn-text">
+                        <i class="fas fa-save"></i> Update Enquiry
+                    </span>
+                    <span class="btn-spinner" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Updating...
+                    </span>
                 </button>
             </div>
         </div>
@@ -1303,6 +1449,12 @@
         initializeMonetaryInputs();
         initializePhoneValidation();
         initializeFileUpload();
+
+        // Initialize enquiry type fields display
+        const enquiryTypeSelect = document.getElementById('enquiry_type');
+        if (enquiryTypeSelect && enquiryTypeSelect.value) {
+            toggleTypeFields(enquiryTypeSelect.value);
+        }
 
         // Set initial phone status
         const phoneInput = document.getElementById('phone');
@@ -1341,7 +1493,7 @@
             // Step 2: Enquiry type is required
             const enquiryTypeField = document.getElementById('enquiry_type');
             if (!enquiryTypeField.value) {
-                alert('Please select an enquiry type');
+                showModernValidationDialog('Please select an enquiry type', 'warning');
                 return;
             }
         }
@@ -1352,7 +1504,7 @@
             if (!field.value || field.value.trim() === '') {
                 isValid = false;
                 field.focus();
-                alert(`Please fill in the ${field.placeholder || field.name || 'required field'}`);
+                showModernValidationDialog(`Please fill in the ${field.placeholder || field.name || 'required field'}`, 'warning');
                 break;
             }
         }
@@ -1556,73 +1708,573 @@
 
     function generateReview() {
         const reviewContent = document.getElementById('review_content');
-        let html = '<div class="row g-3">';
 
-        // Member Information
+        // Create comprehensive review summary for editing
+        let html = `
+            <div class="review-summary">
+                <h5><i class="fas fa-edit me-2"></i>Updated Enquiry Summary</h5>
+                <p>Please review all changes below before saving your enquiry updates</p>
+            </div>
+            <div class="row g-3">
+        `;
+
+        // Member Information - Enhanced
+        const fullName = document.getElementById('full_name').value;
+        const checkNumber = document.getElementById('check_number').value;
+        const phone = document.getElementById('phone').value;
+        const bankName = document.getElementById('bank_name').value;
+        const basicSalary = document.getElementById('basic_salary').value;
+        const allowances = document.getElementById('allowances')?.value || '';
+        const takeHome = document.getElementById('take_home').value;
+
         html += `
             <div class="col-12">
                 <div class="review-card">
-                    <h6 class="review-section-title">Updated Member Information</h6>
+                    <h6 class="review-section-title"><i class="fas fa-user me-2"></i>Updated Member Information</h6>
                     <div class="review-item">
-                        <span class="review-label">Full Name:</span>
-                        <span class="review-value">${document.getElementById('full_name').value}</span>
+                        <span class="review-label">Full Name</span>
+                        <span class="review-value">${fullName}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Check Number:</span>
-                        <span class="review-value">${document.getElementById('check_number').value}</span>
+                        <span class="review-label">Check Number</span>
+                        <span class="review-value">${checkNumber}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Phone:</span>
-                        <span class="review-value">${document.getElementById('phone').value}</span>
+                        <span class="review-label">Phone Number</span>
+                        <span class="review-value">${phone}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Bank:</span>
-                        <span class="review-value">${document.getElementById('bank_name').value}</span>
+                        <span class="review-label">Bank Name</span>
+                        <span class="review-value">${bankName}</span>
                     </div>
                     <div class="review-item">
-                        <span class="review-label">Basic Salary:</span>
-                        <span class="review-value">TSH ${document.getElementById('basic_salary').value}</span>
+                        <span class="review-label">Basic Salary</span>
+                        <span class="review-value">TSh ${parseFloat(basicSalary || 0).toLocaleString()}</span>
                     </div>
+                    ${allowances ? `
                     <div class="review-item">
-                        <span class="review-label">Take Home:</span>
-                        <span class="review-value">TSH ${document.getElementById('take_home').value}</span>
+                        <span class="review-label">Allowances</span>
+                        <span class="review-value">TSh ${parseFloat(allowances).toLocaleString()}</span>
+                    </div>
+                    ` : ''}
+                    <div class="review-item">
+                        <span class="review-label">Take Home</span>
+                        <span class="review-value">TSh ${parseFloat(takeHome || 0).toLocaleString()}</span>
                     </div>
                 </div>
             </div>
         `;
 
-        // Enquiry Information
-        const selectedType = document.getElementById('enquiry_type').selectedOptions[0]?.text;
+        // Enquiry Information - Enhanced
+        const selectedType = document.getElementById('enquiry_type').value;
+        const selectedTypeText = document.getElementById('enquiry_type').selectedOptions[0]?.text;
         if (selectedType) {
             html += `
                 <div class="col-12">
                     <div class="review-card">
-                        <h6 class="review-section-title">Enquiry Information</h6>
+                        <h6 class="review-section-title"><i class="fas fa-question-circle me-2"></i>Enquiry Information</h6>
                         <div class="review-item">
-                            <span class="review-label">Type:</span>
-                            <span class="review-value">${selectedType}</span>
+                            <span class="review-label">Enquiry Type</span>
+                            <span class="review-value">${selectedTypeText}</span>
                         </div>
+            `;
+
+            // Add type-specific details
+            const typeSpecificHtml = getTypeSpecificReviewHTML(selectedType);
+            if (typeSpecificHtml) {
+                html += typeSpecificHtml;
+            }
+
+            html += `
                     </div>
                 </div>
             `;
         }
 
+        // Document Information - Enhanced
+        const fileReference = document.getElementById('file_id');
+        const fileUpload = document.getElementById('file_path');
+
+        if ((fileReference && fileReference.value) || (fileUpload && fileUpload.files.length > 0)) {
+            html += `
+                <div class="col-12">
+                    <div class="review-card">
+                        <h6 class="review-section-title"><i class="fas fa-paperclip me-2"></i>Document Information</h6>
+            `;
+
+            if (fileReference && fileReference.value) {
+                html += `
+                        <div class="review-item">
+                            <span class="review-label">Existing File Reference</span>
+                            <span class="review-value">${fileReference.selectedOptions[0]?.text || 'Selected File'}</span>
+                        </div>
+                `;
+            }
+
+            if (fileUpload && fileUpload.files.length > 0) {
+                const file = fileUpload.files[0];
+                html += `
+                        <div class="review-item">
+                            <span class="review-label">New Document</span>
+                            <span class="review-value">${file.name}</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">File Size</span>
+                            <span class="review-value">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">File Type</span>
+                            <span class="review-value">PDF Document</span>
+                        </div>
+                `;
+            }
+
+            html += `
+                    </div>
+                </div>
+            `;
+        }
+
+        // Final Review Highlight
+        html += `
+            <div class="col-12">
+                <div class="review-highlight">
+                    <i class="fas fa-check-circle me-2"></i>
+                    All changes have been reviewed and are ready to be saved
+                </div>
+            </div>
+        `;
+
         html += '</div>';
         reviewContent.innerHTML = html;
     }
 
+    function showModernValidationDialog(message, type = 'warning') {
+        // Remove any existing validation dialog
+        const existingDialog = document.querySelector('.modern-validation-overlay');
+        if (existingDialog) {
+            existingDialog.remove();
+        }
+
+        // Create modal overlay
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modern-validation-overlay';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 42, 90, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        `;
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.style.cssText = `
+            background: linear-gradient(145deg, #ffffff, #f8f9ff);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(13, 42, 90, 0.3);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        `;
+
+        // Determine icon and color based on type
+        let icon, iconColor, borderColor;
+        switch(type) {
+            case 'error':
+                icon = 'fas fa-exclamation-circle';
+                iconColor = '#f04141';
+                borderColor = '#f04141';
+                break;
+            case 'success':
+                icon = 'fas fa-check-circle';
+                iconColor = '#10dc60';
+                borderColor = '#10dc60';
+                break;
+            default: // warning
+                icon = 'fas fa-exclamation-triangle';
+                iconColor = '#ffce00';
+                borderColor = '#ffce00';
+        }
+
+        modalContainer.innerHTML = `
+            <div style="
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, ${iconColor}20, ${iconColor}10);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                border: 3px solid ${borderColor}40;
+            ">
+                <i class="${icon}" style="
+                    font-size: 2.5rem;
+                    color: ${iconColor};
+                    animation: pulse 1.5s infinite;
+                "></i>
+            </div>
+
+            <h4 style="
+                color: #17479e;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                font-size: 1.3rem;
+            ">Validation Required</h4>
+
+            <p style="
+                color: #475569;
+                font-size: 1.1rem;
+                line-height: 1.6;
+                margin-bottom: 2rem;
+            ">${message}</p>
+
+            <button onclick="closeValidationDialog()" style="
+                background: linear-gradient(135deg, #17479e, #87CEEB);
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 25px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(23, 71, 158, 0.3);
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(23, 71, 158, 0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(23, 71, 158, 0.3)'">
+                <i class="fas fa-check me-2"></i>
+                Got It
+            </button>
+        `;
+
+        modalOverlay.appendChild(modalContainer);
+        document.body.appendChild(modalOverlay);
+
+        // Add CSS animations if not already present
+        if (!document.getElementById('validationDialogStyles')) {
+            const style = document.createElement('style');
+            style.id = 'validationDialogStyles';
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px) scale(0.9);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    function closeValidationDialog() {
+        const dialog = document.querySelector('.modern-validation-overlay');
+        if (dialog) {
+            dialog.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                dialog.remove();
+            }, 300);
+        }
+    }
+
+    function getTypeSpecificReviewHTML(selectedType) {
+        let html = '';
+
+        switch(selectedType) {
+            case 'loan_application':
+                const loanCategory = document.querySelector('input[name="loan_category"]:checked')?.value || '';
+                const loanAmount = document.querySelector('input[name="loan_amount"]')?.value || '';
+                const loanDuration = document.querySelector('input[name="loan_duration"]')?.value || '';
+                if (loanCategory) {
+                    html += `<div class="review-item"><span class="review-label">Loan Category:</span><span class="review-value">${loanCategory.replace('_', ' ').toUpperCase()}</span></div>`;
+                }
+                if (loanAmount) {
+                    html += `<div class="review-item"><span class="review-label">Loan Amount:</span><span class="review-value">TSH ${loanAmount}</span></div>`;
+                }
+                if (loanDuration) {
+                    html += `<div class="review-item"><span class="review-label">Duration:</span><span class="review-value">${loanDuration} months</span></div>`;
+                }
+                break;
+
+            case 'withdraw_savings':
+                const savingsAmount = document.querySelector('input[name="withdraw_saving_amount"]')?.value || '';
+                const savingsReason = document.querySelector('input[name="withdraw_saving_reason"]')?.value || '';
+                if (savingsAmount) {
+                    html += `<div class="review-item"><span class="review-label">Amount:</span><span class="review-value">TSH ${savingsAmount}</span></div>`;
+                }
+                if (savingsReason) {
+                    html += `<div class="review-item"><span class="review-label">Reason:</span><span class="review-value">${savingsReason}</span></div>`;
+                }
+                break;
+
+            case 'withdraw_deposit':
+                const depositAmount = document.querySelector('input[name="withdraw_deposit_amount"]')?.value || '';
+                const depositReason = document.querySelector('input[name="withdraw_deposit_reason"]')?.value || '';
+                if (depositAmount) {
+                    html += `<div class="review-item"><span class="review-label">Amount:</span><span class="review-value">TSH ${depositAmount}</span></div>`;
+                }
+                if (depositReason) {
+                    html += `<div class="review-item"><span class="review-label">Reason:</span><span class="review-value">${depositReason}</span></div>`;
+                }
+                break;
+
+            case 'retirement':
+                const retirementDate = document.querySelector('input[name="date_of_retirement"]')?.value || '';
+                if (retirementDate) {
+                    html += `<div class="review-item"><span class="review-label">Retirement Date:</span><span class="review-value">${retirementDate}</span></div>`;
+                }
+                break;
+
+            case 'refund':
+                const refundAmount = document.querySelector('input[name="refund_amount"]')?.value || '';
+                const refundDuration = document.querySelector('input[name="refund_duration"]')?.value || '';
+                if (refundAmount) {
+                    html += `<div class="review-item"><span class="review-label">Refund Amount:</span><span class="review-value">TSH ${refundAmount}</span></div>`;
+                }
+                if (refundDuration) {
+                    html += `<div class="review-item"><span class="review-label">Duration:</span><span class="review-value">${refundDuration} months</span></div>`;
+                }
+                break;
+
+            case 'share_enquiry':
+                const shareAmount = document.querySelector('input[name="share_amount"]')?.value || '';
+                if (shareAmount) {
+                    html += `<div class="review-item"><span class="review-label">Share Amount:</span><span class="review-value">TSH ${shareAmount}</span></div>`;
+                }
+                break;
+
+            case 'deduction_add':
+                const fromAmount = document.querySelector('input[name="from_amount"]')?.value || '';
+                const toAmount = document.querySelector('input[name="to_amount"]')?.value || '';
+                if (fromAmount && toAmount) {
+                    html += `<div class="review-item"><span class="review-label">Deduction Change:</span><span class="review-value">From TSH ${fromAmount} to TSH ${toAmount}</span></div>`;
+                }
+                break;
+
+            case 'condolences':
+                const dependentType = document.querySelector('select[name="dependent_member_type"]')?.value || '';
+                const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+                if (dependentType) {
+                    html += `<div class="review-item"><span class="review-label">Dependent Type:</span><span class="review-value">${dependentType.replace('_', ' ').toUpperCase()}</span></div>`;
+                }
+                if (gender) {
+                    html += `<div class="review-item"><span class="review-label">Gender:</span><span class="review-value">${gender.toUpperCase()}</span></div>`;
+                }
+                break;
+
+            case 'injured_at_work':
+                const injuryDescription = document.querySelector('textarea[name="description"]')?.value || '';
+                if (injuryDescription) {
+                    html += `<div class="review-item"><span class="review-label">Injury Description:</span><span class="review-value">${injuryDescription}</span></div>`;
+                }
+                break;
+
+            case 'sick_for_30_days':
+                const startDate = document.querySelector('input[name="startdate"]')?.value || '';
+                const endDate = document.querySelector('input[name="enddate"]')?.value || '';
+                if (startDate && endDate) {
+                    html += `<div class="review-item"><span class="review-label">Sick Leave Period:</span><span class="review-value">From ${startDate} to ${endDate}</span></div>`;
+                }
+                break;
+        }
+
+        return html;
+    }
+
     function submitForm() {
         if (!document.getElementById('confirm_update').checked) {
-            alert('Please confirm that all information is accurate before updating.');
+            showModernValidationDialog('Please confirm that all information is accurate before updating.', 'warning');
             return;
         }
 
-        // Show confirmation popup warning dialog
-        if (!confirm('Please confirm that all information is accurate before submitting.')) {
-            return;
-        }
+        // Show loading state on button
+        const updateBtn = document.getElementById('update_btn');
+        updateBtn.classList.add('loading');
+        updateBtn.disabled = true;
 
-        // Removed loading overlay
+        // Show modern confirmation dialog
+        showModernConfirmationDialog();
+    }
+
+    function showModernConfirmationDialog() {
+        // Create modal overlay
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'modern-modal-overlay';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create modal container
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'modern-modal-container';
+        modalContainer.style.cssText = `
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        `;
+
+        modalContainer.innerHTML = `
+            <div class="modal-icon" style="margin-bottom: 1.5rem;">
+                <div style="
+                    width: 80px;
+                    height: 80px;
+                    background: linear-gradient(135deg, #17479e 0%, #87CEEB 100%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto;
+                    box-shadow: 0 10px 25px rgba(23, 71, 158, 0.3);
+                ">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: white;"></i>
+                </div>
+            </div>
+
+            <h3 style="
+                color: #17479e;
+                margin-bottom: 1rem;
+                font-weight: 700;
+                font-size: 1.5rem;
+            ">Confirm Update</h3>
+
+            <p style="
+                color: #64748b;
+                margin-bottom: 2rem;
+                font-size: 1.1rem;
+                line-height: 1.6;
+            ">Please confirm that all information is accurate before submitting your changes.</p>
+
+            <div class="modal-actions" style="
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+            ">
+                <button type="button" class="btn-cancel" style="
+                    padding: 0.875rem 2rem;
+                    background: #f1f5f9;
+                    color: #64748b;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 1rem;
+                " onmouseover="this.style.background='#e2e8f0'; this.style.transform='translateY(-2px)'"
+                   onmouseout="this.style.background='#f1f5f9'; this.style.transform='translateY(0)'">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+
+                <button type="button" class="btn-confirm" style="
+                    padding: 0.875rem 2rem;
+                    background: linear-gradient(135deg, #17479e 0%, #1f5bb8 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 1rem;
+                    box-shadow: 0 4px 15px rgba(23, 71, 158, 0.4);
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(23, 71, 158, 0.6)'"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(23, 71, 158, 0.4)'">
+                    <i class="fas fa-check me-2"></i>Confirm & Update
+                </button>
+            </div>
+        `;
+
+        // Add CSS animations
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(styleElement);
+
+        // Event listeners
+        const cancelBtn = modalContainer.querySelector('.btn-cancel');
+        const confirmBtn = modalContainer.querySelector('.btn-confirm');
+
+        cancelBtn.addEventListener('click', () => {
+            document.body.removeChild(modalOverlay);
+            document.head.removeChild(styleElement);
+        });
+
+        confirmBtn.addEventListener('click', () => {
+            document.body.removeChild(modalOverlay);
+            document.head.removeChild(styleElement);
+            proceedWithUpdate();
+        });
+
+        // Close on overlay click
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                document.body.removeChild(modalOverlay);
+                document.head.removeChild(styleElement);
+            }
+        });
+
+        modalOverlay.appendChild(modalContainer);
+        document.body.appendChild(modalOverlay);
+    }
+
+    function proceedWithUpdate() {
+        // Keep button in loading state
+        const updateBtn = document.getElementById('update_btn');
+        updateBtn.classList.add('loading');
+        updateBtn.disabled = true;
 
         // Convert monetary fields back to numeric values
         document.querySelectorAll('.monetary-input').forEach(input => {
@@ -1630,6 +2282,12 @@
                 input.value = input.value.replace(/,/g, '');
             }
         });
+
+        // Remove readonly date_received field from submission to avoid validation issues
+        const dateReceivedField = document.getElementById('date_received');
+        if (dateReceivedField) {
+            dateReceivedField.removeAttribute('name');
+        }
 
         // Submit the form
         document.getElementById('editEnquiryForm').submit();
@@ -1718,7 +2376,7 @@
         function handleFileSelection(file) {
             if (file.type === 'application/pdf' || file.type.startsWith('image/')) {
                 if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                    alert('File size must be less than 10MB');
+                    showModernValidationDialog('File size must be less than 10MB', 'error');
                     return;
                 }
 
@@ -1749,7 +2407,7 @@
             } else {
                 fileNameSpan.textContent = file.name;
                 selectedFileDiv.style.display = 'block';
-                alert('Please select a PDF or image file only');
+                showModernValidationDialog('Please select a PDF or image file only', 'warning');
             }
         }
     }
