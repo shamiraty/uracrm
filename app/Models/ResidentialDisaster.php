@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ResidentialDisaster extends Model
 {
     use HasFactory;
-    protected $fillable = ['disaster_type'];
+    protected $fillable = ['enquiry_id', 'disaster_type'];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
     
 }

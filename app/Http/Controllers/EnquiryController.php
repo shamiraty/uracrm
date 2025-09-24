@@ -489,68 +489,80 @@ private function createAssociatedModel(Enquiry $enquiry, $type, $data)
                // Calculate loan details
                $loanDetails = $this->calculateLoanableAmount($enquiry);
                // Include loan_type and loan_category from the data
-               $loanDetails['loan_type'] = $data['loan_type'];
-               $loanDetails['loan_category'] = $data['loan_category'];
+               $loanDetails['loan_type'] = $data['loan_type'] ?? null;
+               $loanDetails['loan_category'] = $data['loan_category'] ?? null;
+               $loanDetails['enquiry_id'] = $enquiry->id;
                // Create a new LoanApplication model with the details
                $model = new LoanApplication($loanDetails);
                break;
         case 'refund':
-            $model = new Refund($data);
+            $model = new Refund(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'share_enquiry':
-            $model = new Share($data);
+            $model = new Share(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'retirement':
-            $model = new Retirement($data);
+            $model = new Retirement(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'deduction_add':
-            $model = new Deduction($data);
+            $model = new Deduction(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'withdraw_savings':
             $model = new Withdrawal([
-                'amount' => $data['withdraw_saving_amount'],
+                'enquiry_id' => $enquiry->id,
+                'amount' => $data['withdraw_saving_amount'] ?? 0,
                 'type' => 'savings',
+                'reason' => $data['withdraw_saving_reason'] ?? 'None',
             ]);
             break;
         case 'withdraw_deposit':
             $model = new Withdrawal([
-                'amount' => $data['withdraw_deposit_amount'],
+                'enquiry_id' => $enquiry->id,
+                'amount' => $data['withdraw_deposit_amount'] ?? 0,
                 'type' => 'deposit',
+                'reason' => $data['withdraw_deposit_reason'] ?? 'None',
             ]);
             break;
         case 'unjoin_membership':
             $model = new MembershipChange([
-                'category' => $data['category'],
+                'enquiry_id' => $enquiry->id,
+                'category' => $data['category'] ?? 'normal',
                 'action' => 'unjoin',
             ]);
             break;
         case 'benefit_from_disasters':
-            $model = new Benefit($data);
+            $model = new Benefit(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'sick_for_30_days':
-            $model = new SickLeave($data);
+            $model = new SickLeave(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'residential_disaster':
-            $model = new ResidentialDisaster($data);
+            $model = new ResidentialDisaster(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'condolences':
-            $model = new Condolence($data);
+            $model = new Condolence(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'injured_at_work':
-            $model = new Injury($data);
+            $model = new Injury(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'join_membership':
-            $model = new Membership($data);
+            $model = new MembershipChange([
+                'enquiry_id' => $enquiry->id,
+                'membership_status' => $data['membership_status'] ?? 'civilian',
+                'action' => 'join',
+            ]);
             break;
         case 'ura_mobile':
-            $model = new URAMobile($data);
+            $model = new URAMobile(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
     }
 
     if ($model) {
+        // Ensure all models have enquiry_id set
+        if (!isset($model->enquiry_id)) {
+            $model->enquiry_id = $enquiry->id;
+        }
         $model->save();
-        $enquiry->enquirable()->associate($model);
-        $enquiry->save();
     }
 }
 
@@ -719,7 +731,26 @@ private function constructMessageBasedOnType($data)
     // Show the form for editing the specified resource
     public function edit(Enquiry $enquiry)
     {
-        return view('enquiries.edit', compact('enquiry'));
+        // Load all possible relationships to get existing data
+        $enquiry->load([
+            'loanApplication',
+            'share',
+            'retirement',
+            'deduction',
+            'refund',
+            'withdrawals',
+            'membershipChanges',
+            'condolence',
+            'injury',
+            'residentialDisaster',
+            'sickLeave',
+            'uraMobile'
+        ]);
+
+        $files = File::all();
+        $regions = Region::with('districts')->get();
+
+        return view('enquiries.edit', compact('enquiry', 'files', 'regions'));
     }
 
     public function update(Request $request, Enquiry $enquiry)

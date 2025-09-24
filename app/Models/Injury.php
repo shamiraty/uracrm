@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Injury extends Model
 {
     use HasFactory;
-    protected $fillable = ['description'];
+    protected $fillable = ['enquiry_id', 'description'];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

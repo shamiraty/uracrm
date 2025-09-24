@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SickLeave extends Model
 {
     use HasFactory;
-    protected $fillable = ['startdate', 'enddate'];
+    protected $fillable = ['enquiry_id', 'startdate', 'enddate'];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

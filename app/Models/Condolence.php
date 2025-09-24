@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Condolence extends Model
 {
     use HasFactory;
-    protected $fillable = ['dependent_member_type', 'gender'];
+    protected $fillable = ['enquiry_id', 'dependent_member_type', 'gender'];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

@@ -9,12 +9,13 @@ class Refund extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'enquiry_id',
         'refund_amount',
         'refund_duration',
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

@@ -9,11 +9,12 @@ class Share extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'enquiry_id',
         'share_amount',
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

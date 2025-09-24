@@ -9,12 +9,14 @@ class Withdrawal extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'enquiry_id',
         'amount',
         'type', // 'savings' or 'deposit'
+        'reason',
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

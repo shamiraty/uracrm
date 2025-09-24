@@ -10,11 +10,12 @@ class Retirement extends Model
     use HasFactory;
 
     protected $fillable = [
+        'enquiry_id',
         'date_of_retirement',
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }

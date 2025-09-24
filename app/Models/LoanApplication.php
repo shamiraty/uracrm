@@ -10,10 +10,10 @@ class LoanApplication extends Model
     use HasFactory;
 
     protected $fillable = [
-        // 'enquiry_id',
+        'enquiry_id',
         'user_id',
         'loan_amount',
-        'loan_type' ,
+        'loan_type',
         'loan_category',
         'loan_duration',
         'interest_rate',
@@ -29,10 +29,10 @@ class LoanApplication extends Model
 
     ];
 
-    // public function enquiry()
-    // {
-    //     return $this->belongsTo(Enquiry::class);
-    // }
+    public function enquiry()
+    {
+        return $this->belongsTo(Enquiry::class);
+    }
 
     public function branch()
     {
@@ -100,10 +100,10 @@ public function folios()
 {
     return $this->morphMany(Folio::class, 'folioable');
 }
-public function enquiry()
-{
-    return $this->morphOne(Enquiry::class, 'enquirable');
-}
+//public function enquiry()
+//{
+  //  return $this->morphOne(Enquiry::class, 'enquirable');
+//}
  
 public function district()
 {

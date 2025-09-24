@@ -43,7 +43,7 @@ use App\Http\Controllers\CommandController;
 use App\Http\Controllers\CardDetailManagerController;
 
 // Protected Routes with comprehensive middleware
-Route::middleware(['auth', 'user.status', 'update.activity'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // ============================================
     // USER ACTIVITY AND STATUS ROUTES
@@ -57,18 +57,7 @@ Route::middleware(['auth', 'user.status', 'update.activity'])->group(function ()
     Route::post('/users/clear-online-status', [UserController::class, 'clearOnlineStatus'])
         ->name('users.clear-online-status');
 
-    // ============================================
-    // PASSWORD MANAGEMENT ROUTES
-    // ============================================
-    Route::get('/password/change/first', [AuthenticatedSessionController::class, 'showFirstPasswordChangeForm'])
-        ->name('password.change.first');
-    Route::post('/password/change/first', [AuthenticatedSessionController::class, 'storeFirstPasswordChange'])
-        ->name('password.change.first.store');
-
-    Route::get('/password/change/required', [AuthenticatedSessionController::class, 'showRequiredPasswordChangeForm'])
-        ->name('password.change.required');
-    Route::post('/password/change/required', [AuthenticatedSessionController::class, 'storeRequiredPasswordChange'])
-        ->name('password.change.required.store');
+    // Password routes moved outside this middleware group to avoid conflicts
 
     // ============================================
     // EXPORT ROUTES FOR VARIOUS ENQUIRY TYPES
@@ -155,57 +144,29 @@ Route::middleware(['auth', 'user.status', 'update.activity'])->group(function ()
 
 
 
-Route::post('/calculate-loan/{loanApplicationId}', [LoanController::class, 'calculateLoan'])->name('calculate.loan');;
-
-    Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
-    Route::get('/enquiries/create', [EnquiryController::class, 'create'])->name('enquiries.create');
-    Route::post('/enquiries', [EnquiryController::class, 'store'])->name('enquiries.store');
-    Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
-    Route::get('/enquiries/{enquiry}/edit', [EnquiryController::class, 'edit'])->name('enquiries.edit');
-    Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
-    Route::delete('/enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->name('enquiries.destroy');
-    Route::post('enquiries/{enquiry}/change-status', [EnquiryController::class, 'changeStatus'])->name('enquiries.changeStatus');
-    Route::get('members/{member}/details', [MemberController::class, 'showDetails'])->name('members.details');
-    Route::post('/enquiries/{enquiry}/assign', [EnquiryController::class, 'assignUsersToEnquiry'])->name('enquiries.assign');
-
-
-
-
-
-
-
-    Route::get('/my-enquiries', [EnquiryController::class,'myAssignedEnquiries'])->name('enquiries.my');
-Route::get('/enquiries/{enquiry}/payments/create', [PaymentController::class, 'create'])->name('payments.create');
-Route::post('/enquiries/{enquiry}/payments', [PaymentController::class, 'store'])->name('payments.store');
-
+    // ============================================
+    // LOAN CALCULATION ROUTES
+    // ============================================
+    Route::post('/calculate-loan/{loanApplicationId}', [LoanController::class, 'calculateLoan'])->name('calculate.loan');
+    // ============================================
+    // PAYMENT MANAGEMENT ROUTES
+    // ============================================
+    Route::get('/enquiries/{enquiry}/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('/enquiries/{enquiry}/payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::post('/payment/initiate/{enquiryId}', [PaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::post('/payment/approve/{paymentId}', [PaymentController::class, 'approve'])->name('payment.approve');
     Route::post('/payment/pay/{paymentId}', [PaymentController::class, 'pay'])->name('payment.pay');
+    Route::post('/payment/reject/{paymentId}', [PaymentController::class, 'reject'])->name('payment.reject');
     Route::get('/payments/{paymentId}/timeline', [PaymentController::class, 'showTimeline'])->name('payments.timeline');
-    Route::post('/payment/reject/{paymentId}',[PaymentController::class, 'reject'] )->name('payment.reject');
+    Route::get('/payments/type/{type}', [PaymentController::class, 'showByType'])->name('payments.type');
 
-
-
-Route::post('/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('send.otp.approve');
-Route::post('/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('verify.otp.approve');
-
-Route::post('/send-otp-pay/{paymentId}', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
-Route::post('/verify-otp-pay/{paymentId}', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
-Route::get('/payments/type/{type}', [PaymentController::class, 'showByType'])->name('payments.type');
-
-Route::post('/payment/initiate/{enquiryId}', [PaymentController::class, 'initiate'])->name('payment.initiate');
-Route::post('/payment/approve/{paymentId}', [PaymentController::class, 'approve'])->name('payment.approve');
-Route::post('/payment/pay/{paymentId}',[PaymentController::class, 'pay'] )->name('payment.pay');
-
-
-
-Route::post('/payment/reject/{paymentId}',[PaymentController::class, 'reject'] )->name('payment.reject');
-
-
-
-Route::post('/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('send.otp.approve');
-Route::post('/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('verify.otp.approve');
-
-Route::post('/send-otp-pay/{paymentId}', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
-Route::post('/verify-otp-pay/{paymentId}', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
+    // ============================================
+    // OTP VERIFICATION ROUTES
+    // ============================================
+    Route::post('/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('send.otp.approve');
+    Route::post('/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('verify.otp.approve');
+    Route::post('/send-otp-pay/{paymentId}', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
+    Route::post('/verify-otp-pay/{paymentId}', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
 
 
 
@@ -382,6 +343,14 @@ Route::post('/otp-confirm', [AuthenticatedSessionController::class, 'confirmOTP'
 Route::get('/otp-verify', function () {
     return view('auth.otp-verify');
 })->name('otp.verify');
+
+// Password change routes (outside main middleware)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/password/change/first', [AuthenticatedSessionController::class, 'showFirstPasswordChangeForm'])->name('password.change.first');
+    Route::post('/password/change/first', [AuthenticatedSessionController::class, 'storeFirstPasswordChange'])->name('password.change.first.store');
+    Route::get('/password/change/required', [AuthenticatedSessionController::class, 'showRequiredPasswordChangeForm'])->name('password.change.required');
+    Route::post('/password/change/required', [AuthenticatedSessionController::class, 'storeRequiredPasswordChange'])->name('password.change.required.store');
+});
 
 // Redirect authenticated users to loan offers
 Route::get('/', function () {

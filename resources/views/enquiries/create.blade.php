@@ -1,224 +1,809 @@
 @extends('layouts.app')
 @section('content')
 
-
 <style>
-    /* Bold text for error messages */
-    .text-danger {
-      color: red;
-      font-weight: bold;
+    /* URA SACCOS Color Variables */
+    :root {
+        --ura-primary: #17479e;
+        --ura-primary-dark: #0d2c5f;
+        --ura-primary-light: #1f5bb8;
+        --ura-accent: #87CEEB;
+        --ura-accent-light: #a4d9ee;
+        --ura-purple: #764ba2;
+        --ura-gradient-1: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);
+        --ura-gradient-2: linear-gradient(135deg, #17479e 0%, #87CEEB 100%);
+        --ura-success: #10dc60;
+        --ura-warning: #ffce00;
+        --ura-danger: #f04141;
+        --ura-white: #ffffff;
+        --ura-bg-light: #f8f9fa;
+        --ura-shadow: 0 4px 15px rgba(23, 71, 158, 0.1);
     }
-    /* Bold text for success messages */
-    .text-success {
-      color: green;
-      font-weight: bold;
+
+    /* Breadcrumb Styles */
+    .modern-breadcrumb {
+        background: var(--ura-white);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--ura-shadow);
+        border: 1px solid rgba(13, 42, 90, 0.1);
     }
-    /* Animation class that makes the message grow then shrink back */
-    .grow {
-      animation: growAnimation 0.5s ease-in-out;
+
+    .breadcrumb {
+        margin-bottom: 0;
+        background: none;
+        padding: 0;
     }
-    @keyframes growAnimation {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
+
+    .breadcrumb-item {
+        font-size: 0.875rem;
+        font-weight: 500;
     }
-  </style>
-        <div class="card">
-            <div class="card-body">
-                <h6 class="mb-4 text-xl">Add Enquiry By Following Step</h6>
-                <p class="text-neutral-500">Fill up your details and proceed next steps.</p>
-                @if(session('message'))
-    <div class="alert alert-{{ session('alert-type', 'success') }} bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between" role="alert">
-        <div class="d-flex align-items-center gap-2">
-            <iconify-icon icon="akar-icons:double-check" class="icon text-xl"></iconify-icon>
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: var(--ura-accent);
+        font-weight: 600;
+    }
+
+    .breadcrumb-item.active {
+        color: var(--ura-primary);
+        font-weight: 600;
+    }
+
+    .breadcrumb-item a {
+        color: var(--ura-accent);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .breadcrumb-item a:hover {
+        color: var(--ura-primary);
+    }
+
+    /* Modern Form Container */
+    .modern-form-container {
+        background: var(--ura-white);
+        border-radius: 16px;
+        box-shadow: var(--ura-shadow);
+        overflow: hidden;
+        border: 1px solid rgba(13, 42, 90, 0.08);
+    }
+
+    /* Compact Header */
+    .form-header {
+        background: var(--ura-gradient-2);
+        padding: 1.5rem 2rem;
+        color: var(--ura-white);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.15)"/><circle cx="30" cy="60" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .form-header h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.5rem;
+    }
+
+    .form-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 0.95rem;
+    }
+
+    /* Progress Steps - Compact */
+    .step-progress {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        background: rgba(13, 42, 90, 0.02);
+        border-bottom: 1px solid rgba(13, 42, 90, 0.1);
+        gap: 1rem;
+    }
+
+    .step-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        background: rgba(13, 42, 90, 0.05);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .step-item.active {
+        background: var(--ura-gradient-2);
+        color: var(--ura-white);
+        box-shadow: 0 4px 12px rgba(13, 42, 90, 0.2);
+    }
+
+    .step-item.completed {
+        background: var(--ura-success);
+        color: var(--ura-white);
+    }
+
+    .step-number {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: rgba(255,255,255,0.2);
+    }
+
+    .step-title {
+        font-size: 0.8rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    /* Form Sections */
+    .form-section {
+        display: none;
+        padding: 2rem;
+        animation: fadeInUp 0.4s ease;
+    }
+
+    .form-section.active {
+        display: block;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ura-primary);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--ura-accent-light);
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--ura-accent);
+    }
+
+    /* Modern Form Controls */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--ura-primary);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: var(--ura-white);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--ura-accent);
+        box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+        outline: none;
+        background: var(--ura-white);
+    }
+
+    .form-control.is-invalid,
+    .form-select.is-invalid {
+        border-color: var(--ura-primary);
+        box-shadow: 0 0 0 3px rgba(23, 71, 158, 0.1);
+    }
+
+    .form-control.is-valid,
+    .form-select.is-valid {
+        border-color: var(--ura-success);
+        box-shadow: 0 0 0 3px rgba(16, 220, 96, 0.1);
+    }
+
+    /* Monetary Input Styling */
+    .monetary-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .currency-prefix {
+        position: absolute;
+        left: 1rem;
+        color: var(--ura-accent);
+        font-weight: 600;
+        font-size: 0.9rem;
+        z-index: 1;
+    }
+
+    .monetary-wrapper .form-control {
+        padding-left: 3rem;
+    }
+
+    /* Error Messages */
+    .error-message {
+        color: var(--ura-danger);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        display: none;
+        font-weight: 500;
+    }
+
+    .error-message.show {
+        display: block;
+        animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    .success-message {
+        color: var(--ura-success);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        display: none;
+        font-weight: 500;
+    }
+
+    .success-message.show {
+        display: block;
+    }
+
+    /* Type Specific Fields */
+    .type-fields {
+        display: none;
+        background: rgba(135, 206, 235, 0.08);
+        border: 1px solid rgba(135, 206, 235, 0.2);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .type-fields.show {
+        display: block;
+        animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            max-height: 0;
+            padding: 0 1.5rem;
+        }
+        to {
+            opacity: 1;
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+    }
+
+    .type-fields-title {
+        color: var(--ura-accent);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    /* Modern File Upload */
+    .file-upload-area {
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        background: rgba(0, 188, 212, 0.02);
+        cursor: pointer;
+    }
+
+    .file-upload-area:hover {
+        border-color: var(--ura-accent);
+        background: rgba(0, 188, 212, 0.05);
+    }
+
+    .file-upload-area.drag-over {
+        border-color: var(--ura-accent);
+        background: rgba(0, 188, 212, 0.1);
+    }
+
+    .file-upload-icon {
+        font-size: 3rem;
+        color: var(--ura-accent);
+        margin-bottom: 1rem;
+    }
+
+    .file-upload-text {
+        color: var(--ura-primary);
+        font-weight: 500;
+    }
+
+    .file-upload-subtext {
+        color: #64748b;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+
+    .file-preview {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--ura-white);
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        display: none;
+    }
+
+    .file-preview.show {
+        display: block;
+    }
+
+    /* Navigation Buttons */
+    .form-navigation {
+        padding: 1.5rem 2rem;
+        background: rgba(13, 42, 90, 0.02);
+        border-top: 1px solid rgba(13, 42, 90, 0.1);
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .btn-modern {
+        padding: 0.875rem 2rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        min-width: 120px;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: var(--ura-gradient-2);
+        color: var(--ura-white);
+        box-shadow: 0 4px 12px rgba(13, 42, 90, 0.2);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(13, 42, 90, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f1f5f9;
+        color: var(--ura-primary);
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+
+    .btn-modern:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Loading State */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(13, 42, 90, 0.9);
+        display: none;
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loading-overlay.show {
+        display: flex;
+    }
+
+    .loading-content {
+        text-align: center;
+        color: var(--ura-white);
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255,255,255,0.2);
+        border-top: 4px solid var(--ura-accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Review Section */
+    .review-card {
+        background: var(--ura-white);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .review-section-title {
+        color: var(--ura-primary);
+        font-weight: 600;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .review-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f8fafc;
+    }
+
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    .review-label {
+        font-weight: 500;
+        color: var(--ura-primary);
+    }
+
+    .review-value {
+        color: #64748b;
+        text-align: right;
+    }
+
+    /* Success Alert */
+    .alert-success {
+        background: linear-gradient(135deg, var(--ura-success) 0%, #00e676 100%);
+        color: var(--ura-white);
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(16, 220, 96, 0.2);
+    }
+
+    /* Phone validation styling */
+    .phone-status {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+
+    .phone-status.valid {
+        color: var(--ura-success);
+    }
+
+    .phone-status.invalid {
+        color: var(--ura-danger);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-header {
+            padding: 1rem 1.5rem;
+        }
+
+        .form-section {
+            padding: 1.5rem;
+        }
+
+        .step-progress {
+            padding: 1rem;
+            gap: 0.5rem;
+        }
+
+        .step-title {
+            display: none;
+        }
+
+        .form-navigation {
+            padding: 1rem 1.5rem;
+            flex-direction: column;
+        }
+
+        .btn-modern {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Breadcrumb -->
+    <div class="modern-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('enquiries.index') }}">Enquiries</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Create New Enquiry
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Success Message -->
+    @if(session('message'))
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i>
             {{ session('message') }}
         </div>
-        <button class="remove-button text-success-600 text-xxl line-height-1"> 
-            <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
-        </button>
-    </div>
-@endif
+    @endif
 
-        <div class="form-wizard">
-            {{-- <form action="#" method="post"> --}}
-                <form  method="POST" action="{{ route('enquiries.store') }}" enctype="multipart/form-data"id="myForm">
-                    @csrf
-                <div class="form-wizard-header overflow-x-auto scroll-sm pb-8 my-32">
-                    <ul class="list-unstyled form-wizard-list style-two">
-                        <li class="form-wizard-list__item active">
-                            <div class="form-wizard-list__line">
-                                <span class="count">1</span>
-                            </div>
-                            <span class="text text-xs fw-semibold">Member Details </span>
-                        </li>
-                        <li class="form-wizard-list__item">
-                            <div class="form-wizard-list__line">
-                                <span class="count">2</span>
-                            </div>
-                            <span class="text text-xs fw-semibold">Enquiry Type</span>
-                        </li>
-                        <li class="form-wizard-list__item">
-                            <div class="form-wizard-list__line">
-                                <span class="count">3</span>
-                            </div>
-                            <span class="text text-xs fw-semibold">Address/Location</span>
-                        </li>
-                        <li class="form-wizard-list__item">
-                            <div class="form-wizard-list__line">
-                                <span class="count">4</span>
-                            </div>
-                            <span class="text text-xs fw-semibold">Attachment</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <fieldset class="wizard-fieldset show">
-                    <h6 class="text-md text-neutral-500">Personal Information</h6>
-                    <div class="row gy-3">
-
-
-                        <!-- Check Number -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Check Number</label>
-                            <div class="position-relative">
-                                <input type="text" class="form-control wizard-required" id="check_number" name="check_number" placeholder="Check Number">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Date Received -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Date Received</label>
-                            <div class="position-relative">
-                                <input type="date" class="form-control wizard-required" id="date_received" name="date_received">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Full Name -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Full Name</label>
-                            <div class="position-relative">
-                                <input type="text" class="form-control wizard-required" id="full_name" name="full_name" placeholder="Full Name">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Force Number -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Membershop No</label>
-                            <div class="position-relative">
-                                <input type="text" class="form-control wizard-required" id="force_no" name="force_no" placeholder="Member ID"value="None">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Bank Account Number -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Bank Account Number</label>
-                            <div class="position-relative">
-                                <input type="text" class="form-control wizard-required" id="account_number" name="account_number" placeholder="Bank Account Number">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-
-                        <!-- Bank Name -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Bank Name</label>
-                            <div class="position-relative">
-                                <select class="form-select select2 wizard-required" id="bank_name" name="bank_name" required>
-                                    <option value="">Select a Bank</option>
-                                    <option value="NBC">NBC</option>
-                                    <option value="NMB">NMB</option>
-                                    <option value="CRDB">CRDB</option>
-                                    <option value="Posta Bank">Posta Bank</option>
-                                    <option value="Absa Bank">Absa Bank</option>
-                                    <option value="DCB Commercial Bank">DCB Commercial Bank</option>
-                                    <option value="Access Bank Tanzania">Access Bank Tanzania</option>
-                                    <option value="Akiba Commercial Bank">Akiba Commercial Bank</option>
-                                    <option value="Amana Bank">Amana Bank</option>
-                                    <option value="Azania Bank">Azania Bank</option>
-                                    <option value="Bank of Africa">Bank of Africa</option>
-                                    <option value="Bank of Baroda">Bank of Baroda</option>
-                                    <option value="Bank of India">Bank of India</option>
-                                    <option value="Canara Bank">Canara Bank</option>
-                                    <option value="Citibank Tanzania">Citibank Tanzania</option>
-                                    <option value="Diamond Trust Bank">Diamond Trust Bank</option>
-                                    <option value="Ecobank">Ecobank</option>
-                                    <option value="Equity Bank">Equity Bank</option>
-                                    <option value="Exim Bank">Exim Bank</option>
-                                    <option value="GTBank Tanzania">GTBank Tanzania</option>
-                                    <option value="Habib African Bank">Habib African Bank</option>
-                                    <option value="I&M Bank">I&M Bank</option>
-                                    <option value="ICBank">ICBank</option>
-                                    <option value="KCB Bank">KCB Bank</option>
-                                    <option value="Letshego Bank">Letshego Bank</option>
-                                    <option value="Mkombozi Commercial Bank">Mkombozi Commercial Bank</option>
-                                    <option value="Mwalimu Commercial Bank">Mwalimu Commercial Bank</option>
-                                    <option value="NCBA Bank">NCBA Bank</option>
-                                    <option value="People's Bank of Zanzibar">People's Bank of Zanzibar</option>
-                                    <option value="Stanbic Bank Tanzania Limited">Stanbic Bank Tanzania Limited</option>
-                                    <option value="Standard Chartered Bank">Standard Chartered Bank</option>
-                                    <option value="Tanzania Commercial Bank">Tanzania Commercial Bank</option>
-                                    <option value="UBA Bank">UBA Bank</option>
-                                    <option value="Mwanga Hakika Bank">Mwanga Hakika Bank</option>
-                                </select>
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Basic Salary -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Basic Salary</label>
-                            <div class="position-relative">
-                                <input type="number" class="form-control" id="basic_salary" name="basic_salary" placeholder="Enter Basic Salary" step="0.01">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Allowances -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Allowances</label>
-                            <div class="position-relative">
-                                <input type="number" class="form-control" id="allowances" name="allowances" placeholder="Enter Allowances" step="0.01">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                        <!-- Take Home Pay -->
-                        <div class="col-12 col-lg-4">
-                            <label class="form-label">Take Home Pay</label>
-                            <div class="position-relative">
-                                <input type="number" class="form-control" id="take_home" name="take_home" placeholder="Enter Take Home Pay" step="0.01">
-                                <div class="wizard-form-error"></div>
-                            </div>
-                        </div>
-
-                            <!-- Phone Number Input -->
-        <div class="col-12 col-lg-4">
-            <label for="phone" class="form-label">Phone Number</label>
-            <input type="number" class="form-control wizard-required" id="phone" name="phone" placeholder="255*********" required>
-            <small id="phoneHelp" class="form-text text-muted mt-2 text-primary"></small>
-            <div class="wizard-form-error text-primary"></div>
+    <!-- Main Form Container -->
+    <div class="modern-form-container">
+        <!-- Compact Header -->
+        <div class="form-header">
+            <h3><i class="fas fa-plus-circle me-2"></i>Create New Enquiry</h3>
+            <p>Fill in the required information to submit your enquiry request</p>
         </div>
 
-                        <!-- Submit Button -->
-                        <div class="form-group text-end">
-                            <button type="button" class="form-wizard-next-btn btn btn-primary-600 px-32">Next</button>
+        <!-- Progress Steps -->
+        <div class="step-progress">
+            <div class="step-item active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-title"><i class="fas fa-user me-2"></i>Member Details</div>
+            </div>
+            <div class="step-item" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-title"><i class="fas fa-question-circle me-2"></i>Enquiry Type</div>
+            </div>
+            <div class="step-item" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-title"><i class="fas fa-map-marker-alt me-2"></i>Location</div>
+            </div>
+            <div class="step-item" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-title"><i class="fas fa-paperclip me-2"></i>Documents</div>
+            </div>
+            <div class="step-item" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-title"><i class="fas fa-eye me-2"></i>Review</div>
+            </div>
+        </div>
 
+        <form method="POST" action="{{ route('enquiries.store') }}" enctype="multipart/form-data" id="enquiryForm">
+            @csrf
+
+            <!-- Step 1: Member Details -->
+            <div class="form-section active" id="step-1">
+                <h4 class="section-title">Member Personal Information</h4>
+
+                <div class="row g-4">
+                    <!-- Check Number -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Check Number <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="check_number" name="check_number" required>
+                            <div class="error-message" id="check_number_error"></div>
+                            <small class="text-muted">Start typing to auto-fill details</small>
                         </div>
                     </div>
-                </fieldset>
 
-                <fieldset class="wizard-fieldset " >
-                    <h5 class="mb-1">Enquiry Type</h5>
-                    <p class="mb-4">Select the enquiry type and provide additional information</p>
-                    <div class="row g-3">
-                        <div class="col-12 col-lg-6">
-                            <label for="type" class="form-label">Enquiry Type</label>
-                            <select name="type" id="type" class="form-select select2 wizard-required custom-select-dropdown" onchange="toggleFields(this.value)" required>
-                                <option value="">Select Type</option>
+                    <!-- Date Received -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Date Received <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" class="form-control" id="date_received" name="date_received" value="{{ date('Y-m-d') }}" required>
+                            <div class="error-message" id="date_received_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Full Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                            <div class="error-message" id="full_name_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Membership Number -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Membership Number <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="force_no" name="force_no" value="None" required>
+                            <div class="error-message" id="force_no_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Account Number -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bank Account Number <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="account_number" name="account_number" required>
+                            <div class="error-message" id="account_number_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Name -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Bank Name <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="bank_name" name="bank_name" required>
+                                <option value="">Select Bank</option>
+                                <option value="NBC">NBC</option>
+                                <option value="NMB">NMB</option>
+                                <option value="CRDB">CRDB</option>
+                                <option value="Posta Bank">Posta Bank</option>
+                                <option value="Absa Bank">Absa Bank</option>
+                                <option value="DCB Commercial Bank">DCB Commercial Bank</option>
+                                <option value="Access Bank Tanzania">Access Bank Tanzania</option>
+                                <option value="Akiba Commercial Bank">Akiba Commercial Bank</option>
+                                <option value="Amana Bank">Amana Bank</option>
+                                <option value="Azania Bank">Azania Bank</option>
+                                <option value="Bank of Africa">Bank of Africa</option>
+                                <option value="Bank of Baroda">Bank of Baroda</option>
+                                <option value="Bank of India">Bank of India</option>
+                                <option value="Canara Bank">Canara Bank</option>
+                                <option value="Citibank Tanzania">Citibank Tanzania</option>
+                                <option value="Diamond Trust Bank">Diamond Trust Bank</option>
+                                <option value="Ecobank">Ecobank</option>
+                                <option value="Equity Bank">Equity Bank</option>
+                                <option value="Exim Bank">Exim Bank</option>
+                                <option value="GTBank Tanzania">GTBank Tanzania</option>
+                                <option value="Habib African Bank">Habib African Bank</option>
+                                <option value="I&M Bank">I&M Bank</option>
+                                <option value="ICBank">ICBank</option>
+                                <option value="KCB Bank">KCB Bank</option>
+                                <option value="Letshego Bank">Letshego Bank</option>
+                                <option value="Mkombozi Commercial Bank">Mkombozi Commercial Bank</option>
+                                <option value="Mwalimu Commercial Bank">Mwalimu Commercial Bank</option>
+                                <option value="NCBA Bank">NCBA Bank</option>
+                                <option value="People's Bank of Zanzibar">People's Bank of Zanzibar</option>
+                                <option value="Stanbic Bank Tanzania Limited">Stanbic Bank Tanzania Limited</option>
+                                <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                                <option value="Tanzania Commercial Bank">Tanzania Commercial Bank</option>
+                                <option value="UBA Bank">UBA Bank</option>
+                                <option value="Mwanga Hakika Bank">Mwanga Hakika Bank</option>
+                            </select>
+                            <div class="error-message" id="bank_name_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Salary -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Basic Salary <span class="text-danger">*</span>
+                            </label>
+                            <div class="monetary-wrapper">
+                                <span class="currency-prefix">TSH</span>
+                                <input type="text" class="form-control monetary-input" id="basic_salary" name="basic_salary" placeholder="0.00" required>
+                            </div>
+                            <div class="error-message" id="basic_salary_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Allowances -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Allowances <span class="text-danger">*</span>
+                            </label>
+                            <div class="monetary-wrapper">
+                                <span class="currency-prefix">TSH</span>
+                                <input type="text" class="form-control monetary-input" id="allowances" name="allowances" placeholder="0.00" required>
+                            </div>
+                            <div class="error-message" id="allowances_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Take Home Pay -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Take Home Pay <span class="text-danger">*</span>
+                            </label>
+                            <div class="monetary-wrapper">
+                                <span class="currency-prefix">TSH</span>
+                                <input type="text" class="form-control monetary-input" id="take_home" name="take_home" placeholder="0.00" required>
+                            </div>
+                            <div class="error-message" id="take_home_error"></div>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Phone Number <span class="text-danger">*</span>
+                            </label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="255XXXXXXXXX" required>
+                            <div class="phone-status" id="phone_status"></div>
+                            <div class="error-message" id="phone_error"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Enquiry Type -->
+            <div class="form-section" id="step-2">
+                <h4 class="section-title">Enquiry Type & Details</h4>
+
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Select Enquiry Type <span class="text-danger">*</span>
+                            </label>
+                            <select name="type" id="enquiry_type" class="form-select" required>
+                                <option value="">Choose an enquiry type</option>
                                 <option value="loan_application">Loan Application</option>
                                 <option value="refund">Refund</option>
                                 <option value="share_enquiry">Share Enquiry</option>
@@ -227,677 +812,980 @@
                                 <option value="withdraw_savings">Withdraw Savings</option>
                                 <option value="withdraw_deposit">Withdraw Deposit</option>
                                 <option value="unjoin_membership">Unjoin Membership</option>
-                                <option value="ura_mobile">Ura Mobile</option>
-                                <option value="sick_for_30_days">Sick for 30 Days</option>
+                                <option value="ura_mobile">URA Mobile</option>
+                                <option value="sick_for_30_days">Sick Leave (30+ Days)</option>
                                 <option value="condolences">Condolences</option>
-                                <option value="injured_at_work">Injured at Work</option>
+                                <option value="injured_at_work">Work Injury</option>
                                 <option value="residential_disaster">Residential Disaster</option>
                                 <option value="join_membership">Join Membership</option>
                             </select>
-                            <div class="wizard-form-error"></div>
+                            <div class="error-message" id="enquiry_type_error"></div>
                         </div>
-                        <!-- Additional fields based on Enquiry Type can be added here -->
-                        <!-- Loan Application Fields -->
-<div id="loanFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Loan Category:</label>
-                <select name="loan_category"  class="form-select"  >
-                    <option value="">Select Type</option>
-                    <option value="salary_loan">Salary loan</option>
-                    <option value="cash_loan">Cash loan</option>
+                    </div>
+                </div>
 
-                </select>
+                <!-- Dynamic Type-Specific Fields -->
+                <div class="type-fields" id="loanFields">
+                    <h6 class="type-fields-title"><i class="fas fa-money-bill-wave me-2"></i>Loan Application Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Loan Category <span class="text-danger">*</span></label>
+                                <select name="loan_category" class="form-select">
+                                    <option value="">Select Category</option>
+                                    <option value="salary_loan">Salary Loan</option>
+                                    <option value="cash_loan">Cash Loan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Loan Purpose <span class="text-danger">*</span></label>
+                                <select name="loan_type" class="form-select">
+                                    <option value="">Select Purpose</option>
+                                    <option value="business">Business</option>
+                                    <option value="education">Education</option>
+                                    <option value="medical">Medical</option>
+                                    <option value="vehicle">Vehicle</option>
+                                    <option value="agriculture">Agriculture</option>
+                                    <option value="emergency">Emergency</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="vacation">Vacation</option>
+                                    <option value="funeral">Funeral</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="construction">Construction</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Requested Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="loan_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Duration (Months) <span class="text-danger">*</span></label>
+                                <input type="number" name="loan_duration" class="form-control" placeholder="Enter months" min="1" max="60">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="shareFields">
+                    <h6 class="type-fields-title"><i class="fas fa-chart-line me-2"></i>Share Enquiry Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Share Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="share_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="retirementFields">
+                    <h6 class="type-fields-title"><i class="fas fa-user-clock me-2"></i>Retirement Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Expected Retirement Date <span class="text-danger">*</span></label>
+                                <input type="date" name="date_of_retirement" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="deductionFields">
+                    <h6 class="type-fields-title"><i class="fas fa-calculator me-2"></i>Deduction Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">From Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="from_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">To Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="to_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="refundFields">
+                    <h6 class="type-fields-title"><i class="fas fa-undo me-2"></i>Refund Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Refund Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="refund_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Refund Duration <span class="text-danger">*</span></label>
+                                <input type="number" name="refund_duration" class="form-control" placeholder="Enter duration">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="withdrawSavingsFields">
+                    <h6 class="type-fields-title"><i class="fas fa-piggy-bank me-2"></i>Withdraw Savings Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Withdraw Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="withdraw_saving_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Reason <span class="text-danger">*</span></label>
+                                <input type="text" name="withdraw_saving_reason" class="form-control" placeholder="Reason for withdrawal">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="withdrawDepositFields">
+                    <h6 class="type-fields-title"><i class="fas fa-university me-2"></i>Withdraw Deposit Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Withdraw Amount <span class="text-danger">*</span></label>
+                                <div class="monetary-wrapper">
+                                    <span class="currency-prefix">TSH</span>
+                                    <input type="text" name="withdraw_deposit_amount" class="form-control monetary-input" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Reason <span class="text-danger">*</span></label>
+                                <input type="text" name="withdraw_deposit_reason" class="form-control" placeholder="Reason for withdrawal">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="unjoinMembershipFields">
+                    <h6 class="type-fields-title"><i class="fas fa-user-times me-2"></i>Membership Termination Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Category <span class="text-danger">*</span></label>
+                                <select name="category" class="form-select">
+                                    <option value="">Select Category</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="job_termination">Job Termination</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="uraMobileFields">
+                    <h6 class="type-fields-title"><i class="fas fa-mobile-alt me-2"></i>URA Mobile Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                URA Mobile service registration - no additional details required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="sickLeaveFields">
+                    <h6 class="type-fields-title"><i class="fas fa-bed me-2"></i>Sick Leave Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Start Date <span class="text-danger">*</span></label>
+                                <input type="date" name="startdate" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">End Date <span class="text-danger">*</span></label>
+                                <input type="date" name="enddate" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="condolenceFields">
+                    <h6 class="type-fields-title"><i class="fas fa-heart me-2"></i>Condolence Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Beneficiary Type <span class="text-danger">*</span></label>
+                                <select name="dependent_member_type" class="form-select">
+                                    <option value="">Select Beneficiary</option>
+                                    <option value="dependent_child">Dependent Child</option>
+                                    <option value="dependent_spouse">Dependent Spouse</option>
+                                    <option value="member">Member</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-3 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" value="male" id="gender_male">
+                                        <label class="form-check-label" for="gender_male">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" value="female" id="gender_female">
+                                        <label class="form-check-label" for="gender_female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="injuryFields">
+                    <h6 class="type-fields-title"><i class="fas fa-band-aid me-2"></i>Work Injury Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Description (max 100 words) <span class="text-danger">*</span></label>
+                                <textarea name="description" class="form-control" rows="4" maxlength="600" placeholder="Please describe the injury details..."></textarea>
+                                <small class="form-text text-muted">Please enter up to 100 words.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="disasterFields">
+                    <h6 class="type-fields-title"><i class="fas fa-house-damage me-2"></i>Residential Disaster Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Disaster Cause <span class="text-danger">*</span></label>
+                                <select name="disaster_type" class="form-select">
+                                    <option value="">Select Disaster Cause</option>
+                                    <option value="fire">Fire</option>
+                                    <option value="hurricane">Hurricane</option>
+                                    <option value="flood">Flood</option>
+                                    <option value="earthquake">Earthquake</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="type-fields" id="joinMembershipFields">
+                    <h6 class="type-fields-title"><i class="fas fa-user-plus me-2"></i>Join Membership Details</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Membership Status <span class="text-danger">*</span></label>
+                                <select name="membership_status" class="form-select">
+                                    <option value="">Select Membership Status</option>
+                                    <option value="police_officer">Police Officer</option>
+                                    <option value="civilian">Civilian</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Loan Type/Reason:</label>
-                <select name="loan_type"  class="form-select custom-select-dropdown" >
-                <option value="">Select Type</option>
-<option value="business">Business</option>
-<option value="education">Education</option>
-<option value="medical">Medical</option>
-<option value="vehicle">Vehicle</option>
-<option value="agriculture">Agriculture</option>
-<option value="emergency">Emergency</option>
-<option value="wedding">Wedding</option>
-<option value="vacation">Vacation</option>
-<option value="funeral">Funeral</option>
-<option value="furniture">Furniture</option>
-<option value="construction">Construction</option>
-<option value="other">Other</option>
 
+            <!-- Step 3: Location -->
+            <div class="form-section" id="step-3">
+                <h4 class="section-title">Location Information</h4>
 
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Loan Amount:</label>
-                <input type="number" step="0.01" name="loan_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Loan Duration:</label>
-                <input type="number" name="loan_duration" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Region <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="region" name="region_id" required>
+                                <option value="">Select Region</option>
+                                @foreach ($regions as $region)
+                                    <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="error-message" id="region_error"></div>
+                        </div>
+                    </div>
 
-<!-- Share Enquiry Fields -->
-<div id="shareFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Share Amount:</label>
-                <input type="number" step="0.01" name="share_amount" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                District <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="district" name="district_id" required>
+                                <option value="">Select District</option>
+                            </select>
+                            <div class="error-message" id="district_error"></div>
+                        </div>
+                    </div>
 
-<!-- Retirement Fields -->
-<div id="retirementFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Date of Retirement:</label>
-                <input type="date" name="date_of_retirement" class="form-control">
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Deduction Fields -->
-<div id="deductionFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>From Amount:</label>
-                <input type="number" step="0.01" name="from_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>To Amount:</label>
-                <input type="number" step="0.01" name="to_amount" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Refund Fields -->
-<div id="refundFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Refund Amount:</label>
-                <input type="number" step="0.01" name="refund_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Refund Duration:</label>
-                <input type="number" name="refund_duration" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Withdraw Savings Fields -->
-<div id="withdrawSavingsFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Withdraw Savings Amount:</label>
-                <input type="number" step="0.01"value="0" name="withdraw_saving_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Reason:</label>
-                <input type="text" name="withdraw_saving_reason"value="None" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Withdraw Deposit Fields -->
-<div id="withdrawDepositFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Withdraw Deposit Amount:</label>
-                <input type="number" step="0.01" name="withdraw_deposit_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Reason:</label>
-                <input type="text" name="withdraw_deposit_reason" class="form-control">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Unjoin Membership Fields -->
-<div id="unjoinMembershipFields" style="display: none;">
-    <div class="row mb-3">
-
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Category:</label>
-                <select name="category" class="form-control">
-                <option value="">Select Category</option>
-                    <option value="normal">Normal</option>
-                    <option value="job_termination">Job Termination</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Benefit from Disasters Fields -->
-<div id="benefitFields" style="display: none;">
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Benefit Amount:</label>
-                <input type="number" step="0.01" name="benefit_amount" class="form-control">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Benefit Description:</label>
-                <textarea name="benefit_description" class="form-control"></textarea>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!--Added fields ---------------------------------->
-<div id="dependent_member" style="display:none;">
-    <label for="dependent_member_type">Beneficiary</label>
-    <select name="dependent_member_type" id="dependent_member_type" class="form-select w-50">
-    <option value="">Select Beneficiary</option>
-    <option value="dependent_child">Dependent Child</option>
-        <option value="dependent_spouse">Dependent Spouse</option>
-        <option value="member">Member</option>
-    </select>
-    <p class="mt-2">Choose gender</p>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" id="gender_male" name="gender" value="male">
-        <label class="form-check-l abel" for="gender_male">Male</label>
-    </div>
-
-    <div class="form-check">
-        <input class="form-check-input" type="radio" id="gender_female" name="gender" value="female">
-        <label class="form-check-label" for="gender_female">Female</label>
-    </div>
-</div>
-
-<div id="disaster_type" style="display:none;">
-    <label for="disaster_type">Disaster Cause</label>
-    <select name="disaster_type" id="disaster_type" class="form-select w-50">
-        <option value="">Select Disaster Cause</option>
-        <option value="fire">Fire</option>
-        <option value="hurricane">Hurricane</option>
-        <option value="flood">Flood</option>
-        <option value="earthquake">Earthquake</option>
-    </select>
-</div>
-
-<div id="membership_status" style="display:none;">
-    <label for="membership_status">Membership Status</label>
-    <select name="membership_status" id="membership_status" class="form-select w-50">
-    <option value="">Select Membership Status</option>
-    <option value="police_officer">Police Officer</option>
-        <option value="civilian">Civilian</option>
-    </select>
-</div>
-
-
-<div id="injured_at_work_div" style="display:none;">
-    <label for="description">Description (max 100 words)</label>
-    <textarea name="description" id="description" class="form-control w-50" rows="4" maxlength="600"></textarea>
-    <small class="form-text text-muted">Please enter up to 100 words.</small>
-</div>
-
-
-<div id="sick_for_30_days_div" style="display:none;">
-    <label for="startdate">Start Date</label>
-    <input type="date" name="startdate" id="startdate" class="form-control w-50">
-    <label for="enddate" class="mt-3">End Date</label>
-    <input type="date" name="enddate" id="enddate" class="form-control w-50">
-</div>
-
-
-                    <div class="form-group d-flex align-items-center justify-content-end gap-8">
-                        <button type="button" class="form-wizard-previous-btn btn btn-neutral-500 border-neutral-100 px-32">Back</button>
-                        <button type="button" class="form-wizard-next-btn btn btn-primary-600 px-32">Next</button>
-                    </div></div>
-                </fieldset>
-
-               <!-- Step 4: Address/Location -->
-<fieldset class="wizard-fieldset" >
-    <h5 class="mb-1">Address/Location</h5>
-    <p class="mb-4">Enter the location details</p>
-    <div class="row g-3">
-        <!-- Region Selection -->
-        <div class="col-12 col-lg-6">
-            <label for="region" class="form-label">Region</label>
-            <select class="form-control select2 wizard-required custom-select-dropdown" id="region" name="region_id" required onchange="updateDistricts()">
-                <option value="">Select Region</option>
-                @foreach ($regions as $region)
-                    <option value="{{ $region->id }}">{{ $region->name }}</option>
-                @endforeach
-            </select>
-            <div class="wizard-form-error"></div>
-        </div>
-
-        <!-- District Selection -->
-        <div class="col-12 col-lg-6">
-            <label for="district" class="form-label">District</label>
-            <select class="form-control select2 wizard-required" id="district" name="district_id" required>
-                <option value="">Select District</option>
-                <!-- Districts will be populated here via JavaScript -->
-            </select>
-            <div class="wizard-form-error"></div>
-        </div>
-
-<!-- Command Selection (Only for admin, registrar_hq, and superuser) -->
-       @if(auth()->user()->hasRole(['admin', 'registrar_hq', 'superadmin']))
-        <div class="col-12 col-lg-6">
-            <label for="command_id" class="form-label">Command</label>
-            <select class="form-control custom-select-dropdown" id="command_id" name="command_id">
-                <option value="">Select Command</option>
-                @foreach ($commands as $command)
-                    <option value="{{ $command->id }}">{{ $command->name }}</option>
-                @endforeach
-            </select>
-            <div class="wizard-form-error"></div>
-        </div>
-        @endif
-
-    
-
-        <!-- Navigation Buttons -->
-        <div class="col-12">
-            <div class="d-flex align-items-center justify-content-end gap-3">
-                <button type="button" class="form-wizard-previous-btn btn btn-neutral-500 border-neutral-100 px-32">Back</button>
-                        <button type="button" class="form-wizard-next-btn btn btn-primary-600 px-32">Next</button>
-            </div>
-        </div>
-    </div>
-</fieldset>
-<!-- Step 5: Attachment -->
-<fieldset class="wizard-fieldset" >
-    <h5 class="mb-1">Attachment</h5>
-    <p class="mb-4">Upload the supportive document</p>
-    <div class="row g-3">
-        <!-- File Upload -->
-        <div class="col-12 col-lg-6">
-            <label for="fileUpload" class="form-label">Upload File (PDF only)</label>
-            <input type="file" class="form-control wizard-required" name="file_path" id="fileUpload" onchange="previewFile()" accept="application/pdf">
-        </div>
-
-        <!-- File Selection Dropdown -->
-        <div class="col-12 col-lg-6">
-            <label for="file_id" class="form-label">Select File</label>
-            <select class="form-control select2 wizard-required custom-select-dropdown" id="file_id" name="file_id">
-                <option value="">Select File</option>
-                @foreach ($files as $file)
-                    <option value="{{ $file->id }}">{{ $file->reference_number }}-{{$file->file_subject}}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- PDF Preview -->
-        <div class="col-12">
-            <label for="preview" class="form-label">Preview</label>
-            <div id="previewContainer" class="card bg-light">
-                <div class="card-body">
-                    <object id="pdfPreview" style="width: 100%; height: 400px;" type="application/pdf" class="bg-secondary"></object>
+                    @if(auth()->user()->hasRole(['admin', 'registrar_hq', 'superadmin']))
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Command</label>
+                            <select class="form-select" id="command_id" name="command_id">
+                                <option value="">Select Command</option>
+                                @foreach ($commands as $command)
+                                    <option value="{{ $command->id }}">{{ $command->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
-        </div>
 
-        <!-- Navigation and Submit Buttons -->
-        <div class="col-12">
-            <div class="form-group d-flex align-items-center justify-content-end gap-8">
-                <button type="button" class="form-wizard-previous-btn btn btn-neutral-500 border-neutral-100 px-32">Back</button>
-                <button type="button" class="form-wizard-next-btn btn btn-primary-600 px-32">Next</button>
+            <!-- Step 4: Documents -->
+            <div class="form-section" id="step-4">
+                <h4 class="section-title">Document Attachment</h4>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Upload Supporting Document <span class="text-danger">*</span>
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('file_upload').click()">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="file-upload-text">
+                                    Click to upload or drag and drop
+                                </div>
+                                <div class="file-upload-subtext">
+                                    PDF files only (Max 10MB)
+                                </div>
+                            </div>
+                            <input type="file" id="file_upload" name="file_path" accept="application/pdf" style="display: none;" required>
+                            <div class="file-preview" id="file_preview"></div>
+                            <div class="error-message" id="file_error"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">
+                                File Reference <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="file_id" name="file_id" required>
+                                <option value="">Select File Reference</option>
+                                @foreach ($files as $file)
+                                    <option value="{{ $file->id }}">{{ $file->reference_number }} - {{ $file->file_subject }}</option>
+                                @endforeach
+                            </select>
+                            <div class="error-message" id="file_id_error"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</fieldset>
 
+            <!-- Step 5: Review -->
+            <div class="form-section" id="step-5">
+                <h4 class="section-title">Review Your Information</h4>
 
-                <fieldset class="wizard-fieldset">
-                    <div class="text-center mb-40">
-                        <img src="assets/images/gif/success-img3.gif" alt="" class="gif-image mb-24">
-                        <h6 class="text-md text-neutral-600">Congratulations </h6>
-                        <p class="text-neutral-400 text-sm mb-0">Well done! You have successfully completed.</p>
+                <div id="review_content">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-eye fa-3x mb-3"></i>
+                        <p>Please complete all previous steps to review your information</p>
                     </div>
-                    <div class="form-group d-flex align-items-center justify-content-end gap-8">
-                        <button type="button" class="form-wizard-previous-btn btn btn-neutral-500 border-neutral-100 px-32">Back</button>
-                        {{-- <button type="button" class="form-wizard-submit btn btn-primary-600 px-32">Publish</button> --}}
-                        <button type="submit" class="form-wizard-submit btn btn-primary-600 px-32"id="publish_form">Publish</button>
+                </div>
 
+                <div class="mt-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirm_submission" required>
+                        <label class="form-check-label" for="confirm_submission">
+                            <strong>I confirm that all the information provided is accurate and complete</strong>
+                        </label>
                     </div>
-                </fieldset></form></div></div></div>
+                </div>
+            </div>
 
+        </form>
 
-
-                        </div><!---end row-->
-
-
-                      </div>
-
+        <!-- Navigation -->
+        <div class="form-navigation">
+            <button type="button" class="btn-modern btn-secondary" id="prev_btn" onclick="previousStep()" style="display: none;">
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <div class="ms-auto d-flex gap-2">
+                <button type="button" class="btn-modern btn-primary" id="next_btn" onclick="nextStep()">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button type="button" class="btn-modern btn-primary" id="submit_btn" onclick="submitForm()" style="display: none;">
+                    <i class="fas fa-paper-plane"></i> Submit Enquiry
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-    <script>
-        // Toggle fields based on the enquiry type selected
-        function toggleFields(type) {
-            const fields = {
-                sick_for_30_days: 'sick_for_30_days_div',
-                condolences: 'dependent_member',
-                residential_disaster:'disaster_type',
-                join_membership: 'membership_status',
-                injured_at_work:'injured_at_work_div',
-
-
-                loan_application: 'loanFields',
-                refund: 'refundFields',
-                share_enquiry: 'shareFields',
-                retirement: 'retirementFields',
-                withdraw_savings: 'withdrawSavingsFields',
-                withdraw_deposit: 'withdrawDepositFields',
-                unjoin_membership: 'unjoinMembershipFields',
-                benefit_from_disasters: 'benefitFields',
-                deduction_add: 'deductionFields'
-            };
-
-            // Hide all additional fields
-            Object.keys(fields).forEach(key => {
-                const field = document.getElementById(fields[key]);
-                if (field) {
-                    field.style.display = 'none';
-                }
-            });
-
-            // Show the relevant fields based on the selected type
-            if (type && fields[type]) {
-                const fieldToShow = document.getElementById(fields[type]);
-                if (fieldToShow) {
-                    fieldToShow.style.display = 'block';
-                }
-            }
-        }
-
-        function previewFile() {
-            const file = document.getElementById('fileUpload').files[0];
-            const previewContainer = document.getElementById('previewContainer');
-
-            if (file && /application\/pdf/i.test(file.type)) {
-                const obj = document.createElement('object');
-                obj.type = 'application/pdf';
-                obj.data = URL.createObjectURL(file);
-                obj.style.width = '100%';
-                obj.style.height = '500px'; // Adjust height as needed
-                previewContainer.innerHTML = ''; // Clear previous content
-                previewContainer.appendChild(obj);
-            } else {
-                previewContainer.innerHTML = '<p>Please upload a PDF file.</p>'; // Error message or fallback content
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-
-            // Handle enquiry type selection to toggle additional fields
-            const enquiryTypeSelect = document.getElementById('type');
-            if (enquiryTypeSelect) {
-                toggleFields(enquiryTypeSelect.value); // Initial check when the page loads
-                enquiryTypeSelect.addEventListener('change', function() {
-                    toggleFields(this.value); // Update fields when enquiry type changes
-                });
-            }
-
-            // Set up the file upload preview listener
-            const fileInput = document.getElementById('fileUpload');
-            if (fileInput) {
-                fileInput.addEventListener('change', previewFile);
-            }
-        });
-    </script>
-
-
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading_overlay">
+    <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <h5>Submitting your enquiry...</h5>
+        <p>Please wait while we process your request</p>
+    </div>
+</div>
 
 <script>
-        $(document).ready(function() {
-            $('#bank_name').select2({
-                theme: 'bootstrap', // Apply Bootstrap theme to Select2
-                placeholder: "Select a Bank",
-                allowClear: true
-            });
-        });
-</script>
-<script>
-        $(document).ready(function() {
-            $('#region').select2({
-                theme: 'bootstrap', // Apply Bootstrap theme to Select2
-                placeholder: "Select a Region",
-                allowClear: true
-            });
-        });
-    </script>
-<script>
-        $(document).ready(function() {
-            $('#district').select2({
-                theme: 'bootstrap', // Apply Bootstrap theme to Select2
-                placeholder: "Select a District",
-                allowClear: true
-            });
-        });
-    </script>
-<script>
-    function updateDistricts() {
-        const regionId = document.getElementById('region').value;
-        const districtSelect = document.getElementById('district');
-        districtSelect.innerHTML = '<option value="">Select District</option>'; // Clear existing options
+    let currentStep = 1;
+    const totalSteps = 5;
+    let formData = {};
 
-        if (!regionId) return; // If no region is selected, stop here
-
-        // Assuming you have all districts preloaded in a variable `districts`
-        @json($regions).forEach(region => {
-            if (region.id == regionId) {
-                region.districts.forEach(district => {
-                    let option = new Option(district.name, district.id);
-                    districtSelect.add(option);
-                });
-            }
-        });
-    }
-    </script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
- <script>
-
-
-    $(document).ready(function() {
-    $('.select2').select2(); // Ensure Select2 is initialized
-
-    var debounceTimer;
-    $('#check_number').on('keyup', function() {
-        var checkNumber = $(this).val();
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() {
-            if (checkNumber.length > 3) { // Assuming check number has a meaningful length to start search
-                $.ajax({
-                    url: '{{ url("enquiries/fetch-payroll") }}/' + checkNumber,
-                    type: "GET",
-                    success: function(data) {
-                        if (data && data.bank_name) {
-                            $('#full_name').val(data.full_name);
-                            $('#account_number').val(data.account_number);
-                            // Make sure the value matches exactly an option in the select
-                            $('#bank_name').val(data.bank_name).trigger('change');
-                            $('#basic_salary').val(data.basic_salary);
-                            $('#allowances').val(data.allowance);
-                            $('#take_home').val(data.net_amount);
-                        } else {
-                            $('#full_name, #account_number, #basic_salary, #allowances, #take_home').val('');
-                            $('#bank_name').val('').trigger('change'); // Reset Select2
-                        }
-                    },
-                    error: function() {
-                        alert('Failed to retrieve data');
-                    }
-                });
-            } else {
-                $('#full_name, #account_number, #basic_salary, #allowances, #take_home').val('');
-                $('#bank_name').val('').trigger('change'); // Reset Select2
-            }
-        }, 500); // 500 ms debounce period
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeForm();
+        setupEventListeners();
     });
-});
 
-</script>
-<script>
-    $(document).ready(function() {
-        var debounceTimer;
+    function initializeForm() {
+        updateStepDisplay();
+        initializeMonetaryInputs();
+        initializePhoneValidation();
+        initializeCheckNumberLookup();
+        initializeFileUpload();
+    }
 
-        $('#check_number').on('keyup', function() {
-            var checkNumber = $(this).val();
+    function setupEventListeners() {
+        // Enquiry type change
+        document.getElementById('enquiry_type').addEventListener('change', function() {
+            toggleTypeFields(this.value);
+        });
 
-            // Show loading placeholder when typing starts
-            $('#full_name').attr('placeholder', 'Loading...');
-            $('#account_number').attr('placeholder', 'Loading...');
-            $('#bank_name').attr('placeholder', 'Loading...');
-            $('#basic_salary').attr('placeholder', 'Loading...');
-            $('#allowances').attr('placeholder', 'Loading...');
-            $('#take_home').attr('placeholder', 'Loading...');
+        // Region change
+        document.getElementById('region').addEventListener('change', function() {
+            updateDistricts(this.value);
+        });
 
-            // Clear the previous debounce timer
-            clearTimeout(debounceTimer);
+        // Only validate on form submission, not on blur/input
+        // Remove real-time validation to prevent premature error messages
+    }
 
-            // Set a new debounce timer (wait for user to stop typing for 500ms)
-            debounceTimer = setTimeout(function() {
-                if (checkNumber.length > 3) { // If input is long enough
+    function nextStep() {
+        if (validateCurrentStep()) {
+            // Additional validation for step 2 (enquiry type)
+            if (currentStep === 2) {
+                const enquiryType = document.getElementById('enquiry_type').value;
 
-                    $.ajax({
-                        url: '{{ url("enquiries/fetch-payroll") }}/' + checkNumber,
-                        type: "GET",
-                        success: function(data) {
-                            if (data) {
-                                $('#full_name').val(data.full_name).attr('placeholder', '');
-                                $('#account_number').val(data.account_number).attr('placeholder', '');
-                                $('#bank_name').val(data.bank_name).trigger('change').attr('placeholder', ''); // For Select2
-                                $('#basic_salary').val(data.basic_salary).attr('placeholder', '');
-                                $('#allowances').val(data.allowance).attr('placeholder', '');
-                                $('#take_home').val(data.net_amount).attr('placeholder', '');
-                            } else {
-                                $('#full_name, #account_number, #bank_name, #basic_salary, #allowances, #take_home').val('').trigger('change');
-                                $('#full_name, #account_number, #bank_name, #basic_salary, #allowances, #take_home').attr('placeholder', '');
-                            }
-                        },
-                        error: function() {
-                            alert('Failed to retrieve data');
-                            $('#full_name, #account_number, #bank_name, #basic_salary, #allowances, #take_home').attr('placeholder', '');
+                if (!enquiryType) {
+                    alert('Please select an enquiry type');
+                    return;
+                }
+
+                // If enquiry type is selected, check if at least one option field is filled
+                const visibleTypeSection = document.querySelector('.type-fields.show');
+                if (visibleTypeSection) {
+                    const typeFields = visibleTypeSection.querySelectorAll('input, select, textarea');
+                    let hasAtLeastOneValue = false;
+
+                    typeFields.forEach(field => {
+                        if (field.type === 'radio') {
+                            if (field.checked) hasAtLeastOneValue = true;
+                        } else if (field.type !== 'hidden' && field.value && field.value.trim() !== '') {
+                            hasAtLeastOneValue = true;
                         }
                     });
 
-                } else {
-                    // Clear fields and loading indicators if the input is too short
-                    $('#full_name, #account_number, #bank_name, #basic_salary, #allowances, #take_home').val('').trigger('change');
-                    $('#full_name, #account_number, #bank_name, #basic_salary, #allowances, #take_home').attr('placeholder', '');
+                    // Only require at least one field if there are fillable fields (exclude info-only sections)
+                    const fillableFields = visibleTypeSection.querySelectorAll('input:not([readonly]), select, textarea');
+                    if (fillableFields.length > 0 && !hasAtLeastOneValue) {
+                        alert('Please fill at least one field for the selected enquiry type');
+                        return;
+                    }
                 }
-            }, 500); // Debounce time, meaning the user must stop typing for 500ms
-        });
-    });
-</script>
-<script>
-    const phoneInput = document.getElementById('phone');
-    const phoneHelp = document.getElementById('phoneHelp');
+            }
 
-    // Function to trigger the grow animation with a slight delay
-    function animateMessage() {
-      // Remove the 'grow' class
-      phoneHelp.classList.remove('grow');
-      
-      // Use a timeout to force reflow and then re-add the class
-      setTimeout(() => {
-        phoneHelp.classList.add('grow');
-      }, 50); // 50ms delay should be enough
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepDisplay();
+
+                if (currentStep === 5) {
+                    generateReview();
+                }
+            }
+        }
     }
 
-    // This function validates the phone number
-    function validatePhone() {
-      let value = phoneInput.value;
-      
-      // Remove all non-digit characters (no special characters allowed)
-      value = value.replace(/\D/g, '');
-      
-      // If the number does not start with "255", prepend it.
-      if (!value.startsWith('255')) {
-        value = '255' + value;
-      }
-      
-      // Ensure maximum length is 12 digits
-      if (value.length > 12) {
-        value = value.slice(0, 12);
-      }
-      
-      phoneInput.value = value;
-      
-      // Perform validations and update the message accordingly
-      if (value.length !== 12) {
-        phoneHelp.textContent = 'Phone number must be exactly 12 digits.';
-        phoneHelp.className = 'form-text mt-2 text-danger';
-      } else if (value.charAt(0) === '0') {
-        phoneHelp.textContent = 'Phone number must not start with 0.';
-        phoneHelp.className = 'form-text mt-2 text-danger';
-      } else {
-        phoneHelp.textContent = 'Phone number looks good!';
-        phoneHelp.className = 'form-text mt-2 text-success';
-      }
-      
-      // Trigger the grow animation
-      animateMessage();
+    function previousStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStepDisplay();
+        }
     }
 
-    // Attach the event listener for realtime validation
-    phoneInput.addEventListener('input', validatePhone);
-  </script>
-
-<script>
-    $(document).ready(function(){
-        // When the form is submitted
-        $('#myForm').on('submit', function(e){
-            // Optionally, you can perform some validations here
-            // If validation passes, update the button:
-            var $btn = $('#publish_form');
-
-            // Disable the button to prevent multiple clicks
-            $btn.prop('disabled', true);
-
-            // Change the button text and add a spinner (if desired)
-            $btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Publishing...');
-
-            // The form will now be submitted
+    function updateStepDisplay() {
+        // Hide all sections
+        document.querySelectorAll('.form-section').forEach(section => {
+            section.classList.remove('active');
         });
-    });
-</script>
 
+        // Show current section
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+
+        // Update step indicators
+        document.querySelectorAll('.step-item').forEach((step, index) => {
+            step.classList.remove('active', 'completed');
+            if (index + 1 < currentStep) {
+                step.classList.add('completed');
+            } else if (index + 1 === currentStep) {
+                step.classList.add('active');
+            }
+        });
+
+        // Update navigation buttons
+        const prevBtn = document.getElementById('prev_btn');
+        const nextBtn = document.getElementById('next_btn');
+        const submitBtn = document.getElementById('submit_btn');
+
+        prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+        nextBtn.style.display = currentStep < totalSteps ? 'block' : 'none';
+        submitBtn.style.display = currentStep === totalSteps ? 'block' : 'none';
+
+        // Scroll to top
+        document.querySelector('.modern-form-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function validateCurrentStep() {
+        const currentSection = document.getElementById(`step-${currentStep}`);
+        const requiredFields = currentSection.querySelectorAll('input[required], select[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!validateField(field)) {
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+
+    function validateField(field) {
+        const value = field.value.trim();
+        let isValid = true;
+        let errorMessage = '';
+
+        // Clear previous validation
+        clearFieldError(field);
+
+        if (field.hasAttribute('required') && !value) {
+            errorMessage = 'This field is required';
+            isValid = false;
+        } else if (field.type === 'email' && value && !isValidEmail(value)) {
+            errorMessage = 'Please enter a valid email address';
+            isValid = false;
+        } else if (field.id === 'phone' && value && !isValidPhone(value)) {
+            errorMessage = 'Please enter a valid phone number (255XXXXXXXXX)';
+            isValid = false;
+        }
+
+        if (!isValid) {
+            showFieldError(field, errorMessage);
+        } else {
+            showFieldSuccess(field);
+        }
+
+        return isValid;
+    }
+
+    function showFieldError(field, message) {
+        field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
+
+        const errorDiv = field.parentNode.querySelector('.error-message');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+    }
+
+    function showFieldSuccess(field) {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+    }
+
+    function clearFieldError(field) {
+        field.classList.remove('is-invalid', 'is-valid');
+
+        const errorDiv = field.parentNode.querySelector('.error-message');
+        if (errorDiv) {
+            errorDiv.classList.remove('show');
+        }
+    }
+
+    function initializeMonetaryInputs() {
+        document.querySelectorAll('.monetary-input').forEach(input => {
+            input.addEventListener('input', function() {
+                formatMonetaryInput(this);
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value) {
+                    const numericValue = parseFloat(this.value.replace(/,/g, ''));
+                    if (!isNaN(numericValue)) {
+                        this.value = numericValue.toLocaleString('en-US', {minimumFractionDigits: 2});
+                    }
+                }
+            });
+        });
+    }
+
+    function formatMonetaryInput(input) {
+        let value = input.value.replace(/[^\d.]/g, '');
+
+        // Prevent multiple decimal points
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        // Add thousand separators
+        if (value && !isNaN(value)) {
+            const [integerPart, decimalPart] = value.split('.');
+            if (integerPart) {
+                const formattedInteger = parseInt(integerPart).toLocaleString('en-US');
+                value = decimalPart !== undefined ? formattedInteger + '.' + decimalPart : formattedInteger;
+            }
+        }
+
+        input.value = value;
+    }
+
+    function initializePhoneValidation() {
+        const phoneInput = document.getElementById('phone');
+        const phoneStatus = document.getElementById('phone_status');
+
+        phoneInput.addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+
+            // Auto-add 255 prefix
+            if (value && !value.startsWith('255')) {
+                value = '255' + value.replace(/^255/, '');
+            }
+
+            // Limit to 12 digits
+            if (value.length > 12) {
+                value = value.slice(0, 12);
+            }
+
+            this.value = value;
+
+            // Update status
+            if (value.length === 12) {
+                phoneStatus.textContent = '✓ Valid phone number';
+                phoneStatus.className = 'phone-status valid';
+            } else if (value.length > 0) {
+                phoneStatus.textContent = `${12 - value.length} more digits needed`;
+                phoneStatus.className = 'phone-status invalid';
+            } else {
+                phoneStatus.textContent = '';
+            }
+        });
+    }
+
+    function initializeCheckNumberLookup() {
+        let debounceTimer;
+        const checkNumberInput = document.getElementById('check_number');
+
+        checkNumberInput.addEventListener('input', function() {
+            const checkNumber = this.value;
+
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (checkNumber.length > 3) {
+                    lookupMemberData(checkNumber);
+                }
+            }, 500);
+        });
+    }
+
+    function lookupMemberData(checkNumber) {
+        fetch(`/enquiries/fetch-payroll/${checkNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.full_name) {
+                    document.getElementById('full_name').value = data.full_name || '';
+                    document.getElementById('account_number').value = data.account_number || '';
+                    document.getElementById('bank_name').value = data.bank_name || '';
+
+                    // Format monetary values
+                    if (data.basic_salary) {
+                        document.getElementById('basic_salary').value = parseFloat(data.basic_salary).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    }
+                    if (data.allowance) {
+                        document.getElementById('allowances').value = parseFloat(data.allowance).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    }
+                    if (data.net_amount) {
+                        document.getElementById('take_home').value = parseFloat(data.net_amount).toLocaleString('en-US', {minimumFractionDigits: 2});
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching member data:', error);
+            });
+    }
+
+    function toggleTypeFields(selectedType) {
+        // Hide all type fields
+        document.querySelectorAll('.type-fields').forEach(field => {
+            field.classList.remove('show');
+        });
+
+        // Show selected type fields
+        const typeFieldMap = {
+            'loan_application': 'loanFields',
+            'share_enquiry': 'shareFields',
+            'retirement': 'retirementFields',
+            'condolences': 'condolenceFields',
+            'deduction_add': 'deductionFields',
+            'refund': 'refundFields',
+            'withdraw_savings': 'withdrawSavingsFields',
+            'withdraw_deposit': 'withdrawDepositFields',
+            'unjoin_membership': 'unjoinMembershipFields',
+            'ura_mobile': 'uraMobileFields',
+            'sick_for_30_days': 'sickLeaveFields',
+            'injured_at_work': 'injuryFields',
+            'residential_disaster': 'disasterFields',
+            'join_membership': 'joinMembershipFields'
+        };
+
+        const fieldId = typeFieldMap[selectedType];
+        if (fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('show');
+            }
+        }
+    }
+
+    function updateDistricts(regionId) {
+        const districtSelect = document.getElementById('district');
+        districtSelect.innerHTML = '<option value="">Select District</option>';
+
+        if (regionId) {
+            @json($regions).forEach(region => {
+                if (region.id == regionId && region.districts) {
+                    region.districts.forEach(district => {
+                        const option = new Option(district.name, district.id);
+                        districtSelect.add(option);
+                    });
+                }
+            });
+        }
+    }
+
+    function initializeFileUpload() {
+        const fileInput = document.getElementById('file_upload');
+        const filePreview = document.getElementById('file_preview');
+        const uploadArea = document.querySelector('.file-upload-area');
+
+        // Drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            uploadArea.classList.add('drag-over');
+        }
+
+        function unhighlight(e) {
+            uploadArea.classList.remove('drag-over');
+        }
+
+        uploadArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect(files[0]);
+            }
+        }
+
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                handleFileSelect(this.files[0]);
+            }
+        });
+
+        function handleFileSelect(file) {
+            if (file.type === 'application/pdf') {
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    showFieldError(fileInput, 'File size must be less than 10MB');
+                    return;
+                }
+
+                const fileURL = URL.createObjectURL(file);
+                filePreview.innerHTML = `
+                    <div class="file-preview-container">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-file-pdf text-danger fa-2x me-3"></i>
+                            <div>
+                                <div class="fw-bold">${file.name}</div>
+                                <small class="text-muted">${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+                            </div>
+                            <div class="ms-auto">
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.open('${fileURL}', '_blank')">
+                                    <i class="fas fa-eye"></i> Preview
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pdf-preview-frame">
+                            <iframe src="${fileURL}" width="100%" height="300" style="border: 1px solid #dee2e6; border-radius: 8px;"></iframe>
+                        </div>
+                    </div>
+                `;
+                filePreview.classList.add('show');
+                clearFieldError(fileInput);
+            } else {
+                showFieldError(fileInput, 'Please select a PDF file only');
+                filePreview.classList.remove('show');
+            }
+        }
+    }
+
+    function generateReview() {
+        const reviewContent = document.getElementById('review_content');
+        let html = '<div class="row g-3">';
+
+        // Member Information
+        html += `
+            <div class="col-12">
+                <div class="review-card">
+                    <h6 class="review-section-title">Member Information</h6>
+                    <div class="review-item">
+                        <span class="review-label">Full Name:</span>
+                        <span class="review-value">${document.getElementById('full_name').value}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Check Number:</span>
+                        <span class="review-value">${document.getElementById('check_number').value}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Phone:</span>
+                        <span class="review-value">${document.getElementById('phone').value}</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Bank:</span>
+                        <span class="review-value">${document.getElementById('bank_name').selectedOptions[0]?.text || ''}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Enquiry Information
+        const selectedType = document.getElementById('enquiry_type').selectedOptions[0]?.text;
+        if (selectedType) {
+            html += `
+                <div class="col-12">
+                    <div class="review-card">
+                        <h6 class="review-section-title">Enquiry Information</h6>
+                        <div class="review-item">
+                            <span class="review-label">Type:</span>
+                            <span class="review-value">${selectedType}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Location Information
+        const selectedRegion = document.getElementById('region').selectedOptions[0]?.text;
+        const selectedDistrict = document.getElementById('district').selectedOptions[0]?.text;
+        if (selectedRegion && selectedDistrict) {
+            html += `
+                <div class="col-12">
+                    <div class="review-card">
+                        <h6 class="review-section-title">Location</h6>
+                        <div class="review-item">
+                            <span class="review-label">Region:</span>
+                            <span class="review-value">${selectedRegion}</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">District:</span>
+                            <span class="review-value">${selectedDistrict}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        html += '</div>';
+        reviewContent.innerHTML = html;
+    }
+
+    function submitForm() {
+        if (!document.getElementById('confirm_submission').checked) {
+            alert('Please confirm that all information is accurate before submitting.');
+            return;
+        }
+
+        // Show loading overlay
+        document.getElementById('loading_overlay').classList.add('show');
+
+        // Convert monetary fields back to numeric values
+        document.querySelectorAll('.monetary-input').forEach(input => {
+            if (input.value) {
+                input.value = input.value.replace(/,/g, '');
+            }
+        });
+
+        // Submit the form
+        document.getElementById('enquiryForm').submit();
+    }
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidPhone(phone) {
+        return /^255\d{9}$/.test(phone);
+    }
+</script>
 
 @endsection

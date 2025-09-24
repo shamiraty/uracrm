@@ -1,83 +1,17 @@
 <!--start header -->
 <style>
-    /* Modern Header Styling with Enhanced Gradient */
+    /* Modern Header Styling with Primary Color */
     .topbar {
-        background: linear-gradient(135deg, #17479E 0%, #0F3470 50%, #17479E 100%);
-        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(15px);
-        border-bottom: 3px solid rgba(0, 188, 212, 0.3);
-        height: 65px;
-        padding: 0 25px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Animated background effect */
-    .topbar::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0, 188, 212, 0.1), transparent);
-        animation: shine 3s ease-in-out infinite;
-    }
-
-    @keyframes shine {
-        0% { left: -100%; }
-        100% { left: 100%; }
+        background: #17479E;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        height: 60px;
+        padding: 0 20px;
     }
     
     .topbar .navbar {
         height: 100%;
-    }
-
-    /* Enhanced Search Bar with Glass Effect */
-    .search-bar {
-        position: relative;
-    }
-
-    .search-bar input {
-        background: rgba(255, 255, 255, 0.12);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        color: white;
-        padding: 12px 45px;
-        font-size: 14px;
-        width: 300px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .search-bar input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
-    
-    .search-bar .search-show {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .search-bar input:focus {
-        background: rgba(255, 255, 255, 0.18);
-        border-color: #00BCD4;
-        box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.25), 0 8px 25px rgba(0, 188, 212, 0.15);
-        outline: none;
-        transform: translateY(-2px);
-        width: 350px;
-    }
-
-    .search-bar .search-show {
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 18px;
-        z-index: 1;
-        transition: all 0.3s ease;
-    }
-
-    .search-bar input:focus + .search-show {
-        color: #00BCD4;
-        transform: scale(1.1);
     }
 
     /* Notification Badge - More visible */
@@ -104,90 +38,54 @@
         50% { transform: scale(1.1); }
     }
 
-    /* Enhanced Dropdown with Modern Glass Effect */
+    /* Modern Dropdown - Glass effect */
     .dropdown-menu {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(25px);
-        border: 2px solid rgba(23, 71, 158, 0.15);
-        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-        border-radius: 16px;
-        margin-top: 12px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(23, 71, 158, 0.1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        margin-top: 10px;
         z-index: 9999 !important;
-        overflow: hidden;
-        animation: dropdownFadeIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    @keyframes dropdownFadeIn {
-        0% {
-            opacity: 0;
-            transform: translateY(-10px) scale(0.95);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
     }
     
     .dropdown-item {
         padding: 12px 20px;
-        color: #2c3e50;
+        color: #333;
         font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-        position: relative;
-        overflow: hidden;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        margin: 2px 8px;
     }
-
-    .dropdown-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(23, 71, 158, 0.08) 0%, rgba(0, 188, 212, 0.08) 100%);
-        transition: left 0.3s ease;
-        z-index: -1;
-    }
-
-    .dropdown-item:hover::before {
-        left: 0;
-    }
-
+    
     .dropdown-item:hover {
-        color: #17479E;
-        padding-left: 25px;
+        background: linear-gradient(135deg, rgba(23, 71, 158, 0.1) 0%, rgba(0, 188, 212, 0.1) 100%);
+        color: var(--ura-primary);
         transform: translateX(5px);
-        background: transparent;
-    }
-
-    .dropdown-item:last-child {
-        border-bottom: none;
     }
     
     .dropdown-item i {
-        width: 20px;
+        width: 24px;
         text-align: center;
+        font-size: 18px;
     }
     
     .dropdown-divider {
-        margin: 0;
+        margin: 8px 0;
         border-color: rgba(23, 71, 158, 0.1);
     }
 
-
-    /* Enhanced User Profile Section */
+    /* User Profile Section - Glass effect - Consistent on all devices */
     .user-box {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 188, 212, 0.1) 100%);
-        backdrop-filter: blur(15px);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
         padding: 8px 15px !important;
         margin-left: 15px;
         position: relative;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: all 0.3s ease;
     }
     
     .user-box .dropdown-toggle {
@@ -197,7 +95,7 @@
     
     .user-box .user-name {
         color: white;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
         margin: 0;
         line-height: 1.2;
@@ -206,20 +104,20 @@
     
     .user-box .designation {
         color: rgba(255, 255, 255, 0.7);
-        font-size: 11px;
+        font-size: 12px;
         margin: 0;
         pointer-events: none;
     }
     
     .user-box .dropdown-toggle::after {
         color: rgba(255, 255, 255, 0.6);
+        margin-left: 10px;
     }
 
     .user-box:hover {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 188, 212, 0.15) 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(0, 188, 212, 0.25);
-        border-color: rgba(0, 188, 212, 0.4);
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
     
     /* Ensure user dropdown menu works */
@@ -228,13 +126,14 @@
         top: 100% !important;
         right: 0 !important;
         left: auto !important;
-        margin-top: 5px;
+        margin-top: 8px;
+        min-width: 280px;
     }
 
     .user-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
         background: linear-gradient(135deg, #00BCD4 0%, #17479E 100%);
         display: flex;
         align-items: center;
@@ -242,61 +141,11 @@
         color: white;
         font-weight: 700;
         font-size: 16px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .user-avatar::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        transform: rotate(45deg);
-        transition: all 0.6s ease;
-        opacity: 0;
-    }
-
-    .user-box:hover .user-avatar::before {
-        opacity: 1;
-        animation: shimmer 1.5s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-        0% { transform: translateX(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) rotate(45deg); }
-    }
-
-    /* Enhanced Notification Styling */
-    .top-menu .nav-link {
-        color: rgba(255, 255, 255, 0.9) !important;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        position: relative;
-        margin: 0 4px;
-    }
-
-    .top-menu .nav-link:hover {
-        background: linear-gradient(135deg, rgba(0, 188, 212, 0.2) 0%, rgba(23, 71, 158, 0.2) 100%);
-        color: white !important;
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
-        border-color: rgba(0, 188, 212, 0.4);
-    }
-
+    /* Notification Item Styling - Modern */
     .notify {
         width: 40px;
         height: 40px;
@@ -304,119 +153,134 @@
         align-items: center;
         justify-content: center;
         border-radius: 10px;
-        background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(23, 71, 158, 0.15) 100%);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, rgba(23, 71, 158, 0.1) 0%, rgba(0, 188, 212, 0.1) 100%);
     }
     
     .notify i {
-        font-size: 16px;
+        font-size: 18px;
     }
 
     .msg-header {
         background: linear-gradient(135deg, #17479E 0%, #00BCD4 100%);
         color: white;
-        padding: 18px 20px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .msg-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-        animation: shine 2s ease-in-out infinite;
+        padding: 18px;
+        border-radius: 12px 12px 0 0;
     }
     
     .msg-header-title {
         font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
+        font-weight: 600;
     }
 
     .msg-header-badge {
-        background: rgba(255, 255, 255, 0.95) !important;
+        background: rgba(255, 255, 255, 0.9) !important;
         color: #17479E !important;
         font-weight: 700;
         font-size: 12px;
         padding: 6px 12px;
         border-radius: 15px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .header-notifications-list {
-        max-height: 300px;
+        max-height: 350px;
         overflow-y: auto;
     }
     
     .header-notifications-list::-webkit-scrollbar {
-        width: 4px;
+        width: 6px;
     }
     
     .header-notifications-list::-webkit-scrollbar-thumb {
-        background: rgba(23, 71, 158, 0.2);
-        border-radius: 2px;
+        background: rgba(23, 71, 158, 0.3);
+        border-radius: 3px;
     }
     
     .msg-name {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
         color: #333;
     }
     
     .msg-time {
-        font-size: 11px;
+        font-size: 12px;
         color: #999;
     }
     
     .msg-footer {
         background: #f8f9fa;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 0 0 12px 12px;
     }
 
     /* Icon Buttons - White for dark header */
     .top-menu .nav-link {
         color: rgba(255, 255, 255, 0.8) !important;
-    }
-    
-    .top-menu .nav-link i {
-        font-size: 20px;
-    }
-    
-    /* Enhanced Mobile Toggle */
-    .mobile-toggle-menu {
-        color: white;
-        font-size: 28px;
-        cursor: pointer;
         width: 45px;
         height: 45px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 12px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .top-menu .nav-link i {
+        font-size: 22px;
+    }
+    
+    .top-menu .nav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Dark Mode Toggle with Working Functionality */
+    .dark-mode-toggle {
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        backdrop-filter: blur(10px);
-    }
-
-    .mobile-toggle-menu:hover {
-        transform: translateY(-2px) scale(1.1);
-        background: linear-gradient(135deg, rgba(0, 188, 212, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
-        box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
-        border-color: rgba(0, 188, 212, 0.4);
-    }
-
-    .top-menu .nav-link:hover {
-        background: rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 8px 16px;
         color: white;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .dark-mode-toggle:hover {
+        background: rgba(255, 255, 255, 0.2);
         transform: translateY(-1px);
+    }
+    
+    .dark-mode-toggle i {
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    body.dark-mode .topbar {
+        background: #0d1421;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    body.dark-mode .dropdown-menu {
+        background: rgba(26, 26, 26, 0.95);
+        color: white;
+    }
+    
+    body.dark-mode .dropdown-item {
+        color: #ffffff;
+    }
+    
+    body.dark-mode .dropdown-item:hover {
+        background: rgba(23, 71, 158, 0.2);
+        color: #00BCD4;
     }
     
     /* Fix dropdown toggle */
@@ -445,44 +309,59 @@
         display: block;
     }
     
-    /* Responsive adjustments */
+    /* Responsive adjustments - Keep profile consistent */
     @media (max-width: 768px) {
         .topbar {
-            padding: 0 10px;
+            padding: 0 15px;
         }
         
-        .search-bar {
-            display: none !important;
+        .user-box {
+            padding: 8px 12px !important;
+            margin-left: 10px;
         }
         
         .user-box .user-info {
-            display: none;
+            display: block; /* Keep visible on mobile */
         }
         
-        .nav-link {
-            width: 32px;
-            height: 32px;
+        .user-name {
+            font-size: 13px !important;
+        }
+        
+        .designation {
+            font-size: 11px !important;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            font-size: 14px;
+        }
+        
+        .top-menu .nav-link {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .top-menu .nav-link i {
+            font-size: 20px;
         }
     }
     
-    /* Enhanced Button Styling */
+    /* Additional modern effects */
     .btn-primary {
         background: linear-gradient(135deg, #17479E 0%, #00BCD4 100%);
         border: none;
-        border-radius: 12px;
-        padding: 10px 25px;
-        font-size: 13px;
+        border-radius: 10px;
+        padding: 10px 24px;
+        font-size: 14px;
         font-weight: 600;
-        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        box-shadow: 0 4px 15px rgba(23, 71, 158, 0.3);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
     }
-
+    
     .btn-primary:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 30px rgba(0, 188, 212, 0.4);
-        background: linear-gradient(135deg, #00BCD4 0%, #17479E 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(23, 71, 158, 0.3);
     }
     
     /* Remove pointer-events issues */
@@ -496,41 +375,35 @@
         opacity: 1 !important;
         visibility: visible !important;
     }
+    
+    /* Profile dropdown styling */
+    .user-box .dropdown-menu .dropdown-item:first-child {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .text-danger {
+        color: #dc3545 !important;
+    }
+    
+    .text-danger:hover {
+        background: rgba(220, 53, 69, 0.1) !important;
+        color: #dc3545 !important;
+    }
 </style>
 
 <header>
     <div class="topbar d-flex align-items-center">
         <nav class="navbar navbar-expand gap-3">
-            <div class="mobile-toggle-menu">
-                <i class='bx bx-menu'></i>
-            </div>
-
-            <!-- Search Bar - Show for specific roles -->
-            @if(auth()->check() && auth()->user()->hasAnyRole(['superadmin', 'system_admin', 'general_manager', 'assistant_general_manager']))
-            <div class="position-relative search-bar d-lg-block d-none" data-bs-toggle="modal" data-bs-target="#SearchModal">
-                <input class="form-control px-5" disabled type="search" placeholder="Search">
-                <span class="position-absolute top-50 search-show ms-3 translate-middle-y start-0 top-50 fs-5">
-                    <i class='bx bx-search'></i>
-                </span>
-            </div>
-            @endif
-
             <div class="top-menu ms-auto">
-                <ul class="navbar-nav align-items-center gap-1">
-                    <!-- Mobile Search -->
-                    @if(auth()->check() && auth()->user()->hasAnyRole(['superadmin', 'system_admin', 'general_manager', 'assistant_general_manager']))
-                    <li class="nav-item mobile-search-icon d-flex d-lg-none" data-bs-toggle="modal" data-bs-target="#SearchModal">
-                        <a class="nav-link" href="javascript:;">
-                            <i class='bx bx-search'></i>
-                        </a>
-                    </li>
-                    @endif
-
-                    <!-- Dark Mode Toggle -->
-                    <li class="nav-item dark-mode d-none d-sm-flex">
-                        <a class="nav-link dark-mode-icon" href="javascript:;">
-                            <i class='bx bx-moon'></i>
-                        </a>
+                <ul class="navbar-nav align-items-center gap-2">
+                    <!-- Dark Mode Toggle with Working Functionality -->
+                    <li class="nav-item">
+                        <button class="dark-mode-toggle btn" onclick="toggleDarkMode()" id="darkModeToggle">
+                            <i class='bx bx-moon' id="darkModeIcon"></i>
+                            <span id="darkModeText">Dark</span>
+                        </button>
                     </li>
 
                     <!-- Notifications - Role Based -->
@@ -544,25 +417,25 @@
                             @endif
                             <i class='bx bx-bell'></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end p-0" style="width: 400px;">
-                            <div class="msg-header p-3 d-flex justify-content-between align-items-center">
+                        <div class="dropdown-menu dropdown-menu-end p-0" style="width: 420px;">
+                            <div class="msg-header d-flex justify-content-between align-items-center">
                                 <p class="msg-header-title mb-0 fw-bold">Notifications</p>
                                 @if(isset($notifications))
-                                <p class="msg-header-badge rounded-pill px-2 py-1">
+                                <span class="msg-header-badge rounded-pill">
                                     {{ $notifications->where('is_read', false)->count() }} New
-                                </p>
+                                </span>
                                 @endif
                             </div>
-                            <div class="header-notifications-list" style="max-height: 350px; overflow-y: auto;">
+                            <div class="header-notifications-list">
                                 @if(isset($notifications))
                                     @forelse($notifications as $notification)
                                         <a class="dropdown-item d-flex align-items-center p-3 border-bottom" href="javascript:;">
-                                            <div class="notify bg-light-primary text-primary rounded-circle p-2 me-3">
-                                                <i class='bx bx-bell fs-5'></i>
+                                            <div class="notify me-3">
+                                                <i class='bx bx-bell text-primary'></i>
                                             </div>
                                             <div class="flex-grow-1">
                                                 <h6 class="msg-name mb-1">{{ $notification->message }}</h6>
-                                                <p class="msg-time text-muted mb-0 small">
+                                                <p class="msg-time mb-0">
                                                     {{ $notification->created_at->diffForHumans() }}
                                                 </p>
                                             </div>
@@ -606,15 +479,15 @@
                 </ul>
             </div>
 
-            <!-- User Profile Dropdown -->
-            <div class="user-box dropdown px-3">
+            <!-- User Profile Dropdown - Consistent on all devices -->
+            <div class="user-box dropdown">
                 <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="user-avatar">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
                     <div class="user-info">
                         <p class="user-name mb-0">{{ Auth::user()->name }}</p>
-                        <p class="designation mb-0 small text-muted">
+                        <p class="designation mb-0">
                             @if(Auth::user()->roles->isNotEmpty())
                                 {{ Auth::user()->roles->first()->name }}
                             @else
@@ -639,7 +512,7 @@
                     
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="javascript:;">
-                            <i class="bx bx-user fs-5 me-2"></i>
+                            <i class="bx bx-user me-3"></i>
                             <span>My Profile</span>
                         </a>
                     </li>
@@ -647,7 +520,7 @@
                     @if(auth()->user()->hasAnyRole(['superadmin', 'system_admin', 'general_manager']))
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard') }}">
-                            <i class="bx bx-home-circle fs-5 me-2"></i>
+                            <i class="bx bx-home-circle me-3"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
@@ -655,18 +528,18 @@
                     
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="javascript:;">
-                            <i class="bx bx-cog fs-5 me-2"></i>
+                            <i class="bx bx-cog me-3"></i>
                             <span>Settings</span>
                         </a>
                     </li>
                     
                     <li>
-                        <div class="dropdown-divider mb-0"></div>
+                        <div class="dropdown-divider"></div>
                     </li>
                     
                     <li>
                         <a class="dropdown-item d-flex align-items-center text-danger" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bx bx-log-out-circle fs-5 me-2"></i>
+                            <i class="bx bx-log-out-circle me-3"></i>
                             <span>Logout</span>
                         </a>
                     </li>
@@ -679,4 +552,39 @@
         </nav>
     </div>
 </header>
+
+<script>
+// Dark Mode Toggle Functionality
+function toggleDarkMode() {
+    const body = document.body;
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const darkModeText = document.getElementById('darkModeText');
+    
+    body.classList.toggle('dark-mode');
+    
+    if (body.classList.contains('dark-mode')) {
+        darkModeIcon.className = 'bx bx-sun';
+        darkModeText.textContent = 'Light';
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        darkModeIcon.className = 'bx bx-moon';
+        darkModeText.textContent = 'Dark';
+        localStorage.setItem('darkMode', 'disabled');
+    }
+}
+
+// Load dark mode preference on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const darkMode = localStorage.getItem('darkMode');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const darkModeText = document.getElementById('darkModeText');
+    
+    if (darkMode === 'enabled') {
+        document.body.classList.add('dark-mode');
+        darkModeIcon.className = 'bx bx-sun';
+        darkModeText.textContent = 'Light';
+    }
+});
+</script>
+
 <!--end header -->

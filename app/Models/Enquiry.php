@@ -163,7 +163,120 @@ public function enquirable()
     {
         return $this->morphOne(Enquiry::class, 'enquirable');
     }
-    
+
+    // Child table relationships (one-to-one with enquiry_id)
+    public function benefit()
+    {
+        return $this->hasOne(Benefit::class);
+    }
+
+    public function condolence()
+    {
+        return $this->hasOne(Condolence::class);
+    }
+
+    public function deduction()
+    {
+        return $this->hasOne(Deduction::class);
+    }
+
+    public function injury()
+    {
+        return $this->hasOne(Injury::class);
+    }
+
+    //public function loanApplication()
+   // {
+       // return $this->hasOne(LoanApplication::class);
+   // }
+
+    public function membershipChange()
+    {
+        return $this->hasOne(MembershipChange::class);
+    }
+
+    public function membershipChanges()
+    {
+        return $this->hasMany(MembershipChange::class);
+    }
+
+    public function refund()
+    {
+        return $this->hasOne(Refund::class);
+    }
+
+    public function residentialDisaster()
+    {
+        return $this->hasOne(ResidentialDisaster::class);
+    }
+
+    public function retirement()
+    {
+        return $this->hasOne(Retirement::class);
+    }
+
+    public function share()
+    {
+        return $this->hasOne(Share::class);
+    }
+
+    public function sickLeave()
+    {
+        return $this->hasOne(SickLeave::class);
+    }
+
+    public function uraMobile()
+    {
+        return $this->hasOne(URAMobile::class);
+    }
+
+    public function withdrawal()
+    {
+        return $this->hasOne(Withdrawal::class);
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
+    // Helper method to get child data based on enquiry type
+    public function getChildDataAttribute()
+    {
+        switch ($this->type) {
+            case 'benefit_from_disasters':
+                return $this->benefit;
+            case 'condolences':
+                return $this->condolence;
+            case 'deduction_add':
+                return $this->deduction;
+            case 'injured_at_work':
+                return $this->injury;
+            case 'loan_application':
+                return $this->loanApplication;
+            case 'join_membership':
+            case 'unjoin_membership':
+                return $this->membershipChange;
+            case 'refund':
+                return $this->refund;
+            case 'residential_disaster':
+                return $this->residentialDisaster;
+            case 'retirement':
+                return $this->retirement;
+            case 'share_enquiry':
+                return $this->share;
+            case 'sick_for_30_days':
+                return $this->sickLeave;
+            case 'ura_mobile':
+                return $this->uraMobile;
+            case 'withdraw_savings':
+            case 'withdraw_deposit':
+                return $this->withdrawal;
+            default:
+                return null;
+        }
+    }
+
 
 // Enquiry.php
 

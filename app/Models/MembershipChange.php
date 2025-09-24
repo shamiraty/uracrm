@@ -9,13 +9,14 @@ class MembershipChange extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'enquiry_id',
         'category', // 'normal' or 'job_termination'
         'action', // e.g., 'unjoin'
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 
  

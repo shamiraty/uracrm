@@ -9,12 +9,13 @@ class Deduction extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'enquiry_id',
         'from_amount',
         'to_amount',
     ];
 
     public function enquiry()
     {
-        return $this->morphOne(Enquiry::class, 'enquirable');
+        return $this->belongsTo(Enquiry::class);
     }
 }
