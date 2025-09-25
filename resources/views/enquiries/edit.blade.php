@@ -372,23 +372,41 @@
         transform: none;
     }
 
-    /* Button Loading State */
+    /* Button Loading State - Enhanced */
     .btn-spinner {
         display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn-text {
+        display: inline-block;
+        opacity: 1;
+        transition: opacity 0.3s ease;
     }
 
     .btn-modern.loading .btn-text {
-        display: none;
+        display: none !important;
+        opacity: 0;
     }
 
     .btn-modern.loading .btn-spinner {
-        display: inline-block;
+        display: inline-block !important;
+        opacity: 1;
     }
 
     .btn-modern:disabled {
         opacity: 0.7;
         cursor: not-allowed;
+        pointer-events: none;
         transform: none !important;
+    }
+
+    /* Ensure button maintains consistent appearance */
+    .btn-modern {
+        min-height: 44px;
+        position: relative;
+        overflow: hidden;
     }
 
     @keyframes spin {
@@ -1294,14 +1312,22 @@
                                         <i class="fas fa-file-pdf text-danger fa-lg me-3"></i>
                                         <div>
                                             <div class="fw-bold" style="color: #1e293b;">{{ basename($enquiry->file_path) }}</div>
-                                            <small class="text-muted">Uploaded: {{ $enquiry->created_at->format('M d, Y H:i') }}</small>
+                                            <small class="text-muted d-block">Uploaded: {{ $enquiry->created_at->format('M d, Y H:i') }}</small>
+                                            <small class="text-muted d-block">
+                                                @if(file_exists(public_path($enquiry->file_path)))
+                                                    <span class="me-2"><i class="fas fa-hdd me-1" style="color: #17479e;"></i>{{ number_format(filesize(public_path($enquiry->file_path)) / 1024 / 1024, 2) }} MB</span>
+                                                    <span><i class="fas fa-file-alt me-1" style="color: #28a745;"></i>{{ strtoupper(pathinfo($enquiry->file_path, PATHINFO_EXTENSION)) }} Document</span>
+                                                @else
+                                                    <span class="text-muted">File details not available</span>
+                                                @endif
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="file-actions">
-                                        <a href="{{ asset('storage/' . $enquiry->file_path) }}" target="_blank" class="btn btn-sm" style="background: #17479e; color: white; margin-right: 0.5rem;">
+                                        <a href="{{ asset($enquiry->file_path) }}" target="_blank" class="btn btn-sm" style="background: #17479e; color: white; margin-right: 0.5rem;">
                                             <i class="fas fa-eye me-1"></i>View
                                         </a>
-                                        <a href="{{ asset('storage/' . $enquiry->file_path) }}" download class="btn btn-sm btn-success">
+                                        <a href="{{ asset($enquiry->file_path) }}" download class="btn btn-sm btn-success">
                                             <i class="fas fa-download me-1"></i>Download
                                         </a>
                                     </div>
@@ -1312,10 +1338,17 @@
                             <div class="document-preview-section" style="background: white; border-radius: 8px; padding: 1rem; border: 1px solid rgba(23, 71, 158, 0.1);">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fas fa-eye me-2" style="color: #17479e;"></i>
-                                    <span style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Document Preview</span>
+                                    <span style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">Previously Uploaded Document Preview</span>
+                                    <small class="ms-2 text-muted">(Document uploaded during enquiry creation)</small>
                                 </div>
                                 <div class="pdf-preview-frame">
-                                    <iframe src="{{ asset('storage/' . $enquiry->file_path) }}" width="100%" height="400" style="border: 1px solid #dee2e6; border-radius: 8px;"></iframe>
+                                    <iframe src="{{ asset($enquiry->file_path) }}" width="100%" height="400" style="border: 1px solid #dee2e6; border-radius: 8px;" title="Previously uploaded document: {{ basename($enquiry->file_path) }}"></iframe>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        This is the document you uploaded when creating this enquiry. You can replace it by uploading a new document below.
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -1355,14 +1388,72 @@
                                 </div>
                             </div>
                             <div class="selected-file" style="display: none;">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-file me-2"></i>
-                                    <span class="file-name"></span>
-                                    <button type="button" class="btn btn-sm btn-outline-danger ms-auto remove-file">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+                                <div class="selected-file-info" style="background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file-pdf text-danger fa-lg me-3"></i>
+                                            <div>
+                                                <div class="fw-bold file-name" style="color: #1e293b;"></div>
+                                                <small class="text-muted file-details">
+                                                    <span class="file-size me-2"></span>
+                                                    <span class="file-type"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-file">
+                                            <i class="fas fa-times me-1"></i>Remove
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+
+                            @if($enquiry->file_path)
+                            <!-- Debug Info - Remove this after testing -->
+                            <div class="alert alert-info" style="font-size: 0.8rem; margin-top: 0.5rem;">
+                                <strong>Debug:</strong> File Path: {{ $enquiry->file_path }}<br>
+                                <strong>Asset URL:</strong> {{ asset($enquiry->file_path) }}<br>
+                                <strong>File Exists:</strong> {{ file_exists(public_path($enquiry->file_path)) ? 'YES' : 'NO' }}
+                            </div>
+                            <!-- Existing Document Preview in Upload Section -->
+                            <div class="existing-document-preview" id="existing-document-preview" style="margin-top: 1rem;">
+                                <div class="existing-doc-info" style="background: linear-gradient(135deg, rgba(23, 71, 158, 0.08) 0%, rgba(135, 206, 235, 0.08) 100%); border-radius: 8px; padding: 1rem; border: 1px solid rgba(23, 71, 158, 0.2);">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file-pdf text-primary fa-lg me-3" style="color: #17479e;"></i>
+                                            <div>
+                                                <div class="fw-bold" style="color: #17479e; font-size: 0.9rem;">Current Document</div>
+                                                <div class="text-muted" style="font-size: 0.85rem;">{{ basename($enquiry->file_path) }}</div>
+                                                <small class="text-muted">
+                                                    @if(file_exists(public_path($enquiry->file_path)))
+                                                        <span class="me-2"><i class="fas fa-hdd me-1"></i>{{ number_format(filesize(public_path($enquiry->file_path)) / 1024 / 1024, 2) }} MB</span>
+                                                        <span><i class="fas fa-file-alt me-1"></i>{{ strtoupper(pathinfo($enquiry->file_path, PATHINFO_EXTENSION)) }} Document</span>
+                                                    @else
+                                                        <span class="text-muted">File details not available</span>
+                                                    @endif
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="file-actions">
+                                            <a href="{{ asset($enquiry->file_path) }}" target="_blank" class="btn btn-sm" style="background: #17479e; color: white; margin-right: 0.5rem; font-size: 0.8rem;">
+                                                <i class="fas fa-eye me-1"></i>View
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Inline Document Preview -->
+                                    <div class="inline-preview-section">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-eye me-2" style="color: #17479e; font-size: 0.8rem;"></i>
+                                            <span style="font-weight: 600; color: #17479e; font-size: 0.85rem;">Document Preview</span>
+                                            <small class="ms-2 text-muted" style="font-size: 0.75rem;">(Upload new document above to replace)</small>
+                                        </div>
+                                        <div class="preview-frame">
+                                            <iframe src="{{ asset($enquiry->file_path) }}" width="100%" height="300" style="border: 1px solid #dee2e6; border-radius: 6px; background: white;" title="Current document: {{ basename($enquiry->file_path) }}"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
 
@@ -1495,6 +1586,28 @@
             if (!enquiryTypeField.value) {
                 showModernValidationDialog('Please select an enquiry type', 'warning');
                 return;
+            }
+
+            // If enquiry type is selected, check if at least one option field is filled
+            const visibleTypeSection = document.querySelector('.type-fields.show');
+            if (visibleTypeSection) {
+                const typeFields = visibleTypeSection.querySelectorAll('input, select, textarea');
+                let hasAtLeastOneValue = false;
+
+                typeFields.forEach(field => {
+                    if (field.type === 'radio') {
+                        if (field.checked) hasAtLeastOneValue = true;
+                    } else if (field.type !== 'hidden' && field.value && field.value.trim() !== '') {
+                        hasAtLeastOneValue = true;
+                    }
+                });
+
+                // Only require at least one field if there are fillable fields (exclude info-only sections)
+                const fillableFields = visibleTypeSection.querySelectorAll('input:not([readonly]), select, textarea');
+                if (fillableFields.length > 0 && !hasAtLeastOneValue) {
+                    showModernValidationDialog('Please fill at least one field for the selected enquiry type', 'warning');
+                    return;
+                }
             }
         }
 
@@ -1749,17 +1862,17 @@
                     </div>
                     <div class="review-item">
                         <span class="review-label">Basic Salary</span>
-                        <span class="review-value">TSh ${parseFloat(basicSalary || 0).toLocaleString()}</span>
+                        <span class="review-value">TSh ${basicSalary || '0.00'}</span>
                     </div>
                     ${allowances ? `
                     <div class="review-item">
                         <span class="review-label">Allowances</span>
-                        <span class="review-value">TSh ${parseFloat(allowances).toLocaleString()}</span>
+                        <span class="review-value">TSh ${allowances || '0.00'}</span>
                     </div>
                     ` : ''}
                     <div class="review-item">
                         <span class="review-label">Take Home</span>
-                        <span class="review-value">TSh ${parseFloat(takeHome || 0).toLocaleString()}</span>
+                        <span class="review-value">TSh ${takeHome || '0.00'}</span>
                     </div>
                 </div>
             </div>
@@ -1805,7 +1918,7 @@
             if (fileReference && fileReference.value) {
                 html += `
                         <div class="review-item">
-                            <span class="review-label">Existing File Reference</span>
+                            <span class="review-label"><i class="fas fa-folder-open me-1" style="color: #17479e;"></i>Existing File Reference</span>
                             <span class="review-value">${fileReference.selectedOptions[0]?.text || 'Selected File'}</span>
                         </div>
                 `;
@@ -1815,16 +1928,16 @@
                 const file = fileUpload.files[0];
                 html += `
                         <div class="review-item">
-                            <span class="review-label">New Document</span>
+                            <span class="review-label"><i class="fas fa-file-pdf me-1" style="color: #dc3545;"></i>New Document</span>
                             <span class="review-value">${file.name}</span>
                         </div>
                         <div class="review-item">
-                            <span class="review-label">File Size</span>
+                            <span class="review-label"><i class="fas fa-hdd me-1" style="color: #17479e;"></i>File Size</span>
                             <span class="review-value">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
                         </div>
                         <div class="review-item">
-                            <span class="review-label">File Type</span>
-                            <span class="review-value">PDF Document</span>
+                            <span class="review-label"><i class="fas fa-file-alt me-1" style="color: #28a745;"></i>File Type</span>
+                            <span class="review-value">${file.type === 'application/pdf' ? 'PDF Document' : file.type}</span>
                         </div>
                 `;
             }
@@ -2110,12 +2223,8 @@
             return;
         }
 
-        // Show loading state on button
-        const updateBtn = document.getElementById('update_btn');
-        updateBtn.classList.add('loading');
-        updateBtn.disabled = true;
-
-        // Show modern confirmation dialog
+        // Do NOT show loading state here - only show confirmation dialog
+        // Loading state will be shown after user confirms
         showModernConfirmationDialog();
     }
 
@@ -2276,22 +2385,48 @@
         updateBtn.classList.add('loading');
         updateBtn.disabled = true;
 
-        // Convert monetary fields back to numeric values
-        document.querySelectorAll('.monetary-input').forEach(input => {
-            if (input.value) {
-                input.value = input.value.replace(/,/g, '');
+        try {
+            // Convert monetary fields back to numeric values
+            document.querySelectorAll('.monetary-input').forEach(input => {
+                if (input.value) {
+                    input.value = input.value.replace(/,/g, '');
+                }
+            });
+
+            // Remove readonly date_received field from submission to avoid validation issues
+            const dateReceivedField = document.getElementById('date_received');
+            if (dateReceivedField) {
+                dateReceivedField.removeAttribute('name');
             }
-        });
 
-        // Remove readonly date_received field from submission to avoid validation issues
-        const dateReceivedField = document.getElementById('date_received');
-        if (dateReceivedField) {
-            dateReceivedField.removeAttribute('name');
+            // Submit the form
+            document.getElementById('editEnquiryForm').submit();
+
+            // Fallback timeout in case submission hangs
+            setTimeout(() => {
+                resetUpdateButton();
+            }, 30000); // Reset after 30 seconds
+        } catch (error) {
+            console.error('Form submission error:', error);
+            resetUpdateButton();
         }
-
-        // Submit the form
-        document.getElementById('editEnquiryForm').submit();
     }
+
+    // Add button reset function
+    function resetUpdateButton() {
+        const updateBtn = document.getElementById('update_btn');
+        if (updateBtn) {
+            updateBtn.classList.remove('loading');
+            updateBtn.disabled = false;
+        }
+    }
+
+    // Reset button if user navigates back
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            resetUpdateButton();
+        }
+    });
 
     function toggleTypeFields(selectedType) {
         // Hide all type fields
@@ -2330,7 +2465,10 @@
         const fileInput = document.getElementById('file_path');
         const uploadArea = document.querySelector('.file-upload-area');
         const selectedFileDiv = document.querySelector('.selected-file');
+        const existingDocPreview = document.getElementById('existing-document-preview');
         const fileNameSpan = document.querySelector('.file-name');
+        const fileSizeSpan = document.querySelector('.file-size');
+        const fileTypeSpan = document.querySelector('.file-type');
         const removeFileBtn = document.querySelector('.remove-file');
 
         if (!fileInput || !uploadArea) return;
@@ -2370,6 +2508,17 @@
             removeFileBtn.addEventListener('click', () => {
                 fileInput.value = '';
                 selectedFileDiv.style.display = 'none';
+
+                // Show existing document preview again when new file is removed
+                if (existingDocPreview) {
+                    existingDocPreview.style.display = 'block';
+                }
+
+                // Remove new file preview if exists
+                const newFilePreview = document.querySelector('.new-file-preview');
+                if (newFilePreview) {
+                    newFilePreview.remove();
+                }
             });
         }
 
@@ -2382,7 +2531,14 @@
 
                 const fileURL = URL.createObjectURL(file);
                 fileNameSpan.textContent = file.name;
+                if (fileSizeSpan) fileSizeSpan.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+                if (fileTypeSpan) fileTypeSpan.textContent = file.type === 'application/pdf' ? 'PDF Document' : file.type;
                 selectedFileDiv.style.display = 'block';
+
+                // Hide existing document preview when new file is selected
+                if (existingDocPreview) {
+                    existingDocPreview.style.display = 'none';
+                }
 
                 // Add preview for new file
                 const previewContainer = document.createElement('div');

@@ -463,23 +463,41 @@
         transform: none;
     }
 
-    /* Button Loading State */
+    /* Button Loading State - Enhanced */
     .btn-spinner {
         display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn-text {
+        display: inline-block;
+        opacity: 1;
+        transition: opacity 0.3s ease;
     }
 
     .btn-modern.loading .btn-text {
-        display: none;
+        display: none !important;
+        opacity: 0;
     }
 
     .btn-modern.loading .btn-spinner {
-        display: inline-block;
+        display: inline-block !important;
+        opacity: 1;
     }
 
     .btn-modern:disabled {
         opacity: 0.7;
         cursor: not-allowed;
+        pointer-events: none;
         transform: none !important;
+    }
+
+    /* Ensure button maintains consistent appearance */
+    .btn-modern {
+        min-height: 44px;
+        position: relative;
+        overflow: hidden;
     }
 
     @keyframes spin {
@@ -1855,6 +1873,33 @@
             </div>
         `;
 
+        // Salary Information
+        const basicSalary = document.getElementById('basic_salary').value;
+        const allowances = document.getElementById('allowances').value;
+        const takeHome = document.getElementById('take_home').value;
+
+        if (basicSalary || allowances || takeHome) {
+            html += `
+                <div class="col-12">
+                    <div class="review-card">
+                        <h6 class="review-section-title"><i class="fas fa-money-bill-wave me-2"></i>Salary Information</h6>
+                        <div class="review-item">
+                            <span class="review-label">Basic Salary</span>
+                            <span class="review-value">TSh ${basicSalary || '0.00'}</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Allowances</span>
+                            <span class="review-value">TSh ${allowances || '0.00'}</span>
+                        </div>
+                        <div class="review-item">
+                            <span class="review-label">Take Home Pay</span>
+                            <span class="review-value">TSh ${takeHome || '0.00'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         // Enquiry Information
         const selectedType = document.getElementById('enquiry_type').selectedOptions[0];
         if (selectedType) {
@@ -1905,25 +1950,46 @@
         }
 
         // Documents Information
-        const fileInput = document.getElementById('attachment');
-        if (fileInput && fileInput.files.length > 0) {
-            const file = fileInput.files[0];
+        const fileInput = document.getElementById('file_upload');
+        const fileReference = document.getElementById('file_id');
+
+        if ((fileInput && fileInput.files.length > 0) || (fileReference && fileReference.value)) {
             html += `
                 <div class="col-12">
                     <div class="review-card">
-                        <h6 class="review-section-title"><i class="fas fa-paperclip me-2"></i>Attached Documents</h6>
+                        <h6 class="review-section-title"><i class="fas fa-paperclip me-2"></i>Documents Information</h6>
+            `;
+
+            // Show file reference if selected
+            if (fileReference && fileReference.value) {
+                html += `
                         <div class="review-item">
-                            <span class="review-label">File Name</span>
+                            <span class="review-label"><i class="fas fa-folder-open me-1" style="color: #17479e;"></i>File Reference</span>
+                            <span class="review-value">${fileReference.selectedOptions[0]?.text || 'Selected File'}</span>
+                        </div>
+                `;
+            }
+
+            // Show uploaded file if exists
+            if (fileInput && fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                html += `
+                        <div class="review-item">
+                            <span class="review-label"><i class="fas fa-file-pdf me-1" style="color: #dc3545;"></i>Uploaded File</span>
                             <span class="review-value">${file.name}</span>
                         </div>
                         <div class="review-item">
-                            <span class="review-label">File Size</span>
+                            <span class="review-label"><i class="fas fa-hdd me-1" style="color: #17479e;"></i>File Size</span>
                             <span class="review-value">${(file.size / 1024 / 1024).toFixed(2)} MB</span>
                         </div>
                         <div class="review-item">
-                            <span class="review-label">File Type</span>
-                            <span class="review-value">PDF Document</span>
+                            <span class="review-label"><i class="fas fa-file-alt me-1" style="color: #28a745;"></i>File Type</span>
+                            <span class="review-value">${file.type === 'application/pdf' ? 'PDF Document' : file.type}</span>
                         </div>
+                `;
+            }
+
+            html += `
                     </div>
                 </div>
             `;
@@ -2106,7 +2172,7 @@
                     html += `<div class="review-item"><span class="review-label">Loan Category</span><span class="review-value">${loanCategory.replace('_', ' ').toUpperCase()}</span></div>`;
                 }
                 if (loanAmount) {
-                    html += `<div class="review-item"><span class="review-label">Loan Amount</span><span class="review-value">TSh ${parseFloat(loanAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Loan Amount</span><span class="review-value">TSh ${loanAmount}</span></div>`;
                 }
                 if (loanDuration) {
                     html += `<div class="review-item"><span class="review-label">Duration</span><span class="review-value">${loanDuration} months</span></div>`;
@@ -2117,7 +2183,7 @@
                 const savingsAmount = document.querySelector('input[name="withdraw_saving_amount"]')?.value || '';
                 const savingsReason = document.querySelector('input[name="withdraw_saving_reason"]')?.value || '';
                 if (savingsAmount) {
-                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${parseFloat(savingsAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${savingsAmount}</span></div>`;
                 }
                 if (savingsReason) {
                     html += `<div class="review-item"><span class="review-label">Reason</span><span class="review-value">${savingsReason}</span></div>`;
@@ -2128,7 +2194,7 @@
                 const depositAmount = document.querySelector('input[name="withdraw_deposit_amount"]')?.value || '';
                 const depositReason = document.querySelector('input[name="withdraw_deposit_reason"]')?.value || '';
                 if (depositAmount) {
-                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${parseFloat(depositAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Amount</span><span class="review-value">TSh ${depositAmount}</span></div>`;
                 }
                 if (depositReason) {
                     html += `<div class="review-item"><span class="review-label">Reason</span><span class="review-value">${depositReason}</span></div>`;
@@ -2146,7 +2212,7 @@
                 const refundAmount = document.querySelector('input[name="refund_amount"]')?.value || '';
                 const refundDuration = document.querySelector('input[name="refund_duration"]')?.value || '';
                 if (refundAmount) {
-                    html += `<div class="review-item"><span class="review-label">Refund Amount</span><span class="review-value">TSh ${parseFloat(refundAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Refund Amount</span><span class="review-value">TSh ${refundAmount}</span></div>`;
                 }
                 if (refundDuration) {
                     html += `<div class="review-item"><span class="review-label">Duration</span><span class="review-value">${refundDuration} months</span></div>`;
@@ -2156,7 +2222,7 @@
             case 'share_enquiry':
                 const shareAmount = document.querySelector('input[name="share_amount"]')?.value || '';
                 if (shareAmount) {
-                    html += `<div class="review-item"><span class="review-label">Share Amount</span><span class="review-value">TSh ${parseFloat(shareAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Share Amount</span><span class="review-value">TSh ${shareAmount}</span></div>`;
                 }
                 break;
 
@@ -2164,7 +2230,7 @@
                 const fromAmount = document.querySelector('input[name="from_amount"]')?.value || '';
                 const toAmount = document.querySelector('input[name="to_amount"]')?.value || '';
                 if (fromAmount && toAmount) {
-                    html += `<div class="review-item"><span class="review-label">Deduction Change</span><span class="review-value">From TSh ${parseFloat(fromAmount).toLocaleString()} to TSh ${parseFloat(toAmount).toLocaleString()}</span></div>`;
+                    html += `<div class="review-item"><span class="review-label">Deduction Change</span><span class="review-value">From TSh ${fromAmount} to TSh ${toAmount}</span></div>`;
                 }
                 break;
 
@@ -2204,10 +2270,8 @@
             return;
         }
 
-        // Show loading state on button
-        const submitBtn = document.getElementById('submit_btn');
-        submitBtn.classList.add('loading');
-        submitBtn.disabled = true;
+        // Do NOT show loading state here - only show confirmation dialog
+        // Loading state will be shown after user confirms
 
         // Convert monetary fields back to numeric values
         document.querySelectorAll('.monetary-input').forEach(input => {
@@ -2377,9 +2441,35 @@
         submitBtn.classList.add('loading');
         submitBtn.disabled = true;
 
-        // Submit the form
-        document.getElementById('enquiryForm').submit();
+        try {
+            // Submit the form
+            document.getElementById('enquiryForm').submit();
+
+            // Fallback timeout in case submission hangs
+            setTimeout(() => {
+                resetSubmitButton();
+            }, 30000); // Reset after 30 seconds
+        } catch (error) {
+            console.error('Form submission error:', error);
+            resetSubmitButton();
+        }
     }
+
+    // Add button reset function
+    function resetSubmitButton() {
+        const submitBtn = document.getElementById('submit_btn');
+        if (submitBtn) {
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Reset button if user navigates back
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            resetSubmitButton();
+        }
+    });
 
     function isValidEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
