@@ -129,7 +129,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members/{member}/details', [MemberController::class, 'showDetails'])->name('members.details');
     Route::post('/members/{member}/status/{status}', [MemberController::class, 'updateStatus'])->name('members.updateStatus');
     Route::post('/enquiries/{enquiry}/assign', [EnquiryController::class, 'assignUsersToEnquiry'])->name('enquiries.assign');
+    Route::post('/enquiries/{enquiry}/reassign', [EnquiryController::class, 'reassignUsersToEnquiry'])->name('enquiries.reassign');
     Route::get('/my-enquiries', [EnquiryController::class, 'myAssignedEnquiries'])->name('enquiries.my');
+
+    // ============================================
+    // BULK OPERATIONS ROUTES
+    // ============================================
+    Route::post('/enquiries/bulk-assign', [EnquiryController::class, 'bulkAssign'])->name('enquiries.bulk-assign');
+    Route::post('/enquiries/bulk-reassign', [EnquiryController::class, 'bulkReassign'])->name('enquiries.bulk-reassign');
+    Route::post('/enquiries/bulk-delete', [EnquiryController::class, 'bulkDelete'])->name('enquiries.bulk-delete');
 
     // ============================================
     // USER AND ROLE MANAGEMENT ROUTES

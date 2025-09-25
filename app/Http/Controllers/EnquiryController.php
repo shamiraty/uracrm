@@ -72,34 +72,238 @@ class EnquiryController extends Controller
     {
         $currentUser = auth()->user();
         $type = $request->query('type');
-    
-        $allowedRoles = ['general_manager', 'assistant_general_manager', 'superadmin', 'system_admin'];
-    
-        if ($currentUser->hasAnyRole($allowedRoles)) {
-            $enquiries = Enquiry::with(['response', 'region', 'district', 'registeredBy.district', 'registeredBy.region'])
-                ->when($type, function ($query) use ($type) {
-                    return $query->where('type', $type);
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
-        } else {
-            $enquiries = Enquiry::with(['response', 'region', 'district', 'registeredBy.district', 'registeredBy.region'])
-                ->where('registered_by', $currentUser->id)
-                ->when($type, function ($query) use ($type) {
-                    return $query->where('type', $type);
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
+        $status = $request->query('status');
+        $search = $request->query('search');
+        $perPage = $request->query('per_page', 15);
+
+        $allowedRoles = ['registrar_hq', 'general_manager', 'assistant_general_manager', 'superadmin', 'system_admin'];
+
+        // Build query based on user roles
+        $query = Enquiry::with(['response', 'region', 'district', 'registeredBy.district', 'registeredBy.region', 'users', 'branch']);
+
+        if (!$currentUser->hasAnyRole($allowedRoles)) {
+            $query->where('registered_by', $currentUser->id);
         }
+
+        // Apply filters
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        if ($status) {
+            // Handle special statuses
+            if ($status === 'pending_overdue') {
+                $threeDaysAgo = Carbon::now()->subWeekdays(3);
+                $query->where('status', 'pending')
+                      ->where('created_at', '<', $threeDaysAgo);
+            } else {
+                $query->where('status', $status);
+            }
+        }
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('check_number', 'like', "%{$search}%")
+                  ->orWhere('force_no', 'like', "%{$search}%")
+                  ->orWhere('account_number', 'like', "%{$search}%");
+            });
+        }
+
+        // Get paginated results
+        $enquiries = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+        // Calculate analytics
+        $analytics = $this->getEnquiryAnalytics($type, $currentUser);
 
         $branches = Branch::all();
         $districts = District::all();
         $commands = Command::all();
-    
-        $users = User::all();
-        return view('enquiries.index', compact('enquiries', 'type', 'users','branches', 'districts', 'commands'));
+        // Get users based on enquiry type requirements
+        $requiredRole = $type ? $this->getRoleForEnquiryType($type) : null;
+
+        if ($requiredRole) {
+            $users = User::whereHas('roles', function($query) use ($requiredRole) {
+                $query->where('name', $requiredRole);
+            })->get();
+        } else {
+            // Default to accountant and loanofficer if no specific role
+            $users = User::whereHas('roles', function($query) {
+                $query->whereIn('name', ['accountant', 'loanofficer']);
+            })->get();
+        }
+
+        return view('enquiries.index', compact(
+            'enquiries', 'type', 'status', 'search', 'users', 'branches',
+            'districts', 'commands', 'analytics', 'currentUser'
+        ));
     }
-    
+
+    private function getEnquiryAnalytics($type = null, $currentUser = null)
+    {
+        $threeDaysAgo = Carbon::now()->subWeekdays(3);
+        $query = Enquiry::query();
+
+        // Apply type filter if specified
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        // Apply user filter - registrar_hq can see all, others see only their registered enquiries
+        if ($currentUser && !$currentUser->hasRole('registrar_hq')) {
+            $query->where('registered_by', $currentUser->id);
+        }
+
+        // Clone base query for different counts
+        $baseQuery = clone $query;
+
+        return [
+            'total' => $baseQuery->count(),
+            'pending' => (clone $query)->where('status', 'pending')->count(),
+            'assigned' => (clone $query)->where('status', 'assigned')->count(),
+            'approved' => (clone $query)->where('status', 'approved')->count(),
+            'rejected' => (clone $query)->where('status', 'rejected')->count(),
+            'pending_overdue' => (clone $query)->where('status', 'pending')
+                                              ->where('created_at', '<', $threeDaysAgo)
+                                              ->count(),
+            'status_breakdown' => (clone $query)->selectRaw('status, COUNT(*) as count')
+                                               ->groupBy('status')
+                                               ->pluck('count', 'status')
+                                               ->toArray(),
+            'type_breakdown' => (clone $query)->selectRaw('type, COUNT(*) as count')
+                                             ->groupBy('type')
+                                             ->pluck('count', 'type')
+                                             ->toArray()
+        ];
+    }
+
+    // Bulk Operations Methods
+    public function bulkAssign(Request $request)
+    {
+        $request->validate([
+            'enquiry_ids' => 'required|array',
+            'user_id' => 'required|exists:users,id',
+            'enquiry_types' => 'array'
+        ]);
+
+        // Check if user has permission (registrar_hq)
+        if (!auth()->user()->hasRole('registrar_hq')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $enquiries = Enquiry::whereIn('id', $request->enquiry_ids)
+                           ->whereIn('status', ['pending', 'pending_overdue'])
+                           ->get();
+
+        // Validate that the selected user can handle all enquiry types
+        $user = User::find($request->user_id);
+        $failedValidations = [];
+
+        foreach ($enquiries as $enquiry) {
+            if (!$this->validateUserRoles([$request->user_id], $enquiry->type)) {
+                $requiredRole = $this->getRoleForEnquiryType($enquiry->type);
+                $failedValidations[] = "Enquiry #{$enquiry->id} ({$enquiry->type}) requires " . ($requiredRole ?: 'accountant/loanofficer') . " role";
+            }
+        }
+
+        if (!empty($failedValidations)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Role validation failed: ' . implode(', ', $failedValidations)
+            ]);
+        }
+
+        // All validations passed, proceed with assignments
+        $currentUser = auth()->id();
+        foreach ($enquiries as $enquiry) {
+            $enquiry->users()->sync([$request->user_id => ['assigned_by' => $currentUser]]);
+            $enquiry->update(['status' => 'assigned']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => count($enquiries) . ' enquiries assigned successfully'
+        ]);
+    }
+
+    public function bulkReassign(Request $request)
+    {
+        $request->validate([
+            'enquiry_ids' => 'required|array',
+            'user_id' => 'required|exists:users,id',
+            'enquiry_types' => 'array'
+        ]);
+
+        if (!auth()->user()->hasRole('registrar_hq')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $enquiries = Enquiry::whereIn('id', $request->enquiry_ids)
+                           ->whereIn('status', ['assigned', 'pending_overdue'])
+                           ->get();
+
+        // Validate that the selected user can handle all enquiry types
+        $user = User::find($request->user_id);
+        $failedValidations = [];
+
+        foreach ($enquiries as $enquiry) {
+            if (!$this->validateUserRoles([$request->user_id], $enquiry->type)) {
+                $requiredRole = $this->getRoleForEnquiryType($enquiry->type);
+                $failedValidations[] = "Enquiry #{$enquiry->id} ({$enquiry->type}) requires " . ($requiredRole ?: 'accountant/loanofficer') . " role";
+            }
+        }
+
+        if (!empty($failedValidations)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Role validation failed: ' . implode(', ', $failedValidations)
+            ]);
+        }
+
+        // All validations passed, proceed with reassignments
+        $currentUser = auth()->id();
+        foreach ($enquiries as $enquiry) {
+            // Remove old assignments and assign to new user
+            $enquiry->users()->sync([$request->user_id => ['assigned_by' => $currentUser]]);
+            $enquiry->update(['status' => 'assigned']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => count($enquiries) . ' enquiries reassigned successfully'
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'enquiry_ids' => 'required|array'
+        ]);
+
+        $currentUser = auth()->user();
+
+        // Get enquiries that can be deleted (pending/rejected and owned by user)
+        $enquiries = Enquiry::whereIn('id', $request->enquiry_ids)
+                           ->where(function($query) use ($currentUser) {
+                               $query->where('registered_by', $currentUser->id)
+                                     ->whereIn('status', ['pending', 'rejected']);
+                           })
+                           ->get();
+
+        $deletedCount = $enquiries->count();
+
+        // Delete enquiries and their relationships
+        foreach ($enquiries as $enquiry) {
+            $enquiry->users()->detach();
+            $enquiry->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $deletedCount . ' enquiries deleted successfully'
+        ]);
+    }
+
 public function fetchPayroll($check_number)
 {
     $payroll = Payroll::where('check_number', $check_number)->first();
@@ -1226,6 +1430,44 @@ public function assignUsersToEnquiry(Request $request, $enquiryId)
     ]);
 }
 
+public function reassignUsersToEnquiry(Request $request, $enquiryId)
+{
+    $request->validate([
+        'user_ids' => 'required|array',
+        'user_ids.*' => 'exists:users,id',
+    ]);
+
+    $enquiry = Enquiry::with(['users', 'enquirable'])->findOrFail($enquiryId);
+
+    if (!$this->validateUserRoles($request->user_ids, $enquiry->type)) {
+        return back()->with([
+            'message' => 'One or more users are not authorized to handle this type of enquiry.',
+            'alert-type' => 'error'
+        ]);
+    }
+
+    $currentUser = auth()->id();
+
+    // Use sync to replace assignments (this removes old and adds new)
+    $syncData = [];
+    foreach ($request->user_ids as $userId) {
+        $syncData[$userId] = ['assigned_by' => $currentUser];
+    }
+    $enquiry->users()->sync($syncData);
+
+    // Log if it's a salary loan - same logic as assign
+    if ($enquiry->type === 'loan_application' && $enquiry->enquirable && $enquiry->enquirable instanceof LoanApplication && $enquiry->enquirable->loan_category === 'salary_loan') {
+        $this->logLoanApplicationHistory($enquiry->enquirable, 'Reassigned');
+    }
+
+    $enquiry->update(['status' => 'assigned']);
+
+    return back()->with([
+        'message' => 'Users have been successfully reassigned to the enquiry and any special processing has been completed.',
+        'alert-type' => 'success'
+    ]);
+}
+
 private function logLoanApplicationHistory(LoanApplication $loanApplication, $action)
 {
     // Log the action, such as assignment, for the loan application
@@ -1235,8 +1477,18 @@ private function logLoanApplicationHistory(LoanApplication $loanApplication, $ac
 private function validateUserRoles($userIds, $enquiryType)
 {
     $requiredRole = $this->getRoleForEnquiryType($enquiryType);
-    $users = User::whereIn('id', $userIds)->get();
 
+    // If no specific role required, allow accountant and loanofficer
+    if (!$requiredRole) {
+        $allowedRoles = ['accountant', 'loanofficer'];
+        $users = User::whereIn('id', $userIds)->get();
+        return $users->every(function ($user) use ($allowedRoles) {
+            return $user->hasAnyRole($allowedRoles);
+        });
+    }
+
+    // Check specific role requirement
+    $users = User::whereIn('id', $userIds)->get();
     return $users->every(function ($user) use ($requiredRole) {
         return $user->hasRole($requiredRole);
     });
@@ -1247,8 +1499,19 @@ private function getRoleForEnquiryType($enquiryType)
     $roleMap = [
         'loan_application' => 'loanofficer',
         'refund' => 'accountant',
-        'ura_mobile'=> 'superadmin',
-        // Add other roles and enquiry types as needed
+        'share_enquiry' => 'accountant',
+        'retirement' => 'accountant',
+        'deduction_add' => 'accountant',
+        'withdraw_savings' => 'accountant',
+        'withdraw_deposit' => 'accountant',
+        'unjoin_membership' => 'accountant',
+        'condolences' => 'loanofficer',
+        'injured_at_work' => 'loanofficer',
+        'sick_for_30_days' => 'loanofficer',
+        'benefit_from_disasters' => 'loanofficer',
+        'join_membership' => 'accountant',
+        'ura_mobile' => 'superadmin',
+        // Default to null for other types (allows accountant/loanofficer)
     ];
 
     return $roleMap[$enquiryType] ?? null;
