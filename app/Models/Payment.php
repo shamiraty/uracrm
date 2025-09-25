@@ -102,5 +102,29 @@ public function folios()
     return $this->morphMany(Folio::class, 'folioable');
 }
 
+// Model Events to sync status with enquiry
+protected static function booted()
+{
+    static::updated(function ($payment) {
+        if ($payment->isDirty('status')) {
+            $payment->syncWithEnquiry();
+        }
+    });
+}
+
+public function syncWithEnquiry()
+{
+    if ($this->enquiry) {
+        $enquiryStatus = match($this->status) {
+            'initiated' => 'assigned',
+            'approved' => 'approved',
+            'paid' => 'completed',
+            'rejected' => 'rejected',
+            default => 'assigned'
+        };
+
+        $this->enquiry->update(['status' => $enquiryStatus]);
+    }
+}
 
 }

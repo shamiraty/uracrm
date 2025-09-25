@@ -3,20 +3,133 @@
 @section('title', 'View Enquiry')
 
 @section('content')
-<nav class="page-breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('enquiries.index') }}">Enquiries</a></li>
-        <li class="breadcrumb-item active" aria-current="page">View Enquiry</li>
-    </ol>
-</nav>
+<style>
+    /* Enhanced Modern Styling */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: box-shadow 0.3s ease;
+        border: none;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0 !important;
+        border: none;
+    }
+
+    .list-group-item {
+        border: none;
+        border-bottom: 1px solid #f1f3f4;
+        padding: 12px 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .timeline-marker {
+        background: linear-gradient(135deg, #87CEEB, #17479e) !important;
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Breadcrumb styling */
+    .breadcrumb-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+</style>
+
+<!-- Enhanced Breadcrumb Navigation -->
+<div class="card border-0 shadow-sm mb-4 breadcrumb-card">
+    <div class="card-body py-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas fa-eye text-primary fs-5"></i>
+                <h5 class="fw-bold mb-0 text-dark">View Enquiry Details</h5>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('dashboard') }}" class="text-decoration-none">
+                            <i class="fas fa-home me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('enquiries.index') }}" class="text-decoration-none">All Enquiries</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span class="badge" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%); color: white;">
+                            #{{ $enquiry->check_number }}
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Page Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="mb-2 mb-md-0">
+                        <h1 class="h3 mb-1 fw-bold text-white">
+                            <i class="fas fa-clipboard-check me-3"></i>{{ ucfirst(str_replace('_', ' ', $enquiry->type)) }} Details
+                        </h1>
+                        <p class="mb-0 text-white opacity-75">Complete enquiry information and processing status</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ route('enquiries.index') }}" class="btn btn-light btn-lg fw-semibold shadow">
+                            <i class="fas fa-arrow-left me-2"></i>Back to List
+                        </a>
+                        @if($enquiry->registered_by == auth()->user()->id && $enquiry->status == 'pending')
+                            <a href="{{ route('enquiries.edit', $enquiry->id) }}" class="btn btn-warning btn-lg fw-semibold shadow">
+                                <i class="fas fa-edit me-2"></i>Edit
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <!-- Applicant Details Card (Top Left) -->
     <div class="col-md-6 grid-margin stretch-card mt-2">
-        <div class="card shadow-sm border-light">
-            <div class="card-header text-primary">
+        <div class="card shadow-lg border-0">
+            <div class="card-header">
                 <div class="d-flex align-items-center">
-                    <h6 class="mb-0 text-primary">Applicant Details</h6>
+                    <h6 class="mb-0 text-white"><i class="fas fa-user me-2"></i>Applicant Details</h6>
                     <div class="dropdown ms-auto">
                         <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                             <i class='bx bx-dots-horizontal-rounded font-22 text-option'></i>
@@ -104,8 +217,8 @@
 
     <!-- Enquiry File Card (Top Right) -->
     <div class="col-md-6 grid-margin stretch-card mt-4">
-        <div class="card shadow-sm border-light">
-            <h6 class="card-header  text-primary mb-4">Enquiry File</h6>
+        <div class="card shadow-lg border-0">
+            <h6 class="card-header text-white mb-0"><i class="fas fa-folder-open me-2"></i>Enquiry File</h6>
             <div class="card-body">
                 @if ($enquiry->folios->isNotEmpty())
                     <ul class="list-group">
@@ -137,8 +250,8 @@
 <!-- Registrar Details Card (Bottom Left) -->
 <div class="row mt-4">
     <div class="col-md-6">
-        <div class="card shadow-sm border-light">
-            <h6 class="card-header text-primary">Registrar Details</h6>
+        <div class="card shadow-lg border-0">
+            <h6 class="card-header text-white"><i class="fas fa-user-tie me-2"></i>Registrar Details</h6>
             <div class="card-body">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -176,10 +289,10 @@
 
 
 <!-- Assigned Users Card -->
-<div class="row  mt-4">
+<div class="row mt-4">
 <div class="col-md-6">
-        <div class="card shadow-sm border-light">
-            <h6 class="card-header text-primary">Assigned User Details</h6>
+        <div class="card shadow-lg border-0">
+            <h6 class="card-header text-white"><i class="fas fa-user-check me-2"></i>Assigned User Details</h6>
             <div class="card-body">
                 @if ($enquiry->assignedUsers->isNotEmpty())
                     <ul class="list-group">
@@ -219,14 +332,312 @@
 </div>
 
 
+<!-- Enquiry Type Specific Information -->
+@if($enquiry->childData)
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-lg border-0">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <h6 class="mb-0 text-white">{{ ucfirst(str_replace('_', ' ', $enquiry->type)) }} Specific Details</h6>
+                </div>
+            </div>
+            <div class="card-body">
+                @switch($enquiry->type)
+                    @case('loan_application')
+                        @if($enquiry->loanApplication)
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-money-bill-wave text-success fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Loan Amount</span>
+                                            </div>
+                                            <h5 class="mb-0 text-success fw-bold">{{ number_format($enquiry->loanApplication->loan_amount ?? 0, 0) }} TZS</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-calendar text-info fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Loan Duration</span>
+                                            </div>
+                                            <h5 class="mb-0 text-info fw-bold">{{ $enquiry->loanApplication->loan_duration ?? 'N/A' }} months</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-percentage text-warning fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Interest Rate</span>
+                                            </div>
+                                            <h5 class="mb-0 text-dark fw-bold">{{ $enquiry->loanApplication->interest_rate ?? 'N/A' }}%</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-calculator text-primary fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Monthly Deduction</span>
+                                            </div>
+                                            <h5 class="mb-0 text-primary fw-bold">{{ number_format($enquiry->loanApplication->monthly_deduction ?? 0, 0) }} TZS</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-tag text-info fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Loan Type</span>
+                                            </div>
+                                            <h5 class="mb-0 text-info fw-bold">{{ ucfirst($enquiry->loanApplication->loan_type ?? 'N/A') }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('refund')
+                        @if($enquiry->refund)
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-money-check text-success fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Refund Amount</span>
+                                            </div>
+                                            <h5 class="mb-0 text-success fw-bold">{{ number_format($enquiry->refund->refund_amount ?? 0, 0) }} TZS</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <i class="fas fa-calendar text-info fa-lg me-2"></i>
+                                                <span class="fw-bold text-muted">Refund Duration</span>
+                                            </div>
+                                            <h5 class="mb-0 text-info fw-bold">{{ $enquiry->refund->refund_duration ?? 'N/A' }} months</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('retirement')
+                        @if($enquiry->retirement)
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-calendar-check me-2 text-info"></i>Date of Retirement:</span>
+                                        <span class="text-info">{{ $enquiry->retirement->date_of_retirement ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('condolences')
+                        @if($enquiry->condolence)
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-venus-mars me-2 text-info"></i>Gender:</span>
+                                        <span class="text-info">{{ ucfirst($enquiry->condolence->gender ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-heart me-2 text-danger"></i>Dependent Member Type:</span>
+                                        <span class="text-danger">{{ ucfirst($enquiry->condolence->dependent_member_type ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('deduction_add')
+                        @if($enquiry->deduction)
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-arrow-down me-2 text-success"></i>From Amount:</span>
+                                        <span class="text-success fw-bold">{{ number_format($enquiry->deduction->from_amount ?? 0, 0) }} TZS</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-arrow-up me-2 text-danger"></i>To Amount:</span>
+                                        <span class="text-danger fw-bold">{{ number_format($enquiry->deduction->to_amount ?? 0, 0) }} TZS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('injured_at_work')
+                        @if($enquiry->injury)
+                            <div class="row g-3">
+                                @if($enquiry->injury->description)
+                                <div class="col-12">
+                                    <div class="p-3 bg-light rounded">
+                                        <span class="fw-bold d-block mb-2"><i class="fas fa-file-medical me-2 text-primary"></i>Injury Description:</span>
+                                        <span class="text-dark">{{ $enquiry->injury->description }}</span>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        @endif
+                        @break
+
+                    @case('share_enquiry')
+                        @if($enquiry->share)
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-chart-line me-2 text-success"></i>Share Amount:</span>
+                                        <span class="text-success fw-bold">{{ number_format($enquiry->share->amount ?? 0, 0) }} TZS</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-percentage me-2 text-info"></i>Share Type:</span>
+                                        <span class="text-info">{{ ucfirst($enquiry->share->type ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-calendar me-2 text-warning"></i>Request Date:</span>
+                                        <span class="text-warning">{{ $enquiry->share->request_date ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('withdraw_savings')
+                    @case('withdraw_deposit')
+                        @if($enquiry->withdrawal)
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-money-bill-alt me-2 text-success"></i>Withdrawal Amount:</span>
+                                        <span class="text-success fw-bold">{{ number_format($enquiry->withdrawal->amount ?? 0, 0) }} TZS</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-university me-2 text-info"></i>Withdrawal Type:</span>
+                                        <span class="text-info">{{ ucfirst($enquiry->withdrawal->type ?? str_replace('_', ' ', $enquiry->type)) }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-calendar me-2 text-warning"></i>Request Date:</span>
+                                        <span class="text-warning">{{ $enquiry->withdrawal->request_date ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('join_membership')
+                    @case('unjoin_membership')
+                        @if($enquiry->membershipChange)
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-tag me-2 text-info"></i>Category:</span>
+                                        <span class="text-info">{{ ucfirst($enquiry->membershipChange->category ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-exchange-alt me-2 text-primary"></i>Action:</span>
+                                        <span class="text-primary">{{ ucfirst($enquiry->membershipChange->action ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('sick_for_30_days')
+                        @if($enquiry->sickLeave)
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-calendar-plus me-2 text-warning"></i>Start Date:</span>
+                                        <span class="text-warning">{{ $enquiry->sickLeave->start_date ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-calendar-minus me-2 text-danger"></i>End Date:</span>
+                                        <span class="text-danger">{{ $enquiry->sickLeave->end_date ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-clock me-2 text-info"></i>Total Days:</span>
+                                        <span class="text-info fw-bold">{{ $enquiry->sickLeave->total_days ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @case('ura_mobile')
+                        @if($enquiry->uraMobile)
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-mobile-alt me-2 text-primary"></i>Service Type:</span>
+                                        <span class="text-primary">{{ $enquiry->uraMobile->service_type ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-bold"><i class="fas fa-phone me-2 text-info"></i>Phone Number:</span>
+                                        <span class="text-info">{{ $enquiry->uraMobile->phone_number ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @break
+
+                    @default
+                        <div class="text-center py-4">
+                            <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No specific details available for this enquiry type</h5>
+                            <p class="text-muted">General enquiry information is displayed in the sections above.</p>
+                        </div>
+                @endswitch
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <!-- Enhanced Status Timeline -->
 <div class="row mt-4">
     <div class="col-12">
-        <div class="card shadow-sm border-light">
-            <div class="card-header bg-primary text-white">
+        <div class="card shadow-lg border-0">
+            <div class="card-header">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-history me-2"></i>
-                    <h6 class="mb-0">Enquiry Timeline & Status History</h6>
+                    <h6 class="mb-0 text-white">Enquiry Timeline & Status History</h6>
                 </div>
             </div>
             <div class="card-body p-4">

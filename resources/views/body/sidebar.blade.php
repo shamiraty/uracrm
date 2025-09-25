@@ -198,9 +198,10 @@
         transform: rotate(-45deg) translate(4px, -4px);
     }
 
-    /* Enhanced Sidebar Container - Darker background */
+    /* 
     .sidebar-wrapper {
         background: linear-gradient(180deg, #17479e 0%, #164087 100%);
+        background: #17479E;
         backdrop-filter: blur(10px);
         border-right: 2px solid rgba(255, 255, 255, 0.1);
         overflow-x: hidden !important;
@@ -211,7 +212,22 @@
         flex-direction: column;
         box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
     }
+*/
 
+   .sidebar-wrapper {
+        background: #17479E;
+        backdrop-filter: blur(10px);
+        border-right: 2px solid rgba(255, 255, 255, 0.1);
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        /* Ensure smooth scrolling */
+        scroll-behavior: smooth;
+        /* Ensure it takes full height */
+        height: 100vh !important;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    }
     /* Remove any SimpleBar elements */
     .sidebar-wrapper .simplebar-content-wrapper,
     .sidebar-wrapper .simplebar-content {

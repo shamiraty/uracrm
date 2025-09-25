@@ -164,7 +164,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payment/initiate/{enquiryId}', [PaymentController::class, 'initiate'])->name('payment.initiate');
     Route::post('/payment/approve/{paymentId}', [PaymentController::class, 'approve'])->name('payment.approve');
     Route::post('/payment/pay/{paymentId}', [PaymentController::class, 'pay'])->name('payment.pay');
-    Route::post('/payment/reject/{paymentId}', [PaymentController::class, 'reject'])->name('payment.reject');
+    Route::match(['POST', 'PUT'], '/payment/reject/{paymentId}', [PaymentController::class, 'reject'])->name('payment.reject');
     Route::get('/payments/{paymentId}/timeline', [PaymentController::class, 'showTimeline'])->name('payments.timeline');
     Route::get('/payments/type/{type}', [PaymentController::class, 'showByType'])->name('payments.type');
 
@@ -173,8 +173,22 @@ Route::middleware(['auth'])->group(function () {
     // ============================================
     Route::post('/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('send.otp.approve');
     Route::post('/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('verify.otp.approve');
-    Route::post('/send-otp-pay/{paymentId}', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
-    Route::post('/verify-otp-pay/{paymentId}', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
+
+    // Payment Dashboard Routes
+    Route::get('/payment/accountant/dashboard', [PaymentController::class, 'accountantDashboard'])->name('payment.accountant.dashboard');
+    Route::get('/payment/manager/dashboard', [PaymentController::class, 'managerDashboard'])->name('payment.manager.dashboard');
+
+    // Single Payment OTP Routes
+    Route::post('/payment/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('payment.send.otp.approve');
+    Route::post('/payment/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('payment.verify.otp.approve');
+    Route::post('/payment/{paymentId}/send-otp-pay', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
+    Route::post('/payment/{paymentId}/verify-otp-pay', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
+
+    // Bulk Actions Routes
+    Route::post('/payment/bulk-reject', [PaymentController::class, 'bulkReject'])->name('payment.bulk.reject');
+    Route::post('/payment/manager-bulk-reject', [PaymentController::class, 'managerBulkReject'])->name('payment.manager.bulk.reject');
+    Route::post('/payment/bulk-approve', [PaymentController::class, 'bulkApprove'])->name('payment.bulk.approve');
+    Route::post('/payment/send-bulk-otp', [PaymentController::class, 'sendBulkOTP'])->name('payment.send.bulk.otp');
 
 
 

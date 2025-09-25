@@ -41,12 +41,15 @@
     /* Progress bars */
     .progress {
         border-radius: 10px;
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(255,255,255,0.2);
+        height: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .progress-bar {
         border-radius: 10px;
         transition: width 0.6s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     /* Icon styling */
@@ -77,14 +80,65 @@
     /* Dropdown enhancements */
     .dropdown-menu {
         border: none;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        border-radius: 12px;
+        padding: 8px 0;
+        min-width: 200px;
+        z-index: 1050;
+        position: absolute;
+    }
+
+    .dropdown-item {
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 500;
         border-radius: 8px;
+        margin: 2px 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
     }
 
     .dropdown-item:hover {
-        background-color: #f8f9fa;
-        transform: translateX(5px);
-        transition: all 0.2s ease;
+        background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);
+        color: white;
+        transform: translateX(8px);
+    }
+
+    .dropdown-item i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+    }
+
+    .dropdown-divider {
+        margin: 8px 16px;
+        border-color: #e9ecef;
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    .dropdown-toggle {
+        background: none;
+        border: none;
+        color: #6c757d;
+        font-size: 18px;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dropdown-toggle:hover {
+        background-color: #87CEEB;
+        color: white;
+        transform: scale(1.1);
     }
 
     /* Card enhancements */
@@ -100,38 +154,190 @@
 
     /* Enhanced table styling */
     .table-responsive {
-        border-radius: 12px;
+        border-radius: 15px;
         overflow: hidden;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+        background: white;
+        border: 1px solid #e9ecef;
     }
 
     .table-responsive::-webkit-scrollbar {
-        height: 8px;
-        width: 8px;
+        height: 10px;
+        width: 10px;
     }
 
     .table-responsive::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
+        background: linear-gradient(90deg, #f8f9fa, #e9ecef);
+        border-radius: 10px;
     }
 
     .table-responsive::-webkit-scrollbar-thumb {
-        background: #007bff;
-        border-radius: 4px;
+        background: linear-gradient(90deg, #87CEEB, #17479e);
+        border-radius: 10px;
+        border: 2px solid #f8f9fa;
     }
 
     .table-responsive::-webkit-scrollbar-thumb:hover {
-        background: #0056b3;
+        background: linear-gradient(90deg, #17479e, #87CEEB);
+    }
+
+    .table-responsive::-webkit-scrollbar-corner {
+        background: #f8f9fa;
     }
 
     /* Fixed table width for horizontal scroll */
     .fixed-table {
-        min-width: 1400px;
+        min-width: 1600px;
         width: 100%;
+        table-layout: fixed;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .fixed-table th:nth-child(1) { width: 60px !important; }
+    .fixed-table th:nth-child(2) { width: 80px !important; }
+    .fixed-table th:nth-child(3) { width: 120px !important; }
+    .fixed-table th:nth-child(4) { width: 140px !important; }
+    .fixed-table th:nth-child(5) { width: 200px !important; }
+    .fixed-table th:nth-child(6) { width: 150px !important; }
+    .fixed-table th:nth-child(7) { width: 150px !important; }
+    .fixed-table th:nth-child(8) { width: 130px !important; }
+    .fixed-table th:nth-child(9) { width: 180px !important; }
+    .fixed-table th:nth-child(10) { width: 180px !important; }
+    .fixed-table th:nth-child(11) { width: 130px !important; }
+    .fixed-table th:nth-child(12) { width: 120px !important; }
+
+    .fixed-table td:nth-child(1) { width: 60px !important; }
+    .fixed-table td:nth-child(2) { width: 80px !important; }
+    .fixed-table td:nth-child(3) { width: 120px !important; }
+    .fixed-table td:nth-child(4) { width: 140px !important; }
+    .fixed-table td:nth-child(5) { width: 200px !important; }
+    .fixed-table td:nth-child(6) { width: 150px !important; }
+    .fixed-table td:nth-child(7) { width: 150px !important; }
+    .fixed-table td:nth-child(8) { width: 130px !important; }
+    .fixed-table td:nth-child(9) { width: 180px !important; }
+    .fixed-table td:nth-child(10) { width: 180px !important; }
+    .fixed-table td:nth-child(11) { width: 130px !important; }
+    .fixed-table td:nth-child(12) { width: 120px !important; }
+
+    /* Modern table design */
+    .table {
+        margin-bottom: 0;
+        background: white;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #f1f3f4;
+        position: relative;
+    }
+
+    .table tbody tr::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover::before {
+        background: linear-gradient(180deg, #87CEEB, #17479e);
+    }
+
+    /* Cell styling improvements */
+    .table td {
+        border: none;
+        position: relative;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #fafbfc;
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(90deg, #f8f9ff 0%, #ffffff 100%) !important;
+        box-shadow: 0 6px 20px rgba(135, 206, 235, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Badge improvements */
+    .badge {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Checkbox styling */
+    .form-check-input {
+        border-radius: 6px;
+        border: 2px solid #dee2e6;
+        width: 18px;
+        height: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input:checked {
+        background-color: #87CEEB;
+        border-color: #87CEEB;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
+    }
+
+    .form-check-input:focus {
+        border-color: #87CEEB;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
+    }
+
+    /* Sticky header improvements */
+    .sticky-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /* Fix dropdown visibility */
+    .table td .dropdown {
+        position: static;
+    }
+
+    .table .dropdown-menu {
+        position: fixed;
+        top: auto;
+        left: auto;
+        z-index: 1060;
+        margin-top: 5px;
+    }
+
+    .sticky-top th {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Mobile responsiveness improvements */
+    @media (max-width: 768px) {
+        .fixed-table {
+            min-width: 1200px;
+        }
+
+        .table th, .table td {
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+        }
     }
 
     .table th {
-        background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);
+        background: #87CEEB;
         color: white;
         font-weight: 600;
         text-transform: uppercase;
@@ -139,12 +345,16 @@
         padding: 15px 12px;
         border: none;
         font-size: 0.85rem;
+        vertical-align: middle;
+        white-space: nowrap;
     }
 
     .table td {
         padding: 12px;
         vertical-align: middle;
         border-color: #f1f3f4;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .table tbody tr {
@@ -309,79 +519,79 @@
     <div class="row g-4 mb-4">
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #87CEEB, #17479e);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(135, 206, 235, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 position-relative" style="width: 70px; height: 70px; background: linear-gradient(135deg, #87CEEB, #17479e); box-shadow: 0 8px 20px rgba(23, 71, 158, 0.3);">
                         <i class="fas fa-clipboard-list text-white fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold mb-2 text-dark display-6">{{ number_format($analytics['total'] ?? 0) }}</h3>
-                    <p class="mb-2 text-muted fw-semibold">Total Enquiries</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #87CEEB, #17479e); width: 100%"></div>
+                    <h3 class="fw-bold mb-2 display-6" style="color: #17479e;">{{ number_format($analytics['total'] ?? 0) }}</h3>
+                    <p class="mb-2 fw-semibold" style="color: #495057;">Total Enquiries</p>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #87CEEB, #17479e); width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
-                    <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? '100%' : '0%' }} of capacity</small>
+                    <small class="d-block mt-2" style="color: #6c757d;">{{ $analytics['total'] > 0 ? '100%' : '0%' }} of capacity</small>
                 </div>
             </div>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #ffc107, #ff8c00);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(255, 193, 7, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #ffc107, #ff8c00); box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);">
                         <i class="fas fa-clock text-white fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold mb-2 text-dark display-6">{{ number_format($analytics['pending'] ?? 0) }}</h3>
-                    <p class="mb-2 text-muted fw-semibold">Pending Review</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #ffc107, #ff8c00); width: {{ $analytics['total'] > 0 ? (($analytics['pending'] ?? 0) / $analytics['total']) * 100 : 0 }}%"></div>
+                    <h3 class="fw-bold mb-2 display-6" style="color: #ff8c00;">{{ number_format($analytics['pending'] ?? 0) }}</h3>
+                    <p class="mb-2 fw-semibold" style="color: #495057;">Pending Review</p>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #ffc107, #ff8c00); width: {{ $analytics['total'] > 0 ? (($analytics['pending'] ?? 0) / $analytics['total']) * 100 : 0 }}%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
-                    <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? round((($analytics['pending'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% pending</small>
+                    <small class="d-block mt-2" style="color: #6c757d;">{{ $analytics['total'] > 0 ? round((($analytics['pending'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% pending</small>
                 </div>
             </div>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #17a2b8, #007bff);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(23, 162, 184, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #17a2b8, #007bff); box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);">
                         <i class="fas fa-user-check text-white fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold mb-2 text-dark display-6">{{ number_format($analytics['assigned'] ?? 0) }}</h3>
-                    <p class="mb-2 text-muted fw-semibold">Assigned</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #17a2b8, #007bff); width: {{ $analytics['total'] > 0 ? (($analytics['assigned'] ?? 0) / $analytics['total']) * 100 : 0 }}%"></div>
+                    <h3 class="fw-bold mb-2 display-6" style="color: #007bff;">{{ number_format($analytics['assigned'] ?? 0) }}</h3>
+                    <p class="mb-2 fw-semibold" style="color: #495057;">Assigned</p>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #17a2b8, #007bff); width: {{ $analytics['total'] > 0 ? (($analytics['assigned'] ?? 0) / $analytics['total']) * 100 : 0 }}%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
-                    <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? round((($analytics['assigned'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% assigned</small>
+                    <small class="d-block mt-2" style="color: #6c757d;">{{ $analytics['total'] > 0 ? round((($analytics['assigned'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% assigned</small>
                 </div>
             </div>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #28a745, #20c997);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(40, 167, 69, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #28a745, #20c997); box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);">
                         <i class="fas fa-check-circle text-white fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold mb-2 text-dark display-6">{{ number_format($analytics['approved'] ?? 0) }}</h3>
-                    <p class="mb-2 text-muted fw-semibold">Approved</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #28a745, #20c997); width: {{ $analytics['total'] > 0 ? (($analytics['approved'] ?? 0) / $analytics['total']) * 100 : 0 }}%"></div>
+                    <h3 class="fw-bold mb-2 display-6" style="color: #28a745;">{{ number_format($analytics['approved'] ?? 0) }}</h3>
+                    <p class="mb-2 fw-semibold" style="color: #495057;">Approved</p>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #28a745, #20c997); width: {{ $analytics['total'] > 0 ? (($analytics['approved'] ?? 0) / $analytics['total']) * 100 : 0 }}%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
-                    <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? round((($analytics['approved'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% approved</small>
+                    <small class="d-block mt-2" style="color: #6c757d;">{{ $analytics['total'] > 0 ? round((($analytics['approved'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% approved</small>
                 </div>
             </div>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="500">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #dc3545, #e74c3c);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(220, 53, 69, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #dc3545, #e74c3c); box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);">
                         <i class="fas fa-times-circle text-white fa-2x"></i>
                     </div>
                     <h3 class="fw-bold mb-2 text-dark display-6">{{ number_format($analytics['rejected'] ?? 0) }}</h3>
                     <p class="mb-2 text-muted fw-semibold">Rejected</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #dc3545, #e74c3c); width: {{ $analytics['total'] > 0 ? (($analytics['rejected'] ?? 0) / $analytics['total']) * 100 : 0 }}%"></div>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: rgba(255,255,255,0.9); width: {{ $analytics['total'] > 0 ? (($analytics['rejected'] ?? 0) / $analytics['total']) * 100 : 0 }}%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
                     <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? round((($analytics['rejected'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% rejected</small>
                 </div>
@@ -389,104 +599,40 @@
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card border-0 shadow-lg h-100 analytics-card position-relative overflow-hidden" data-aos="fade-up" data-aos-delay="600">
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10" style="background: linear-gradient(135deg, #6c757d, #495057);"></div>
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(108, 117, 125, 0.05);"></div>
                 <div class="card-body text-center p-4 position-relative">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #dc3545, #6c757d); box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);">
                         <i class="fas fa-exclamation-triangle text-white fa-2x"></i>
                     </div>
-                    <h3 class="fw-bold mb-2 text-danger display-6">{{ number_format($analytics['pending_overdue'] ?? 0) }}</h3>
-                    <p class="mb-2 text-muted fw-semibold">Overdue</p>
-                    <div class="progress rounded-pill" style="height: 6px;">
-                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #dc3545, #6c757d); width: {{ $analytics['total'] > 0 ? (($analytics['pending_overdue'] ?? 0) / $analytics['total']) * 100 : 0 }}%"></div>
+                    <h3 class="fw-bold mb-2 display-6" style="color: #dc3545;">{{ number_format($analytics['pending_overdue'] ?? 0) }}</h3>
+                    <p class="mb-2 fw-semibold" style="color: #495057;">Overdue</p>
+                    <div class="progress rounded-pill" style="height: 8px;">
+                        <div class="progress-bar rounded-pill" style="background: linear-gradient(90deg, #dc3545, #6c757d); width: {{ $analytics['total'] > 0 ? (($analytics['pending_overdue'] ?? 0) / $analytics['total']) * 100 : 0 }}%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                     </div>
-                    <small class="text-muted d-block mt-2">{{ $analytics['total'] > 0 ? round((($analytics['pending_overdue'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% overdue</small>
+                    <small class="d-block mt-2" style="color: #6c757d;">{{ $analytics['total'] > 0 ? round((($analytics['pending_overdue'] ?? 0) / $analytics['total']) * 100, 1) : 0 }}% overdue</small>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Filters -->
+    <!-- Filter Button -->
     <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0 fw-bold">
-                        <i class="fas fa-filter me-2"></i>Filter Enquiries
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <form method="GET" class="row g-3">
-                        <div class="col-md-3">
-                            <label class="form-label fw-semibold">Search</label>
-                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search enquiries...">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label fw-semibold">Type</label>
-                            <select class="form-select" name="type">
-                                <option value="">All Types</option>
-                                <option value="loan_application" {{ request('type') == 'loan_application' ? 'selected' : '' }}>Loan Application</option>
-                                <option value="refund" {{ request('type') == 'refund' ? 'selected' : '' }}>Refund</option>
-                                <option value="share_enquiry" {{ request('type') == 'share_enquiry' ? 'selected' : '' }}>Share Enquiry</option>
-                                <option value="retirement" {{ request('type') == 'retirement' ? 'selected' : '' }}>Retirement</option>
-                                <option value="deduction_add" {{ request('type') == 'deduction_add' ? 'selected' : '' }}>Add Deduction</option>
-                                <option value="withdraw_savings" {{ request('type') == 'withdraw_savings' ? 'selected' : '' }}>Withdraw Savings</option>
-                                <option value="withdraw_deposit" {{ request('type') == 'withdraw_deposit' ? 'selected' : '' }}>Withdraw Deposit</option>
-                                <option value="unjoin_membership" {{ request('type') == 'unjoin_membership' ? 'selected' : '' }}>Unjoin Membership</option>
-                                <option value="condolences" {{ request('type') == 'condolences' ? 'selected' : '' }}>Condolences</option>
-                                <option value="injured_at_work" {{ request('type') == 'injured_at_work' ? 'selected' : '' }}>Injured at Work</option>
-                                <option value="sick_for_30_days" {{ request('type') == 'sick_for_30_days' ? 'selected' : '' }}>Sick for 30 Days</option>
-                                <option value="benefit_from_disasters" {{ request('type') == 'benefit_from_disasters' ? 'selected' : '' }}>Benefit from Disasters</option>
-                                <option value="join_membership" {{ request('type') == 'join_membership' ? 'selected' : '' }}>Join Membership</option>
-                                <option value="ura_mobile" {{ request('type') == 'ura_mobile' ? 'selected' : '' }}>URA Mobile</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label fw-semibold">From Date</label>
-                            <input type="date" class="form-control" name="date_from" value="{{ request('date_from') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label fw-semibold">To Date</label>
-                            <input type="date" class="form-control" name="date_to" value="{{ request('date_to') }}">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label fw-semibold">Status</label>
-                            <select class="form-select" name="status">
-                                <option value="">All Status</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="assigned" {{ request('status') == 'assigned' ? 'selected' : '' }}>Assigned</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                <option value="pending_overdue" {{ request('status') == 'pending_overdue' ? 'selected' : '' }}>Overdue</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="form-label fw-semibold">Per Page</label>
-                            <select class="form-select" name="per_page">
-                                <option value="15" {{ request('per_page', 15) == '15' ? 'selected' : '' }}>15</option>
-                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25</option>
-                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
-                            </select>
-                        </div>
-                        <div class="col-md-12 d-flex align-items-end justify-content-center gap-2 mt-3">
-                            <button type="submit" class="btn" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%); color: white; border: none;">
-                                <i class="fas fa-search me-1"></i>Apply Filters
-                            </button>
-                            <a href="{{ route('enquiries.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-1"></i>Clear All
-                            </a>
-                            <button type="button" class="btn btn-outline-success" onclick="setDateRange('today')">
-                                <i class="fas fa-calendar-day me-1"></i>Today
-                            </button>
-                            <button type="button" class="btn btn-outline-info" onclick="setDateRange('week')">
-                                <i class="fas fa-calendar-week me-1"></i>This Week
-                            </button>
-                            <button type="button" class="btn btn-outline-warning" onclick="setDateRange('month')">
-                                <i class="fas fa-calendar-alt me-1"></i>This Month
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div class="d-flex gap-2 align-items-center">
+                <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <i class="fas fa-filter me-2"></i>Filter Enquiries
+                    @if(request()->hasAny(['search', 'type', 'status', 'date_from', 'date_to']))
+                        <span class="badge bg-danger ms-2">{{ collect(['search', 'type', 'status', 'date_from', 'date_to'])->filter(fn($key) => request($key))->count() }}</span>
+                    @endif
+                </button>
+                @if(request()->hasAny(['search', 'type', 'status', 'date_from', 'date_to']))
+                    <a href="{{ route('enquiries.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i>Clear Filters
+                    </a>
+                @endif
+            </div>
+            <div class="text-muted">
+                <small><i class="fas fa-info-circle me-1"></i>Total: {{ number_format($enquiries->total()) }} enquiries</small>
             </div>
         </div>
     </div>
@@ -543,27 +689,48 @@
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="table-responsive" style="max-height: 80vh; overflow-x: auto; overflow-y: auto;">
-                        <table class="table table-striped table-hover mb-0 fixed-table">
-                            <thead class="table-dark">
+                    <div class="table-responsive" style="max-height: 85vh; overflow-x: auto; overflow-y: auto;">
+                        <table class="table table-hover mb-0 fixed-table" style="position: relative;">
+                            <thead class="sticky-top">
                                 <tr>
-                                    <th width="50">
-                                        <div class="form-check">
+                                    <th width="60" class="text-center">
+                                        <div class="form-check d-flex justify-content-center">
                                             <input class="form-check-input" type="checkbox" id="selectAll">
                                         </div>
                                     </th>
-                                    <th>S/N</th>
-                                    <th>Date Received</th>
-                                    <th>Check Number</th>
-                                    <th>Full Name</th>
-                                    <th>Account Number</th>
-                                    <th>Bank Name</th>
-                                    <th>Region</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Registered By</th>
-                                    <th>Assigned To</th>
-                                    <th width="120">Actions</th>
+                                    <th width="80" class="text-center">
+                                        <i class="fas fa-hashtag me-1"></i>S/N
+                                    </th>
+                                    <th width="120">
+                                        <i class="fas fa-calendar me-1"></i>Date Received
+                                    </th>
+                                    <th width="140">
+                                        <i class="fas fa-receipt me-1"></i>Check Number
+                                    </th>
+                                    <th width="200">
+                                        <i class="fas fa-user me-1"></i>Full Name & Details
+                                    </th>
+                                    <th width="150">
+                                        <i class="fas fa-university me-1"></i>Bank Info
+                                    </th>
+                                    <th width="150">
+                                        <i class="fas fa-map-marker-alt me-1"></i>Location
+                                    </th>
+                                    <th width="130">
+                                        <i class="fas fa-flag me-1"></i>Status
+                                    </th>
+                                    <th width="180">
+                                        <i class="fas fa-user-tie me-1"></i>Registration
+                                    </th>
+                                    <th width="180">
+                                        <i class="fas fa-user-check me-1"></i>Assignment
+                                    </th>
+                                    <th width="130">
+                                        <i class="fas fa-clock me-1"></i>Timeline
+                                    </th>
+                                    <th width="120" class="text-center">
+                                        <i class="fas fa-cog me-1"></i>Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -574,50 +741,55 @@
                                     $daysDiff = $enquiry->created_at->diffInWeekdays(now());
                                 @endphp
                                 <tr>
-                                    <td>
-                                        <div class="form-check">
+                                    <td class="text-center">
+                                        <div class="form-check d-flex justify-content-center">
                                             <input class="form-check-input enquiry-checkbox" type="checkbox"
                                                    value="{{ $enquiry->id }}">
                                         </div>
                                     </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
+                                    <td class="text-center">
+                                        <span class="fw-bold text-muted">
                                             {{ $loop->iteration + (($enquiries->currentPage() - 1) * $enquiries->perPage()) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ $enquiry->date_received ?? $enquiry->created_at->format('M d, Y') }}</strong>
+                                            <small class="text-muted">{{ $enquiry->created_at->format('H:i') }}</small>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            {{ $enquiry->date_received ?? $enquiry->created_at->format('Y-m-d') }}
+                                            <span class="badge bg-primary-soft text-primary px-2 py-1">
+                                                {{ $enquiry->check_number }}
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center text-primary fw-bold">
-                                            {{ $enquiry->check_number }}
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ ucwords($enquiry->full_name) }}</strong>
+                                            <small class="text-muted">
+                                                <i class="fas fa-id-card me-1"></i>{{ $enquiry->force_no ?? 'N/A' }}
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="fas fa-phone me-1"></i>{{ $enquiry->phone ?? 'N/A' }}
+                                            </small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            {{ ucwords($enquiry->full_name) }}
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ strtoupper($enquiry->bank_name ?? 'N/A') }}</strong>
+                                            <small class="text-muted">
+                                                <i class="fas fa-credit-card me-1"></i>{{ $enquiry->account_number ?? 'N/A' }}
+                                            </small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            {{ $enquiry->account_number }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center text-uppercase">
-                                            {{ $enquiry->bank_name }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            {{ ucwords($enquiry->region->name ?? $enquiry->registeredBy->district->region->name ?? 'No Region') }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            {{ $enquiry->phone }}
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ ucwords($enquiry->region->name ?? $enquiry->registeredBy->district->region->name ?? 'No Region') }}</strong>
+                                            <small class="text-muted">
+                                                <i class="fas fa-building me-1"></i>{{ ucwords($enquiry->district->name ?? 'No District') }}
+                                            </small>
                                         </div>
                                     </td>
                                     <td>
@@ -648,57 +820,73 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div>
-                                            <h6 class="mb-1">{{ $enquiry->registeredBy->name ?? 'N/A' }}</h6>
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ $enquiry->registeredBy->name ?? 'N/A' }}</strong>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>{{ $enquiry->created_at->format('M d, Y') }}
+                                            </small>
                                             @if($enquiry->registeredBy && $enquiry->registeredBy->district)
                                             <small class="text-muted">
-                                                <i class="fas fa-map-marker-alt me-1"></i>
-                                                {{ $enquiry->registeredBy->district->name }}
+                                                <i class="fas fa-map-marker-alt me-1"></i>{{ $enquiry->registeredBy->district->name }}
                                             </small>
                                             @endif
                                         </div>
                                     </td>
                                     <td>
                                         @if($enquiry->users->count() > 0)
-                                            <div>
-                                                <h6 class="mb-1">{{ $enquiry->users->first()->name }}</h6>
-                                                <small class="badge bg-light text-dark">
-                                                    {{ $enquiry->users->first()->getRoleNames()->implode(', ') }}
+                                            <div class="d-flex flex-column">
+                                                <strong class="text-dark">{{ $enquiry->users->first()->name }}</strong>
+                                                <span class="badge bg-success text-white px-2 py-1 align-self-start">
+                                                    {{ $enquiry->users->first()->getRoleNames()->first() }}
+                                                </span>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock me-1"></i>Assigned {{ $enquiry->updated_at->diffForHumans() }}
                                                 </small>
                                             </div>
                                         @else
-                                            <span class="text-muted fst-italic">
-                                                <i class="fas fa-user-slash me-1"></i>Not assigned
-                                            </span>
+                                            <div class="text-center py-2">
+                                                <i class="fas fa-user-slash text-muted fa-lg mb-1"></i>
+                                                <br>
+                                                <small class="text-muted fst-italic">Not assigned</small>
+                                            </div>
                                         @endif
                                     </td>
                                     <td>
-                                        <div>
-                                            <strong>{{ $enquiry->created_at->format('M d, Y') }}</strong>
-                                            <br>
+                                        <div class="d-flex flex-column align-items-center">
+                                            <span class="badge bg-primary text-white px-2 py-1">
+                                                {{ ucfirst(str_replace('_', ' ', $enquiry->type)) }}
+                                            </span>
+                                            <small class="text-muted mt-1">
+                                                <i class="fas fa-calendar-plus me-1"></i>{{ $enquiry->created_at->format('M d, Y') }}
+                                            </small>
                                             <small class="text-muted">
-                                                <i class="fas fa-clock me-1"></i>
-                                                {{ $enquiry->created_at->format('H:i') }}
+                                                <i class="fas fa-clock me-1"></i>{{ $enquiry->created_at->diffForHumans() }}
                                             </small>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="dropdown ms-auto">
-                                            <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-horizontal-rounded font-22 text-option"></i>
-                                            </a>
-                                            <ul class="dropdown-menu">
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu shadow-lg">
                                                 <!-- View Action -->
-                                                <li><a class="dropdown-item" href="{{ route('enquiries.show', $enquiry->id) }}"><i class="mdi mdi-eye me-2"></i>View Detail</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('enquiries.show', $enquiry->id) }}">
+                                                    <i class="fas fa-eye"></i>View Details
+                                                </a></li>
                                                 <li><hr class="dropdown-divider"></li>
 
                                                 @if(auth()->user()->hasRole('registrar_hq'))
                                                     <!-- Assign Action -->
                                                     @if(in_array($enquiry->status, ['pending', 'pending_overdue']))
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#assignUserModal-{{ $enquiry->id }}"><i class="mdi mdi-account-arrow-right me-2"></i>Assign</a></li>
+                                                    <li><a class="dropdown-item text-success" href="#" data-bs-toggle="modal" data-bs-target="#assignUserModal-{{ $enquiry->id }}">
+                                                        <i class="fas fa-user-plus"></i>Assign User
+                                                    </a></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     @elseif(in_array($enquiry->status, ['assigned', 'pending_overdue']))
-                                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reassignUserModal-{{ $enquiry->id }}"><i class="mdi mdi-account-switch me-2"></i>Reassign</a></li>
+                                                    <li><a class="dropdown-item text-warning" href="#" data-bs-toggle="modal" data-bs-target="#reassignUserModal-{{ $enquiry->id }}">
+                                                        <i class="fas fa-exchange-alt"></i>Reassign User
+                                                    </a></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     @endif
                                                 @endif
@@ -706,17 +894,21 @@
                                                 @if($enquiry->registered_by == auth()->user()->id)
                                                     <!-- Edit Action - Only for owner and if pending -->
                                                     @if($enquiry->status == 'pending' && !$isOverdue)
-                                                    <li><a class="dropdown-item" href="{{ route('enquiries.edit', $enquiry->id) }}"><i class="mdi mdi-pencil me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item text-primary" href="{{ route('enquiries.edit', $enquiry->id) }}">
+                                                        <i class="fas fa-edit"></i>Edit Enquiry
+                                                    </a></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     @endif
 
                                                     <!-- Delete Action - Only for owner -->
                                                     @if(in_array($enquiry->status, ['pending', 'rejected']) && $enquiry->status != 'assigned')
                                                     <li>
-                                                        <form action="{{ route('enquiries.destroy', $enquiry->id) }}" method="POST">
+                                                        <form action="{{ route('enquiries.destroy', $enquiry->id) }}" method="POST" class="w-100">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this enquiry?')"><i class="mdi mdi-delete me-2"></i>Delete</button>
+                                                            <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent text-start" onclick="return confirm('Are you sure you want to delete this enquiry?')">
+                                                                <i class="fas fa-trash-alt"></i>Delete Enquiry
+                                                            </button>
                                                         </form>
                                                     </li>
                                                     <li><hr class="dropdown-divider"></li>
@@ -725,16 +917,16 @@
 
                                                 <!-- Loan Details -->
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('deductions.details', ['checkNumber' => $enquiry->check_number]) }}">
-                                                        <i class="bx bx-show me-2"></i> Loan Details
+                                                    <a class="dropdown-item text-info" href="{{ route('deductions.details', ['checkNumber' => $enquiry->check_number]) }}">
+                                                        <i class="fas fa-money-bill-wave"></i>Loan Details
                                                     </a>
                                                 </li>
                                                 <li><hr class="dropdown-divider"></li>
 
                                                 <!-- Contribution Details -->
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('deductions.contributiondetails', ['checkNumber' => $enquiry->check_number]) }}">
-                                                        <i class="bx bx-show me-2"></i> Contribution Details
+                                                    <a class="dropdown-item text-secondary" href="{{ route('deductions.contributiondetails', ['checkNumber' => $enquiry->check_number]) }}">
+                                                        <i class="fas fa-chart-line"></i>Contribution Details
                                                     </a>
                                                 </li>
                                             </ul>
@@ -743,7 +935,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="13" class="text-center py-5">
+                                    <td colspan="12" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
                                             <h5>No enquiries found</h5>
@@ -780,6 +972,121 @@
                     </div>
                 </div>
                 @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);">
+                <h5 class="modal-title text-white fw-bold" id="filterModalLabel">
+                    <i class="fas fa-filter me-2"></i>Filter Enquiries
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="GET" id="filterForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-search me-1"></i>Search
+                            </label>
+                            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search enquiries...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-list me-1"></i>Enquiry Type
+                            </label>
+                            <select class="form-select" name="type">
+                                <option value="">All Types</option>
+                                <option value="loan_application" {{ request('type') == 'loan_application' ? 'selected' : '' }}>Loan Application</option>
+                                <option value="refund" {{ request('type') == 'refund' ? 'selected' : '' }}>Refund</option>
+                                <option value="share_enquiry" {{ request('type') == 'share_enquiry' ? 'selected' : '' }}>Share Enquiry</option>
+                                <option value="retirement" {{ request('type') == 'retirement' ? 'selected' : '' }}>Retirement</option>
+                                <option value="deduction_add" {{ request('type') == 'deduction_add' ? 'selected' : '' }}>Add Deduction</option>
+                                <option value="withdraw_savings" {{ request('type') == 'withdraw_savings' ? 'selected' : '' }}>Withdraw Savings</option>
+                                <option value="withdraw_deposit" {{ request('type') == 'withdraw_deposit' ? 'selected' : '' }}>Withdraw Deposit</option>
+                                <option value="unjoin_membership" {{ request('type') == 'unjoin_membership' ? 'selected' : '' }}>Unjoin Membership</option>
+                                <option value="condolences" {{ request('type') == 'condolences' ? 'selected' : '' }}>Condolences</option>
+                                <option value="injured_at_work" {{ request('type') == 'injured_at_work' ? 'selected' : '' }}>Injured at Work</option>
+                                <option value="sick_for_30_days" {{ request('type') == 'sick_for_30_days' ? 'selected' : '' }}>Sick for 30 Days</option>
+                                <option value="benefit_from_disasters" {{ request('type') == 'benefit_from_disasters' ? 'selected' : '' }}>Benefit from Disasters</option>
+                                <option value="join_membership" {{ request('type') == 'join_membership' ? 'selected' : '' }}>Join Membership</option>
+                                <option value="ura_mobile" {{ request('type') == 'ura_mobile' ? 'selected' : '' }}>URA Mobile</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-calendar me-1"></i>From Date
+                            </label>
+                            <input type="date" class="form-control" name="date_from" id="modalDateFrom" value="{{ request('date_from') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-calendar me-1"></i>To Date
+                            </label>
+                            <input type="date" class="form-control" name="date_to" id="modalDateTo" value="{{ request('date_to') }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-flag me-1"></i>Status
+                            </label>
+                            <select class="form-select" name="status">
+                                <option value="">All Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="assigned" {{ request('status') == 'assigned' ? 'selected' : '' }}>Assigned</option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="pending_overdue" {{ request('status') == 'pending_overdue' ? 'selected' : '' }}>Overdue</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-list-ol me-1"></i>Items Per Page
+                            </label>
+                            <select class="form-select" name="per_page">
+                                <option value="15" {{ request('per_page', 15) == '15' ? 'selected' : '' }}>15</option>
+                                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h6 class="mb-2 fw-bold text-dark">
+                                        <i class="fas fa-clock me-1"></i>Quick Date Ranges
+                                    </h6>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="setModalDateRange('today')">
+                                            <i class="fas fa-calendar-day me-1"></i>Today
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info btn-sm" onclick="setModalDateRange('week')">
+                                            <i class="fas fa-calendar-week me-1"></i>This Week
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="setModalDateRange('month')">
+                                            <i class="fas fa-calendar-alt me-1"></i>This Month
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="clearModalFilters()">
+                    <i class="fas fa-eraser me-1"></i>Clear All
+                </button>
+                <button type="button" class="btn" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%); color: white; border: none;" onclick="applyFilters()">
+                    <i class="fas fa-search me-1"></i>Apply Filters
+                </button>
             </div>
         </div>
     </div>
@@ -834,8 +1141,18 @@ function initializeCheckboxes() {
             // Get statuses of selected enquiries
             const selectedStatuses = Array.from(checkedBoxes).map(cb => {
                 const row = cb.closest('tr');
-                const statusBadge = row.querySelector('.badge');
-                return statusBadge ? statusBadge.textContent.toLowerCase().trim() : '';
+                // Find the status column (8th column, index 7)
+                const statusCell = row.children[7];
+                const statusBadge = statusCell ? statusCell.querySelector('.badge') : null;
+                let statusText = '';
+                if (statusBadge) {
+                    statusText = statusBadge.textContent.toLowerCase().trim();
+                    // Handle overdue case
+                    if (statusText.includes('overdue')) {
+                        statusText = 'pending';
+                    }
+                }
+                return statusText;
             });
 
             // Show/hide bulk buttons based on selected enquiry statuses
@@ -1033,6 +1350,61 @@ function clearSelection() {
     document.querySelectorAll('.enquiry-checkbox').forEach(cb => cb.checked = false);
     document.getElementById('selectAll').checked = false;
     document.getElementById('bulkActions').classList.add('d-none');
+}
+
+// Date Range Functions for Modal
+function setModalDateRange(range) {
+    const dateFrom = document.getElementById('modalDateFrom');
+    const dateTo = document.getElementById('modalDateTo');
+    const today = new Date();
+
+    switch(range) {
+        case 'today':
+            const todayStr = today.toISOString().split('T')[0];
+            dateFrom.value = todayStr;
+            dateTo.value = todayStr;
+            break;
+
+        case 'week':
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay());
+            const endOfWeek = new Date(today);
+            endOfWeek.setDate(today.getDate() - today.getDay() + 6);
+
+            dateFrom.value = startOfWeek.toISOString().split('T')[0];
+            dateTo.value = endOfWeek.toISOString().split('T')[0];
+            break;
+
+        case 'month':
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            dateFrom.value = startOfMonth.toISOString().split('T')[0];
+            dateTo.value = endOfMonth.toISOString().split('T')[0];
+            break;
+    }
+}
+
+// Modal Filter Functions
+function applyFilters() {
+    const form = document.getElementById('filterForm');
+    const formData = new FormData(form);
+    const urlParams = new URLSearchParams();
+
+    for (const [key, value] of formData.entries()) {
+        if (value.trim() !== '') {
+            urlParams.append(key, value);
+        }
+    }
+
+    const url = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+    window.location.href = url;
+}
+
+function clearModalFilters() {
+    const form = document.getElementById('filterForm');
+    form.reset();
+    window.location.href = window.location.pathname;
 }
 </script>
 
