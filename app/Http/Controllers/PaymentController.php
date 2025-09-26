@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enquiry;
 use App\Models\Payment;
+use App\Models\LoanApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -268,6 +269,7 @@ private function getManagerAnalytics()
         'overdue_initiated' => $overdueInitiated,
     ];
 }
+
 
 private function exportManagerData($query)
 {
@@ -785,6 +787,157 @@ public function verifyOtpPay(Request $request, $paymentId)
         ]);
 
         return redirect()->route('payment.accountant.dashboard')->with('success', 'Payment rejected successfully.');
+    }
+
+    /**
+     * Send OTP for loan application approval
+     */
+    public function sendLoanOTP($paymentId)
+    {
+        $payment = Payment::findOrFail($paymentId);
+        $otp = rand(100000, 999999);
+        $payment->otp = $otp;
+        $payment->otp_expires_at = now()->addMinutes(10);
+        $payment->save();
+
+        // Send OTP via SMS
+        $this->sendEnquiryapproveSMS(auth()->user()->phone_number, "Your OTP for loan application approval is: $otp");
+
+        return response()->json(['success' => true, 'message' => 'OTP has been sent.']);
+    }
+
+    /**
+     * Verify OTP and approve loan application
+     */
+    public function verifyLoanOTP(Request $request, $paymentId)
+    {
+        $request->validate([
+            'otp' => 'required|string|size:6',
+            'enquiry_id' => 'required|exists:enquiries,id'
+        ]);
+
+        $payment = Payment::findOrFail($paymentId);
+        $inputOtp = $request->input('otp');
+
+        if ($payment->otp !== $inputOtp || now()->greaterThan($payment->otp_expires_at)) {
+            return response()->json(['success' => false, 'message' => 'Invalid or expired OTP'], 400);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $enquiry = Enquiry::findOrFail($request->enquiry_id);
+
+            // Find the loan application
+            $loanApplication = $enquiry->loanApplication;
+
+            if (!$loanApplication) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No loan application found for this enquiry'
+                ], 404);
+            }
+
+            // Update loan application status
+            $loanApplication->update(['status' => 'approved']);
+
+            // Update payment status
+            $payment->update([
+                'status' => 'approved',
+                'approved_by' => auth()->id()
+            ]);
+
+            // Update enquiry status
+            $enquiry->update(['status' => 'approved']);
+
+            // Create payment log
+            $payment->logs()->create([
+                'approved_by' => auth()->id()
+            ]);
+
+            // Send SMS notification
+            $message = "Hello {$enquiry->full_name}, your loan application has been approved. For more information, contact 0677 026301";
+            $this->sendEnquiryapproveSMS($enquiry->phone, $message);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'OTP verified and loan application approved successfully. SMS notification sent.'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error approving loan application: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Reject loan application from manager dashboard
+     */
+    public function rejectLoanApplication(Request $request)
+    {
+        $request->validate([
+            'payment_id' => 'required|exists:payments,id',
+            'enquiry_id' => 'required|exists:enquiries,id',
+            'reason' => 'required|string|min:10'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $payment = Payment::findOrFail($request->payment_id);
+            $enquiry = Enquiry::findOrFail($request->enquiry_id);
+
+            // Find the loan application
+            $loanApplication = $enquiry->loanApplication;
+
+            if (!$loanApplication) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No loan application found for this enquiry'
+                ], 404);
+            }
+
+            // Update loan application status
+            $loanApplication->update(['status' => 'rejected']);
+
+            // Update payment status
+            $payment->update([
+                'status' => 'rejected',
+                'rejected_by' => auth()->id(),
+                'remarks' => $request->reason
+            ]);
+
+            // Update enquiry status
+            $enquiry->update(['status' => 'rejected']);
+
+            // Create payment log
+            $payment->logs()->create([
+                'rejected_by' => auth()->id()
+            ]);
+
+            // Send SMS notification
+            $message = "Hello {$enquiry->full_name}, your loan application has been rejected. Reason: {$request->reason}. For more information, contact 0677 026301";
+            $this->sendEnquirySMS($enquiry->phone, $message);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Loan application rejected successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error rejecting loan application: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
 

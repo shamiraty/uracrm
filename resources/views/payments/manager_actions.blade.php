@@ -29,7 +29,7 @@
             </h2>
          </div>
         <div class="d-flex align-items-center gap-2">
-            <span class="badge px-3 py-2" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); color: white;">
+            <span class="badge px-3 py-2" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden; color: white;">
                 <i class="fas fa-user-tie me-1"></i>Manager Dashboard
             </span>
         </div>
@@ -38,17 +38,17 @@
     <!-- Manager Business Intelligence Dashboard -->
     <div class="row g-4 mb-4">
         <!-- Primary KPI Cards -->
-        <div class="col-xl-4 col-lg-6">
-            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%);">
-                <div class="card-body text-white p-4">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden; overflow: hidden;">
+                <div class="card-body text-white p-4 position-relative">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <i class="fas fa-chart-area fa-3x"></i>
+                            <div class="me-2">
+                                <i class="fas fa-chart-area fa-2x"></i>
                             </div>
                             <div>
-                                <h2 class="fw-bold mb-1">{{ number_format($analytics['total']) }}</h2>
-                                <p class="mb-0 opacity-75">Total Portfolio Under Review</p>
+                                <h4 class="fw-bold mb-1">{{ number_format($analytics['total']) }}</h4>
+                                <p class="mb-0 opacity-75 small">Total Portfolio Under Review</p>
                                 <small class="opacity-75 mt-1 d-block">
                                     <i class="fas fa-trending-up me-1"></i>Complete oversight dashboard
                                 </small>
@@ -65,17 +65,17 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-6">
-            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #87ceeb 0%, #4facfe 100%);">
-                <div class="card-body text-white p-4">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #87ceeb 0%, #4facfe 100%); overflow: hidden;">
+                <div class="card-body text-white p-4 position-relative">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <i class="fas fa-bell fa-3x"></i>
+                            <div class="me-2">
+                                <i class="fas fa-bell fa-2x"></i>
                             </div>
                             <div>
-                                <h2 class="fw-bold mb-1">{{ number_format($analytics['initiated']) }}</h2>
-                                <p class="mb-0 opacity-75">Awaiting Your Approval</p>
+                                <h4 class="fw-bold mb-1">{{ number_format($analytics['initiated']) }}</h4>
+                                <p class="mb-0 opacity-75 small">Awaiting Your Approval</p>
                                 <small class="opacity-75 mt-1 d-block">
                                     <i class="fas fa-money-bill me-1"></i>Tsh {{ number_format($analytics['total_amount_initiated'] ?? 0) }}
                                 </small>
@@ -92,17 +92,17 @@
             </div>
         </div>
 
-        <div class="col-xl-4 col-lg-6">
-            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #20c997 0%, #17479E 100%);">
-                <div class="card-body text-white p-4">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden;">
+                <div class="card-body text-white p-4 position-relative">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <i class="fas fa-thumbs-up fa-3x"></i>
+                            <div class="me-2">
+                                <i class="fas fa-thumbs-up fa-2x"></i>
                             </div>
                             <div>
-                                <h2 class="fw-bold mb-1">{{ number_format($analytics['approved']) }}</h2>
-                                <p class="mb-0 opacity-75">Successfully Approved</p>
+                                <h4 class="fw-bold mb-1">{{ number_format($analytics['approved']) }}</h4>
+                                <p class="mb-0 opacity-75 small">Successfully Approved</p>
                                 <small class="opacity-75 mt-1 d-block">
                                     <i class="fas fa-money-bill me-1"></i>Tsh {{ number_format($analytics['total_amount_approved'] ?? 0) }}
                                 </small>
@@ -119,85 +119,53 @@
             </div>
         </div>
 
-        <!-- Secondary Analytics Row -->
-        <div class="col-xl-3 col-lg-6">
-            <div class="card border-0 shadow-lg h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6 class="fw-bold text-dark mb-0">Completed Payments</h6>
-                        <div class="badge bg-primary-subtle text-primary px-3 py-2">
-                            <i class="fas fa-check-double me-1"></i>{{ number_format($analytics['paid']) }}
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="p-3 bg-primary-subtle rounded mb-3">
-                            <i class="fas fa-medal text-primary fa-3x mb-2"></i>
-                            <h3 class="fw-bold text-primary mb-1">{{ $analytics['total'] > 0 ? round(($analytics['paid'] / $analytics['total']) * 100, 1) : 0 }}%</h3>
-                            <small class="text-muted">Completion Rate</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-6">
-            <div class="card border-0 shadow-lg h-100">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6 class="fw-bold text-dark mb-0">Rejected Cases</h6>
-                        <div class="badge bg-danger-subtle text-danger px-3 py-2">
-                            <i class="fas fa-times-circle me-1"></i>{{ number_format($analytics['rejected']) }}
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="p-3 bg-danger-subtle rounded mb-3">
-                            <i class="fas fa-shield-alt text-danger fa-3x mb-2"></i>
-                            <h3 class="fw-bold text-danger mb-1">{{ $analytics['total'] > 0 ? round(($analytics['rejected'] / $analytics['total']) * 100, 1) : 0 }}%</h3>
-                            <small class="text-muted">Quality Control</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-6">
-            <div class="card border-0 shadow-lg h-100 border-start border-warning border-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h6 class="fw-bold text-dark mb-0">Overdue Items</h6>
-                        <div class="badge bg-warning-subtle text-warning px-3 py-2">
-                            <i class="fas fa-clock me-1"></i>{{ number_format($analytics['overdue_initiated'] ?? 0) }}
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <div class="p-3 bg-warning-subtle rounded mb-3">
-                            <i class="fas fa-exclamation-triangle text-warning fa-3x mb-2"></i>
-                            <h3 class="fw-bold text-warning mb-1">URGENT</h3>
-                            <small class="text-muted">Requires Attention</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-6">
-            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        <i class="fas fa-user-tie fa-3x text-primary mb-3"></i>
-                        <h6 class="fw-bold text-dark mb-2">Manager Efficiency</h6>
-                        <div class="row g-2 mt-3">
-                            <div class="col-6">
-                                <div class="bg-white rounded p-2">
-                                    <div class="text-success fw-bold">{{ $analytics['total'] > 0 ? round((($analytics['approved'] + $analytics['paid']) / $analytics['total']) * 100, 1) : 0 }}%</div>
-                                    <small class="text-muted">Approval Rate</small>
-                                </div>
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #87ceeb 0%, #4facfe 100%); overflow: hidden;">
+                <div class="card-body text-white p-4 position-relative">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex align-items-center">
+                            <div class="me-2">
+                                <i class="fas fa-times-circle fa-2x"></i>
                             </div>
-                            <div class="col-6">
-                                <div class="bg-white rounded p-2">
-                                    <div class="text-info fw-bold">Live</div>
-                                    <small class="text-muted">Status</small>
-                                </div>
+                            <div>
+                                <h4 class="fw-bold mb-1">{{ number_format($analytics['rejected']) }}</h4>
+                                <p class="mb-0 opacity-75 small">Rejected</p>
+                                <small class="opacity-75 mt-1 d-block">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>{{ $analytics['total'] > 0 ? round(($analytics['rejected'] / $analytics['total']) * 100, 1) : 0 }}% rejected
+                                </small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="badge bg-danger px-2 py-1 mb-2">REJECTED</div>
+                            <div class="progress" style="height: 3px; background: rgba(255,255,255,0.2);">
+                                <div class="progress-bar bg-danger" style="width: {{ $analytics['total'] > 0 ? ($analytics['rejected'] / $analytics['total']) * 100 : 0 }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="card border-0 shadow-lg h-100" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden;">
+                <div class="card-body text-white p-4 position-relative">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex align-items-center">
+                            <div class="me-2">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4 class="fw-bold mb-1">{{ number_format($analytics['paid']) }}</h4>
+                                <p class="mb-0 opacity-75 small">Paid</p>
+                                <small class="opacity-75 mt-1 d-block">
+                                    <i class="fas fa-money-check me-1"></i>{{ $analytics['total'] > 0 ? round(($analytics['paid'] / $analytics['total']) * 100, 1) : 0 }}% completed
+                                </small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="badge bg-success px-2 py-1 mb-2">PAID</div>
+                            <div class="progress" style="height: 3px; background: rgba(255,255,255,0.2);">
+                                <div class="progress-bar bg-success" style="width: {{ $analytics['total'] > 0 ? ($analytics['paid'] / $analytics['total']) * 100 : 0 }}%"></div>
                             </div>
                         </div>
                     </div>
@@ -207,7 +175,7 @@
     </div>
 
     <!-- Modern Manager Actions Bar -->
-    <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%);">
+    <div class="card border-0 shadow-sm mb-4" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden;">
         <div class="card-body text-white">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -258,35 +226,106 @@
         </div>
     </div>
 
-    <!-- Payments Table -->
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-bottom">
+    <!-- Modern BI Data Table -->
+            <!-- Modern BI Data Table -->
+            <div class="card border-0 shadow-lg">
+        <div class="card-header border-0" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Payment Approval Queue</h5>
-                <small class="text-muted">
-                    {{ number_format($payments->total()) }} total entries
-                </small>
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="bg-primary rounded-circle p-2">
+                            <i class="fas fa-table text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1" style="color: #17479E;">Payment Approval Queue</h5>
+                        <p class="text-muted mb-0 small">
+                            <i class="fas fa-database me-1"></i>{{ number_format($payments->total()) }} records
+                            <span class="mx-2">•</span>
+                            <i class="fas fa-sync-alt me-1"></i>Real-time updates
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fas fa-cog me-1"></i>Table Settings
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-columns me-2"></i>Manage Columns</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sort me-2"></i>Sort Options</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Export All Data</a></li>
+                        </ul>
+                    </div>
+                    <span class="badge bg-success-subtle text-success px-3 py-2">
+                        <i class="fas fa-circle fa-xs me-1"></i>Live
+                    </span>
+                </div>
             </div>
         </div>
 
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th width="50" class="text-center">
+                <table class="table table-striped table-hover mb-0 modern-table">
+                    <thead style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden;">
+                        <tr class="text-white">
+                            <th width="50" class="text-center border-0">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" style="border-color: white;">
                                 </div>
                             </th>
-                            <th width="80" class="text-center">S/N</th>
-                            <th width="120">Date Initiated</th>
-                            <th width="140">Check Number</th>
-                            <th width="200">Full Name & Details</th>
-                            <th width="150">Amount</th>
-                            <th width="150">Initiated By</th>
-                            <th width="130">Type</th>
-                            <th width="120" class="text-center">Actions</th>
+                            <th width="60" class="text-center border-0">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    <span class="fw-bold">#</span>
+                                </div>
+                            </th>
+                            <th class="border-0 sortable" style="cursor: pointer;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar me-2"></i>
+                                    <span class="fw-bold">Date Initiated</span>
+                                    <i class="fas fa-sort ms-1 opacity-75"></i>
+                                </div>
+                            </th>
+                            <th class="border-0 sortable" style="cursor: pointer;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-receipt me-2"></i>
+                                    <span class="fw-bold">Check Number</span>
+                                    <i class="fas fa-sort ms-1 opacity-75"></i>
+                                </div>
+                            </th>
+                            <th class="border-0 sortable" style="cursor: pointer;">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user me-2"></i>
+                                    <span class="fw-bold">Member Details</span>
+                                    <i class="fas fa-sort ms-1 opacity-75"></i>
+                                </div>
+                            </th>
+                            <th class="border-0">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-money-bill-wave me-2"></i>
+                                    <span class="fw-bold">Amount & Bank</span>
+                                </div>
+                            </th>
+                            <th class="border-0">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-cog me-2"></i>
+                                    <span class="fw-bold">Initiated By</span>
+                                </div>
+                            </th>
+                            <th class="border-0">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-tags me-2"></i>
+                                    <span class="fw-bold">Type</span>
+                                </div>
+                            </th>
+                            <th width="150" class="text-center border-0">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-tools me-2"></i>
+                                    <span class="fw-bold">Actions</span>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -305,10 +344,10 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="text-center">
-                                <span class="fw-bold text-muted">
+                            <td class="text-center align-middle">
+                                <div class="badge badge-counter" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden; color: white; font-weight: bold;">
                                     {{ $loop->iteration + (($payments->currentPage() - 1) * $payments->perPage()) }}
-                                </span>
+                                </div>
                             </td>
                             <td>
                                 <div class="d-flex flex-column">
@@ -345,54 +384,99 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="d-flex flex-column">
-                                    <strong class="text-dark">{{ $payment->initiatedBy->name ?? 'N/A' }}</strong>
-                                    <small class="text-muted">
-                                        <i class="fas fa-user me-1"></i>{{ $payment->initiatedBy->getRoleNames()->first() ?? 'N/A' }}
-                                    </small>
-                                    <small class="text-muted">{{ $payment->created_at->diffForHumans() }}</small>
-                                </div>
+                                @switch($payment->status)
+                                    @case('initiated')
+                                        <span class="badge bg-warning text-white px-3 py-2">
+                                            <i class="fas fa-clock me-1"></i>Initiated
+                                        </span>
+                                        @break
+                                    @case('approved')
+                                        <span class="badge bg-success text-white px-3 py-2">
+                                            <i class="fas fa-check me-1"></i>Approved
+                                        </span>
+                                        @break
+                                    @case('paid')
+                                        <span class="badge bg-primary text-white px-3 py-2">
+                                            <i class="fas fa-money-check me-1"></i>Paid
+                                        </span>
+                                        @break
+                                    @case('rejected')
+                                        <span class="badge bg-danger text-white px-3 py-2">
+                                            <i class="fas fa-times me-1"></i>Rejected
+                                        </span>
+                                        @break
+                                @endswitch
                             </td>
                             <td>
-                                <span class="badge bg-info-soft text-info">
-                                    {{ ucfirst(str_replace('_', ' ', $payment->enquiry->type)) }}
-                                </span>
+                                <div class="d-flex flex-column">
+                                    <strong class="text-dark">{{ $payment->enquiry->region->name ?? 'N/A' }}</strong>
+                                    <small class="text-muted">{{ $payment->enquiry->district->name ?? 'N/A' }}</small>
+                                </div>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-sm btn-outline-info me-1"
-                                            data-bs-toggle="modal" data-bs-target="#viewModal-{{ $payment->id }}"
-                                            title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-
-                                    @if($payment->status === 'initiated')
-                                        <button type="button" class="btn btn-sm btn-outline-success me-1"
-                                                data-bs-toggle="modal" data-bs-target="#approveModal-{{ $payment->id }}"
-                                                title="Approve Payment">
-                                            <i class="fas fa-check"></i>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-cog me-1"></i>Actions
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger"
-                                                data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $payment->id }}"
-                                                title="Reject Payment">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    @else
-                                        <span class="badge bg-{{ $payment->status === 'approved' ? 'success' : ($payment->status === 'paid' ? 'primary' : 'danger') }} px-2 py-1">
-                                            {{ ucfirst($payment->status) }}
-                                        </span>
-                                    @endif
+                                        <ul class="dropdown-menu shadow border-0" style="min-width: 200px;">
+                                            <!-- Payment Actions -->
+                                            <li>
+                                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewModal-{{ $payment->id }}">
+                                                    <i class="fas fa-eye text-info me-2"></i>View Payment Details
+                                                </button>
+                                            </li>
+                                            @if($payment->status === 'initiated')
+                                                <li><hr class="dropdown-divider"></li>
+                                                @if($payment->enquiry->type === 'loan_application')
+                                                    <!-- Loan Application Actions -->
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#approveLoanModal-{{ $payment->id }}">
+                                                            <i class="fas fa-check me-2"></i>Approve Loan Application
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectLoanModal-{{ $payment->id }}">
+                                                            <i class="fas fa-times me-2"></i>Reject Loan Application
+                                                        </button>
+                                                    </li>
+                                                @else
+                                                    <!-- Regular Payment Actions -->
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#approveModal-{{ $payment->id }}">
+                                                            <i class="fas fa-check me-2"></i>Approve Payment
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $payment->id }}">
+                                                            <i class="fas fa-times me-2"></i>Reject Payment
+                                                        </button>
+                                                    </li>
+                                                @endif
+                                            @else
+                                                <li>
+                                                    <span class="dropdown-item-text">
+                                                        <span class="badge bg-{{ $payment->status === 'approved' ? 'success' : ($payment->status === 'paid' ? 'primary' : 'danger') }} px-2 py-1">
+                                                            {{ ucfirst($payment->status) }}
+                                                        </span>
+                                                    </span>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                            @endif
 
-                                    <a href="{{ route('enquiries.show', $payment->enquiry->id) }}"
-                                       class="btn btn-sm btn-outline-secondary ms-1" title="View Full Details">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
+                                            <!-- View Full Details -->
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('enquiries.show', $payment->enquiry->id) }}">
+                                                    <i class="fas fa-external-link-alt text-secondary me-2"></i>View Full Details
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="9" class="text-center py-5">
+                            <td colspan="7" class="text-center py-5">
                                 <div class="text-muted">
                                     <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
                                     <h5>No pending approvals</h5>
@@ -427,9 +511,11 @@
         </div>
         @endif
     </div>
+        </div>
 </div>
 
 @include('payments.modals.manager_modals')
+
 
 <style>
 /* ===== MANAGER BUSINESS INTELLIGENCE DASHBOARD STYLES ===== */
@@ -443,6 +529,63 @@
 
 .analytics-card {
     transition: all 0.3s ease;
+}
+
+/* Dropdown enhancements */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 8px 0;
+    min-width: 200px;
+    z-index: 1060;
+}
+
+.dropdown-item {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    margin: 2px 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);
+    color: white;
+    transform: translateX(8px);
+}
+
+.dropdown-item i {
+    margin-right: 10px;
+    width: 16px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    margin: 8px 16px;
+    border-color: #e9ecef;
+}
+
+/* Fix dropdown positioning in table */
+.table td .dropdown {
+    position: static;
+}
+
+.table .dropdown-menu {
+    position: absolute !important;
+    z-index: 1060;
+}
+
+.table tbody tr:last-child .dropdown-menu {
+    bottom: 100%;
+    top: auto;
+    transform: translateY(-8px);
+}
+
+.analytics-card
     border-radius: 16px !important;
     overflow: hidden;
 }
@@ -668,7 +811,7 @@ function exportToExcel() {
 <div class="modal fade" id="managerFilterModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); color: white;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #17479E 0%, #4facfe 100%); overflow: hidden; color: white;">
                 <h5 class="modal-title fw-bold">
                     <i class="fas fa-user-tie me-2"></i>Manager Search & Filters
                 </h5>
@@ -825,6 +968,8 @@ document.getElementById('managerQuickDateRange').addEventListener('change', func
 function applyManagerFilters() {
     document.getElementById('managerFilterForm').submit();
 }
+
+
 </script>
 
 @endsection
