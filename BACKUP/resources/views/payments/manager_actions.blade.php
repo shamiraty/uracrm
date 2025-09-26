@@ -428,16 +428,31 @@
                                             </li>
                                             @if($payment->status === 'initiated')
                                                 <li><hr class="dropdown-divider"></li>
-                                                <li>
-                                                    <button type="button" class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#approveModal-{{ $payment->id }}">
-                                                        <i class="fas fa-check me-2"></i>Approve Payment
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $payment->id }}">
-                                                        <i class="fas fa-times me-2"></i>Reject Payment
-                                                    </button>
-                                                </li>
+                                                @if($payment->enquiry->type === 'loan_application')
+                                                    <!-- Loan Application Actions -->
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#approveLoanModal-{{ $payment->id }}">
+                                                            <i class="fas fa-check me-2"></i>Approve Loan Application
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectLoanModal-{{ $payment->id }}">
+                                                            <i class="fas fa-times me-2"></i>Reject Loan Application
+                                                        </button>
+                                                    </li>
+                                                @else
+                                                    <!-- Regular Payment Actions -->
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#approveModal-{{ $payment->id }}">
+                                                            <i class="fas fa-check me-2"></i>Approve Payment
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $payment->id }}">
+                                                            <i class="fas fa-times me-2"></i>Reject Payment
+                                                        </button>
+                                                    </li>
+                                                @endif
                                             @else
                                                 <li>
                                                     <span class="dropdown-item-text">

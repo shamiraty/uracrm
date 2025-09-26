@@ -191,9 +191,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/payment/bulk-approve', [PaymentController::class, 'bulkApprove'])->name('payment.bulk.approve');
     Route::post('/payment/send-bulk-otp', [PaymentController::class, 'sendBulkOTP'])->name('payment.send.bulk.otp');
 
-
-
-
+    // Loan Application Approval Routes (Manager)
+    Route::post('/payment/send-loan-otp/{paymentId}', [PaymentController::class, 'sendLoanOTP'])->name('payment.send.loan.otp');
+    Route::post('/payment/verify-loan-otp/{paymentId}', [PaymentController::class, 'verifyLoanOTP'])->name('payment.verify.loan.otp');
+    Route::post('/payment/reject-loan-application', [PaymentController::class, 'rejectLoanApplication'])->name('payment.reject.loan.application');
 
     Route::get('loans/{member}/amortization-form', [LoanController::class, 'showAmortizationForm'])->name('loans.amortizationForm');
     Route::post('loans/{member}/amortization', [LoanController::class, 'calculateAmortization'])->name('loans.calculate');
