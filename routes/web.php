@@ -57,6 +57,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/users/clear-online-status', [UserController::class, 'clearOnlineStatus'])
         ->name('users.clear-online-status');
 
+    // Export and Analytics Routes
+    Route::post('/users/export', [UserController::class, 'exportUsers'])
+        ->name('users.export');
+    Route::post('/users/export-range', [UserController::class, 'exportUsersRange'])
+        ->name('users.export-range');
+    Route::post('/users/export-quick', [UserController::class, 'exportUsersQuick'])
+        ->name('users.export-quick');
+    Route::post('/users/security-audit', [UserController::class, 'generateSecurityAudit'])
+        ->name('users.security-audit');
+    Route::post('/users/schedule-report', [UserController::class, 'scheduleReport'])
+        ->name('users.schedule-report');
+    Route::get('/users/analytics-data', [UserController::class, 'getAnalyticsData'])
+        ->name('users.analytics-data');
+
     // Password routes moved outside this middleware group to avoid conflicts
 
     // ============================================
@@ -146,6 +160,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('users', UserController::class);
+
+    // Additional user management routes
+    Route::get('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+        ->name('users.toggle-status');
+    Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])
+        ->name('users.reset-password');
+    Route::get('/users/bulk-operations', [UserController::class, 'bulkOperations'])
+        ->name('users.bulk-operations');
 
 
 
@@ -365,6 +387,9 @@ require __DIR__.'/auth.php';
 // ============================================
 Route::get('/', [AuthenticatedSessionController::class, 'create']);
 Route::post('/otp-confirm', [AuthenticatedSessionController::class, 'confirmOTP'])->name('otp.confirm');
+Route::post('/resend-otp', [AuthenticatedSessionController::class, 'resendOTP'])->name('otp.resend');
+Route::post('/check-cooldown-status', [AuthenticatedSessionController::class, 'checkCooldownStatus'])->name('otp.check-cooldown');
+Route::post('/debug-cache-state', [AuthenticatedSessionController::class, 'debugCacheState'])->name('otp.debug-cache');
 Route::get('/otp-verify', function () {
     return view('auth.otp-verify');
 })->name('otp.verify');

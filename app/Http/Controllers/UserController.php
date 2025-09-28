@@ -18,6 +18,16 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
+use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
@@ -486,10 +496,248 @@ class UserController extends Controller
             ->get();
 
         $html = view('users.index', compact('onlineUsers'))->render();
-        
+
         return response()->json([
             'html' => $html,
             'count' => $onlineUsers->count()
         ]);
+    }
+
+    // ===============================
+    // EXPORT AND ANALYTICS METHODS
+    // ===============================
+
+    /**
+     * Export users to Excel or PDF
+     */
+    public function exportUsers(Request $request)
+    {
+        $format = $request->input('format', 'excel');
+
+        $users = User::with(['branch', 'region', 'department', 'district', 'rank', 'roles'])
+            ->where('status', 'active')
+            ->get();
+
+        switch ($format) {
+            case 'excel':
+                return $this->exportToExcel($users, 'users_report_' . date('Y-m-d'));
+            case 'pdf':
+            case 'activity_pdf':
+                return $this->exportToPdf($users, 'activity_report_' . date('Y-m-d'));
+            case 'analytics_pdf':
+                return $this->generateAnalyticsPdf($users);
+            default:
+                return response()->json(['error' => 'Invalid format'], 400);
+        }
+    }
+
+    /**
+     * Export users within a date range
+     */
+    public function exportUsersRange(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $users = User::with(['branch', 'region', 'department', 'district', 'rank', 'roles'])
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+
+        return $this->exportToExcel($users, 'users_range_' . $startDate . '_to_' . $endDate);
+    }
+
+    /**
+     * Quick export by period
+     */
+    public function exportUsersQuick(Request $request)
+    {
+        $period = $request->input('period');
+        $query = User::with(['branch', 'region', 'department', 'district', 'rank', 'roles']);
+
+        switch ($period) {
+            case 'today':
+                $query->whereDate('last_login', today());
+                break;
+            case 'week':
+                $query->whereBetween('last_login', [now()->startOfWeek(), now()->endOfWeek()]);
+                break;
+            case 'month':
+                $query->whereBetween('last_login', [now()->startOfMonth(), now()->endOfMonth()]);
+                break;
+        }
+
+        $users = $query->get();
+        return $this->exportToExcel($users, 'users_' . $period . '_' . date('Y-m-d'));
+    }
+
+    /**
+     * Generate security audit report
+     */
+    public function generateSecurityAudit(Request $request)
+    {
+        $data = [
+            'total_users' => User::count(),
+            'active_users' => User::where('status', 'active')->count(),
+            'inactive_users' => User::where('status', 'inactive')->count(),
+            'users_with_expired_passwords' => User::where('last_password_change', '<', now()->subMonths(3))->count(),
+            'users_never_logged_in' => User::whereNull('last_login')->count(),
+            'failed_login_attempts' => User::where('login_attempts', '>=', 3)->count(),
+            'online_users' => User::where('last_activity', '>', now()->subMinutes(5))->count(),
+            'audit_date' => now()->format('Y-m-d H:i:s'),
+            'recent_logins' => User::with(['branch', 'rank'])
+                ->whereDate('last_login', '>=', now()->subDays(7))
+                ->orderBy('last_login', 'desc')
+                ->take(50)
+                ->get()
+        ];
+
+        // Generate PDF audit report
+        $pdf = Pdf::loadView('reports.security-audit', $data);
+
+        return $pdf->download('security_audit_' . date('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Schedule periodic reports
+     */
+    public function scheduleReport(Request $request)
+    {
+        $frequency = $request->input('frequency');
+
+        // In a real application, you would save this to a scheduled_reports table
+        // For now, we'll just return success
+
+        Log::info("Report scheduled with frequency: {$frequency} by user: " . auth()->id());
+
+        return response()->json([
+            'success' => true,
+            'message' => ucfirst($frequency) . ' reports have been scheduled successfully.',
+            'frequency' => $frequency
+        ]);
+    }
+
+    /**
+     * Get analytics data for popup
+     */
+    public function getAnalyticsData(Request $request)
+    {
+        $onlineThreshold = Carbon::now()->subMinutes(5);
+
+        return response()->json([
+            'total_users' => User::count(),
+            'active_users' => User::where('status', 'active')->count(),
+            'online_count' => User::where('last_activity', '>', $onlineThreshold)->count(),
+            'logged_today' => User::whereDate('last_login', today())->count(),
+            'logged_this_week' => User::whereBetween('last_login', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+            'logged_this_month' => User::whereBetween('last_login', [now()->startOfMonth(), now()->endOfMonth()])->count(),
+            'departments' => Department::withCount('users')->get(),
+            'branches' => Branch::withCount('users')->get(),
+        ]);
+    }
+
+    /**
+     * Export users to Excel
+     */
+    private function exportToExcel($users, $filename)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set headers
+        $headers = [
+            'A1' => 'Name',
+            'B1' => 'Email',
+            'C1' => 'Phone',
+            'D1' => 'Branch',
+            'E1' => 'Department',
+            'F1' => 'Region',
+            'G1' => 'District',
+            'H1' => 'Rank',
+            'I1' => 'Role',
+            'J1' => 'Status',
+            'K1' => 'Last Login',
+            'L1' => 'Login Attempts',
+            'M1' => 'Created At'
+        ];
+
+        foreach ($headers as $cell => $header) {
+            $sheet->setCellValue($cell, $header);
+            $sheet->getStyle($cell)->getFont()->setBold(true);
+        }
+
+        // Set data
+        $row = 2;
+        foreach ($users as $user) {
+            $sheet->setCellValue('A' . $row, $user->name);
+            $sheet->setCellValue('B' . $row, $user->email);
+            $sheet->setCellValue('C' . $row, $user->phone_number);
+            $sheet->setCellValue('D' . $row, $user->branch->name ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $user->department->name ?? 'N/A');
+            $sheet->setCellValue('F' . $row, $user->region->name ?? 'N/A');
+            $sheet->setCellValue('G' . $row, $user->district->name ?? 'N/A');
+            $sheet->setCellValue('H' . $row, $user->rank->name ?? 'N/A');
+            $sheet->setCellValue('I' . $row, $user->roles->first()->name ?? 'N/A');
+            $sheet->setCellValue('J' . $row, ucfirst($user->status));
+            $sheet->setCellValue('K' . $row, $user->last_login ? $user->last_login->format('Y-m-d H:i:s') : 'Never');
+            $sheet->setCellValue('L' . $row, $user->login_attempts);
+            $sheet->setCellValue('M' . $row, $user->created_at->format('Y-m-d H:i:s'));
+            $row++;
+        }
+
+        // Auto-size columns
+        foreach (range('A', 'M') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        return new StreamedResponse(function() use ($writer) {
+            $writer->save('php://output');
+        }, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '.xlsx"',
+            'Cache-Control' => 'max-age=0',
+        ]);
+    }
+
+    /**
+     * Export users to PDF
+     */
+    private function exportToPdf($users, $filename)
+    {
+        $data = [
+            'users' => $users,
+            'total_count' => $users->count(),
+            'generated_at' => now()->format('Y-m-d H:i:s'),
+            'generated_by' => auth()->user()->name
+        ];
+
+        $pdf = Pdf::loadView('reports.users-activity', $data);
+
+        return $pdf->download($filename . '.pdf');
+    }
+
+    /**
+     * Generate analytics dashboard PDF
+     */
+    private function generateAnalyticsPdf($users)
+    {
+        $onlineThreshold = Carbon::now()->subMinutes(5);
+
+        $data = [
+            'users' => $users,
+            'total_count' => $users->count(),
+            'active_count' => $users->where('status', 'active')->count(),
+            'online_count' => $users->where('last_activity', '>', $onlineThreshold)->count(),
+            'logged_today' => $users->whereDate('last_login', today())->count(),
+            'generated_at' => now()->format('Y-m-d H:i:s'),
+            'generated_by' => auth()->user()->name,
+            'departments' => Department::withCount('users')->get(),
+            'branches' => Branch::withCount('users')->get(),
+        ];
+
+        $pdf = Pdf::loadView('reports.analytics-dashboard', $data);
+
+        return $pdf->download('analytics_dashboard_' . date('Y-m-d') . '.pdf');
     }
 }

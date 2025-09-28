@@ -760,7 +760,8 @@
     <!-- Main Navigation -->
     <div class="menu-header">MAIN NAVIGATION</div>
 
-    <!-- Dashboard - Available to all roles -->
+    <!-- Dashboard - Available only to specific roles, NOT to accountant, registrar, loanofficer, system_admin, admin, public_relation_officer, registrar_hq -->
+    @if(auth()->check() && !auth()->user()->hasAnyRole(['accountant', 'registrar', 'loanofficer', 'system_admin', 'admin', 'public_relation_officer', 'registrar_hq']))
     <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}">
             <div class="parent-icon">
@@ -771,9 +772,10 @@
             <span class="menu-badge success">New</span>
         </a>
     </li>
+    @endif
 
-    <!-- My Enquiries - Available to all roles except some restrictions -->
-    @if(auth()->check() && !auth()->user()->hasRole('branch_manager'))
+    <!-- My Enquiries - Only for public_relation_officer who can access only this -->
+    @if(auth()->check() && auth()->user()->hasRole('public_relation_officer'))
     <li class="{{ request()->routeIs('enquiries.my') ? 'active' : '' }}">
         <a href="{{ route('enquiries.my') }}">
             <div class="parent-icon"><i class='bx bx-folder'></i></div>
@@ -788,19 +790,23 @@
     <!-- OPERATIONS SECTION -->
     <div class="menu-header">OPERATIONS</div>
 
-    <!-- ENQUIRY MANAGEMENT - Only for Registrar and management roles -->
-    @if(auth()->check() && auth()->user()->hasAnyRole(['Registrar', 'general_manager', 'assistant_general_manager', 'superadmin', 'system_admin']))
+    <!-- ENQUIRY MANAGEMENT - Available to all roles except those with specific restrictions -->
+    @if(auth()->check() && !auth()->user()->hasAnyRole(['branch_manager']))
     <li>
         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-category"></i></div>
             <div class="menu-title">Enquiries Management</div>
         </a>
         <ul>
-            <!-- Show "New Enquiry" for all roles in this section -->
-            <li><a href="{{ route('enquiries.create') }}"><i class='bx bx-plus-circle'></i>New Enquiry</a></li>
+            <!-- Hide "New Enquiry" for specific roles -->
+            @if(!auth()->user()->hasAnyRole(['accountant', 'registrar', 'loanofficer', 'public_relation_officer', 'registrar_hq', 'general_manager', 'branch_manager']))
+                <li><a href="{{ route('enquiries.create') }}"><i class='bx bx-plus-circle'></i>New Enquiry</a></li>
+            @endif
+
             <li><a href="{{ route('enquiries.index') }}"><i class='bx bx-folder-open'></i>All Enquiries</a></li>
-            <!-- Show all other items only for non-Registrar roles -->
-            @if(!auth()->user()->hasRole('Registrar'))
+
+            <!-- Show all other enquiry types for roles that aren't restricted -->
+            @if(!auth()->user()->hasAnyRole(['registrar', 'registrar_hq']))
                 <li><a href="{{ route('enquiries.index', ['type' => 'share_enquiry']) }}"><i class='bx bx-share-alt'></i>Share Enquiries</a></li>
                 <li><a href="{{ route('enquiries.index', ['type' => 'retirement']) }}"><i class='bx bx-user-check'></i>Retirement Enquiries</a></li>
                 <li><a href="{{ route('enquiries.index', ['type' => 'deduction_add']) }}"><i class='bx bx-plus'></i>Deduction Adjustment</a></li>
@@ -984,8 +990,8 @@
     </li>
     @endif
 
-    <!-- ACCESS MANAGEMENT SECTION - Only for admin and system roles -->
-    @if(auth()->check() && auth()->user()->hasAnyRole(['general_manager', 'assistant_general_manager', 'superadmin','system_admin']))
+    <!-- ACCESS MANAGEMENT SECTION - Only for admin, system_admin and superadmin -->
+    @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'system_admin', 'superadmin']))
     <li>
         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-shield"></i></div>
@@ -1018,7 +1024,8 @@
     <!-- SYSTEM SECTION -->
     <div class="menu-header">SYSTEM</div>
 
-    <!-- DOCUMENT MANAGEMENT SECTION -->
+    <!-- DOCUMENT MANAGEMENT SECTION - Only for admin, system_admin and superadmin -->
+    @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'system_admin', 'superadmin']))
     <li>
         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-archive"></i></div>
@@ -1035,8 +1042,10 @@
             <li><a href="{{ route('test.api') }}"><i class='bx bx-import'></i>Test api</a></li>
         </ul>
     </li>
+    @endif
 
-    <!-- PAYROLL MANAGEMENT SECTION -->
+    <!-- PAYROLL MANAGEMENT SECTION - Only for admin, system_admin and superadmin -->
+    @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'system_admin', 'superadmin']))
     <li>
         <a href="javascript:;" class="has-arrow">
             <div class="parent-icon"><i class="bx bx-archive"></i></div>
@@ -1046,6 +1055,7 @@
             <li><a href="{{ route('deductions.import.form') }}"><i class='bx bx-radio-circle'></i>Import Deductions</a></li>
         </ul>
     </li>
+    @endif
 
     <!-- MEMBER ID MANAGEMENT SECTION - Available to all roles -->
     <li>
