@@ -276,10 +276,13 @@
                     <div id="resend-section" style="margin-top: 20px; text-align: center;">
                         ${!canRequestOtp ?
                             '' : // No resend button during cooldown
-                            `<button id="resend-otp-btn" style="background: #17479E; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease;">
-                                <i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>
-                                Request New OTP
-                            </button>`
+                            `<div style="text-align: center;">
+                                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">Didn't receive your code?</p>
+                                <button id="resend-otp-btn" style="background: #17479E; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(23, 71, 158, 0.3);">
+                                    <i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>
+                                    Resend Verification Code
+                                </button>
+                            </div>`
                         }
                     </div>
                 `;
