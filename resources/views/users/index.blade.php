@@ -551,6 +551,596 @@
         border-color: var(--ura-primary);
         color: var(--ura-primary);
     }
+
+    /* Modern Security Table Styles */
+    .modern-security-table {
+        margin: 2rem 0;
+    }
+
+    .security-table-header {
+        background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+        border-radius: 20px 20px 0 0;
+        padding: 2rem;
+        border: 1px solid rgba(220, 53, 69, 0.1);
+        border-bottom: none;
+    }
+
+    .security-title {
+        color: #dc3545;
+        font-weight: 700;
+        font-size: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .security-icon {
+        font-size: 2.2rem;
+        animation: pulse-danger 2s infinite;
+    }
+
+    @keyframes pulse-danger {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .violation-count {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .security-subtitle {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin: 0.5rem 0 0 0;
+        font-weight: 500;
+    }
+
+    .search-container {
+        position: relative;
+        width: 350px;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        font-size: 1.1rem;
+        z-index: 2;
+    }
+
+    .modern-search {
+        border: 2px solid rgba(220, 53, 69, 0.2);
+        border-radius: 25px;
+        padding: 0.75rem 1rem 0.75rem 3rem;
+        font-size: 1rem;
+        background: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 100%;
+    }
+
+    .modern-search:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        outline: none;
+    }
+
+    .modern-action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+        border-bottom: 2px solid rgba(220, 53, 69, 0.1);
+    }
+
+    .table-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .control-label {
+        color: #495057;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .modern-select {
+        border: 2px solid rgba(220, 53, 69, 0.2);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        width: 80px;
+        font-weight: 600;
+        color: #dc3545;
+    }
+
+    .export-buttons {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .modern-btn {
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .excel-btn {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+    }
+
+    .excel-btn:hover {
+        background: linear-gradient(135deg, #20c997, #28a745);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        color: white;
+    }
+
+    .pdf-btn {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .pdf-btn:hover {
+        background: linear-gradient(135deg, #c82333, #dc3545);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        color: white;
+    }
+
+    .print-btn {
+        background: linear-gradient(135deg, #6f42c1, #6610f2);
+        color: white;
+    }
+
+    .print-btn:hover {
+        background: linear-gradient(135deg, #6610f2, #6f42c1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        color: white;
+    }
+
+    .refresh-btn {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+    }
+
+    .refresh-btn:hover {
+        background: linear-gradient(135deg, #138496, #17a2b8);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(23, 162, 184, 0.4);
+        color: white;
+    }
+
+    .modern-table-container {
+        background: white;
+        border-radius: 0 0 20px 20px;
+        border: 1px solid rgba(220, 53, 69, 0.1);
+        border-top: none;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.1);
+    }
+
+    .modern-table {
+        margin: 0;
+        border: none;
+    }
+
+    .modern-thead {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+    }
+
+    .modern-thead th {
+        border: none;
+        padding: 1.5rem 1rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .th-content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .th-content i {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .modern-tbody tr {
+        border-bottom: 1px solid rgba(220, 53, 69, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .modern-tbody tr:hover {
+        background: rgba(220, 53, 69, 0.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.1);
+    }
+
+    .violation-row td {
+        padding: 1.25rem 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-avatar {
+        position: relative;
+    }
+
+    .avatar-circle {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .violation-indicator {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 18px;
+        height: 18px;
+        background: #ff6b6b;
+        border: 3px solid white;
+        border-radius: 50%;
+        animation: pulse-violation 1.5s infinite;
+    }
+
+    @keyframes pulse-violation {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    .user-details {
+        flex: 1;
+    }
+
+    .user-name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #212529;
+        margin-bottom: 0.25rem;
+    }
+
+    .user-id {
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .phone-number {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #495057;
+        font-weight: 500;
+    }
+
+    .phone-number i {
+        color: #28a745;
+        font-size: 1.1rem;
+    }
+
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .role-admin {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    .role-accountant {
+        background: linear-gradient(135deg, #ffc107, #e0a800);
+        color: #212529;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    .role-loanofficer {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.3);
+    }
+
+    .location-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .location-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #495057;
+    }
+
+    .location-item i {
+        color: #6c757d;
+        width: 16px;
+    }
+
+    .violation-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .violation-route {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .violation-route i {
+        color: #dc3545;
+        font-size: 1.1rem;
+    }
+
+    .violation-route code {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .severity-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .severity-badge.high {
+        background: linear-gradient(135deg, #ff4757, #ff3742);
+        color: white;
+        box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
+    }
+
+    .timestamp-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .date-info, .time-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #495057;
+    }
+
+    .date-info i, .time-info i {
+        color: #6c757d;
+        width: 16px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .view-btn {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+    }
+
+    .view-btn:hover {
+        background: linear-gradient(135deg, #0056b3, #007bff);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        color: white;
+    }
+
+    .alert-btn {
+        background: linear-gradient(135deg, #fd7e14, #e55c3a);
+        color: white;
+    }
+
+    .alert-btn:hover {
+        background: linear-gradient(135deg, #e55c3a, #fd7e14);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+        color: white;
+    }
+
+    .report-btn {
+        background: linear-gradient(135deg, #6f42c1, #6610f2);
+        color: white;
+    }
+
+    .report-btn:hover {
+        background: linear-gradient(135deg, #6610f2, #6f42c1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        color: white;
+    }
+
+    .no-violations-content {
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .security-shield {
+        margin-bottom: 2rem;
+    }
+
+    .security-shield i {
+        font-size: 5rem;
+        color: #28a745;
+        animation: gentle-pulse 3s infinite;
+    }
+
+    @keyframes gentle-pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+    }
+
+    .no-violations-title {
+        color: #28a745;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .no-violations-text {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .status-badge.secure {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+        .search-container {
+            width: 280px;
+        }
+
+        .export-buttons {
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .security-table-header {
+            padding: 1.5rem;
+        }
+
+        .security-title {
+            font-size: 1.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .modern-action-bar {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-container {
+            width: 100%;
+        }
+
+        .export-buttons {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .modern-btn {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .violation-row td {
+            padding: 1rem 0.5rem;
+        }
+
+        .user-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+    }
 </style>
 
 <div class="container-fluid">
@@ -1107,124 +1697,223 @@
                                 </div>
                             </div>
 
-                            <!-- Advanced Data Table -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h6 class="mb-0 text-danger">
-                                                <i class="bx bx-table me-2"></i>Security Violation Records
-                                            </h6>
-                                            <small class="text-muted">Detailed audit trail of unauthorized access attempts</small>
+                            <!-- Modern Security Violations Table -->
+                            <div class="modern-security-table">
+                                <!-- Modern Header Card -->
+                                <div class="security-table-header">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div class="header-title">
+                                            <h4 class="security-title">
+                                                <i class="bx bx-shield-x security-icon"></i>
+                                                Security Violations
+                                                <span class="violation-count">{{ $unauthorizedAttempts ? $unauthorizedAttempts->count() : 0 }}</span>
+                                            </h4>
+                                            <p class="security-subtitle">Real-time monitoring of unauthorized access attempts</p>
                                         </div>
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="input-group" style="width: 250px;">
-                                                <span class="input-group-text"><i class="bx bx-search"></i></span>
-                                                <input type="text" class="form-control" id="unauthorizedSearchInput" placeholder="Search records...">
+                                        <div class="header-actions">
+                                            <div class="search-container">
+                                                <i class="bx bx-search search-icon"></i>
+                                                <input type="text" class="form-control modern-search" id="modernSearchInput" placeholder="Search violations...">
                                             </div>
-                                            <select class="form-select" id="unauthorizedPerPage" style="width: 120px;">
-                                                <option value="10" selected>10 per page</option>
-                                                <option value="25">25 per page</option>
-                                                <option value="50">50 per page</option>
-                                                <option value="100">100 per page</option>
-                                            </select>
                                         </div>
                                     </div>
 
-                                    <!-- DataTable Buttons Row -->
-                                    <div class="d-flex justify-content-between align-items-center px-3 py-2 bg-light border-bottom">
-                                        <div class="datatable-info">
-                                            <small class="text-muted">Enhanced data table with export capabilities</small>
+                                    <!-- Modern Action Bar -->
+                                    <div class="modern-action-bar">
+                                        <div class="action-left">
+                                            <div class="table-controls">
+                                                <label class="control-label">Show</label>
+                                                <select class="form-select modern-select" id="modernPerPage">
+                                                    <option value="10" selected>10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                                <label class="control-label">entries</label>
+                                            </div>
                                         </div>
-                                        <div class="datatable-buttons d-flex gap-2">
-                                            <form method="post" action="{{ route('unauthorized.access.export.excel') }}" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-outline-success btn-sm" title="Export to Excel">
-                                                    <i class="bx bx-file-export"></i> Excel
+                                        <div class="action-right">
+                                            <div class="export-buttons">
+                                                <form method="post" action="{{ route('unauthorized.access.export.excel') }}" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn modern-btn excel-btn" title="Export to Excel">
+                                                        <i class="bx bx-download"></i> Excel
+                                                    </button>
+                                                </form>
+                                                <form method="post" action="{{ route('unauthorized.access.export.pdf') }}" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn modern-btn pdf-btn" title="Export to PDF">
+                                                        <i class="bx bx-file-pdf"></i> PDF
+                                                    </button>
+                                                </form>
+                                                <button type="button" class="btn modern-btn print-btn" onclick="printTable()" title="Print Table">
+                                                    <i class="bx bx-printer"></i> Print
                                                 </button>
-                                            </form>
-                                            <form method="post" action="{{ route('unauthorized.access.export.pdf') }}" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Export to PDF">
-                                                    <i class="bx bx-file-export"></i> PDF
+                                                <button type="button" class="btn modern-btn refresh-btn" onclick="refreshTable()" title="Refresh Data">
+                                                    <i class="bx bx-refresh"></i>
                                                 </button>
-                                            </form>
-                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="printTable()" title="Print Table">
-                                                <i class="bx bx-printer"></i> Print
-                                            </button>
-                                            <button type="button" class="btn btn-outline-info btn-sm" onclick="refreshTable()" title="Refresh Data">
-                                                <i class="bx bx-refresh"></i> Refresh
-                                            </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-body p-0">
+
+                                <!-- Modern Table Container -->
+                                <div class="modern-table-container">
                                     <div class="table-responsive">
-                                        <table class="table table-hover table-striped mb-0 w-100" id="unauthorizedAccessDataTable">
-                                            <thead class="table-danger">
+                                        <table class="table modern-table" id="modernSecurityTable">
+                                            <thead class="modern-thead">
                                                 <tr>
-                                                    <th>User Name</th>
-                                                    <th>Phone</th>
-                                                    <th>Role</th>
-                                                    <th>Region</th>
-                                                    <th>Branch</th>
-                                                    <th>District</th>
-                                                    <th>Page Attempted</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Actions</th>
+                                                    <th class="user-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-user"></i>
+                                                            User Details
+                                                        </div>
+                                                    </th>
+                                                    <th class="contact-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-phone"></i>
+                                                            Contact
+                                                        </div>
+                                                    </th>
+                                                    <th class="role-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-id-card"></i>
+                                                            Role
+                                                        </div>
+                                                    </th>
+                                                    <th class="location-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-map"></i>
+                                                            Location
+                                                        </div>
+                                                    </th>
+                                                    <th class="violation-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-error-circle"></i>
+                                                            Violation Details
+                                                        </div>
+                                                    </th>
+                                                    <th class="timestamp-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-time"></i>
+                                                            Timestamp
+                                                        </div>
+                                                    </th>
+                                                    <th class="actions-col">
+                                                        <div class="th-content">
+                                                            <i class="bx bx-cog"></i>
+                                                            Actions
+                                                        </div>
+                                                    </th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="modern-tbody">
                                                 @if($unauthorizedAttempts && $unauthorizedAttempts->count() > 0)
                                                     @foreach($unauthorizedAttempts as $index => $attempt)
-                                                        <tr>
-                                                            <td class="fw-medium">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar-sm me-2">
-                                                                        <div class="avatar-title bg-danger-light text-danger rounded-circle" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">
+                                                        <tr class="violation-row" data-violation-id="{{ $index }}">
+                                                            <td class="user-cell">
+                                                                <div class="user-info">
+                                                                    <div class="user-avatar">
+                                                                        <div class="avatar-circle">
                                                                             {{ substr($attempt['user_name'], 0, 2) }}
                                                                         </div>
+                                                                        <div class="violation-indicator"></div>
                                                                     </div>
-                                                                    <span>{{ $attempt['user_name'] }}</span>
+                                                                    <div class="user-details">
+                                                                        <div class="user-name">{{ $attempt['user_name'] }}</div>
+                                                                        <div class="user-id">ID: USR{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}</div>
+                                                                    </div>
                                                                 </div>
                                                             </td>
-                                                            <td>
-                                                                <small class="text-muted">{{ $attempt['user_phone'] }}</small>
+                                                            <td class="contact-cell">
+                                                                <div class="contact-info">
+                                                                    <div class="phone-number">
+                                                                        <i class="bx bx-phone-call"></i>
+                                                                        {{ $attempt['user_phone'] }}
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td>
-                                                                <span class="badge bg-{{ $attempt['user_role'] === 'admin' ? 'danger' : ($attempt['user_role'] === 'accountant' ? 'warning' : 'secondary') }}">
+                                                            <td class="role-cell">
+                                                                <div class="role-badge role-{{ $attempt['user_role'] }}">
+                                                                    <i class="bx bx-{{ $attempt['user_role'] === 'admin' ? 'crown' : ($attempt['user_role'] === 'accountant' ? 'calculator' : 'user') }}"></i>
                                                                     {{ ucfirst(str_replace('_', ' ', $attempt['user_role'])) }}
-                                                                </span>
+                                                                </div>
                                                             </td>
-                                                            <td>{{ $attempt['region'] }}</td>
-                                                            <td>{{ $attempt['branch'] }}</td>
-                                                            <td>{{ $attempt['district'] }}</td>
-                                                            <td>
-                                                                <code class="text-danger small">{{ $attempt['route_attempted'] }}</code>
+                                                            <td class="location-cell">
+                                                                <div class="location-info">
+                                                                    <div class="location-item">
+                                                                        <i class="bx bx-world"></i>
+                                                                        <span>{{ $attempt['region'] }}</span>
+                                                                    </div>
+                                                                    <div class="location-item">
+                                                                        <i class="bx bx-buildings"></i>
+                                                                        <span>{{ $attempt['branch'] }}</span>
+                                                                    </div>
+                                                                    <div class="location-item">
+                                                                        <i class="bx bx-map-pin"></i>
+                                                                        <span>{{ $attempt['district'] }}</span>
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td>
-                                                                <span class="badge bg-light text-dark">{{ $attempt['date'] }}</span>
+                                                            <td class="violation-cell">
+                                                                <div class="violation-info">
+                                                                    <div class="violation-route">
+                                                                        <i class="bx bx-link"></i>
+                                                                        <code>{{ $attempt['route_attempted'] }}</code>
+                                                                    </div>
+                                                                    <div class="violation-severity">
+                                                                        <span class="severity-badge high">High Risk</span>
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td>
-                                                                <small class="text-muted">{{ $attempt['time'] }}</small>
+                                                            <td class="timestamp-cell">
+                                                                <div class="timestamp-info">
+                                                                    <div class="date-info">
+                                                                        <i class="bx bx-calendar"></i>
+                                                                        {{ $attempt['date'] }}
+                                                                    </div>
+                                                                    <div class="time-info">
+                                                                        <i class="bx bx-time-five"></i>
+                                                                        {{ $attempt['time'] }}
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td>
-                                                                <button class="btn btn-outline-primary btn-sm"
-                                                                        title="View User Details"
-                                                                        onclick="viewUserDetails('{{ $attempt['user_name'] }}', '{{ $attempt['user_phone'] }}', '{{ $attempt['user_role'] }}')">
-                                                                    <i class="bx bx-show"></i>
-                                                                </button>
+                                                            <td class="actions-cell">
+                                                                <div class="action-buttons">
+                                                                    <button class="btn action-btn view-btn"
+                                                                            onclick="viewViolationDetails('{{ $attempt['user_name'] }}', '{{ $attempt['user_phone'] }}', '{{ $attempt['user_role'] }}', '{{ $attempt['route_attempted'] }}', '{{ $attempt['date'] }}', '{{ $attempt['time'] }}')"
+                                                                            title="View Details">
+                                                                        <i class="bx bx-show"></i>
+                                                                    </button>
+                                                                    <button class="btn action-btn alert-btn"
+                                                                            onclick="flagUser('{{ $attempt['user_name'] }}')"
+                                                                            title="Flag User">
+                                                                        <i class="bx bx-flag"></i>
+                                                                    </button>
+                                                                    <button class="btn action-btn report-btn"
+                                                                            onclick="generateReport('{{ $attempt['user_name'] }}')"
+                                                                            title="Generate Report">
+                                                                        <i class="bx bx-file-export"></i>
+                                                                    </button>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     @endforeach
                                                 @else
-                                                    <tr>
-                                                        <td colspan="10" class="text-center py-5">
-                                                            <div class="text-success">
-                                                                <i class="bx bx-shield-check" style="font-size: 3rem;"></i>
-                                                                <h6 class="mt-3 text-success">All Clear!</h6>
-                                                                <p class="text-muted">No unauthorized access attempts found. System security is functioning properly!</p>
+                                                    <tr class="no-violations-row">
+                                                        <td colspan="7" class="no-violations-cell">
+                                                            <div class="no-violations-content">
+                                                                <div class="security-shield">
+                                                                    <i class="bx bx-shield-check"></i>
+                                                                </div>
+                                                                <h5 class="no-violations-title">System Secure</h5>
+                                                                <p class="no-violations-text">No unauthorized access attempts detected. All systems operating normally.</p>
+                                                                <div class="security-status">
+                                                                    <span class="status-badge secure">
+                                                                        <i class="bx bx-check-circle"></i>
+                                                                        All Clear
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -1233,7 +1922,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
 
                             <!-- Security Notice -->
@@ -2651,29 +3339,25 @@ function printTable() {
     newWin.print();
 }
 
-// Enhanced refresh function
+// Enhanced refresh function for modern table
 function refreshTable() {
     const refreshBtn = event.target.closest('button');
     const originalHtml = refreshBtn.innerHTML;
-    refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Refreshing...';
+    refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i>';
     refreshBtn.disabled = true;
 
-    // Refresh DataTable
+    // Simulate refresh
     setTimeout(() => {
-        if ($.fn.DataTable.isDataTable('#unauthorizedAccessDataTable')) {
-            $('#unauthorizedAccessDataTable').DataTable().ajax.reload(null, false);
-        }
-
         // Show success message
         const alertDiv = $(`
-            <div class="alert alert-success alert-dismissible fade show">
+            <div class="alert alert-success alert-dismissible fade show" style="margin: 1rem 2rem 0;">
                 <i class="bx bx-check-circle me-2"></i>
                 Security data refreshed successfully!
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         `);
 
-        $('#unauthorized-access .card').prepend(alertDiv);
+        $('.modern-security-table').prepend(alertDiv);
 
         // Auto-hide alert
         setTimeout(() => alertDiv.remove(), 3000);
@@ -2684,38 +3368,83 @@ function refreshTable() {
     }, 1500);
 }
 
-// View user details function
-function viewUserDetails(userName, userPhone, userRole) {
+// Modern violation details view
+function viewViolationDetails(userName, userPhone, userRole, routeAttempted, date, time) {
     const modal = $(`
-        <div class="modal fade" id="userDetailsModal" tabindex="-1">
-            <div class="modal-dialog">
+        <div class="modal fade" id="violationDetailsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header bg-danger text-white">
+                    <div class="modal-header" style="background: linear-gradient(135deg, #dc3545, #c82333); color: white;">
                         <h5 class="modal-title">
-                            <i class="bx bx-user-circle me-2"></i>Security Violation Details
+                            <i class="bx bx-shield-x me-2"></i>Security Violation Analysis
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-4"><strong>User Name:</strong></div>
-                            <div class="col-sm-8">${userName}</div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-4"><strong>Phone:</strong></div>
-                            <div class="col-sm-8">${userPhone}</div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-4"><strong>Role:</strong></div>
-                            <div class="col-sm-8"><span class="badge bg-secondary">${userRole}</span></div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-4"><strong>Status:</strong></div>
-                            <div class="col-sm-8"><span class="badge bg-danger">Security Violation</span></div>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <h6 class="info-title"><i class="bx bx-user me-2"></i>User Information</h6>
+                                    <div class="info-item">
+                                        <strong>Name:</strong> ${userName}
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Phone:</strong> ${userPhone}
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Role:</strong>
+                                        <span class="badge bg-secondary ms-2">${userRole}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <h6 class="info-title"><i class="bx bx-error-circle me-2"></i>Violation Details</h6>
+                                    <div class="info-item">
+                                        <strong>Route Attempted:</strong><br>
+                                        <code style="color: #dc3545; background: rgba(220,53,69,0.1); padding: 4px 8px; border-radius: 4px;">${routeAttempted}</code>
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Risk Level:</strong>
+                                        <span class="badge bg-danger ms-2">High Risk</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <h6 class="info-title"><i class="bx bx-time me-2"></i>Timestamp</h6>
+                                    <div class="info-item">
+                                        <strong>Date:</strong> ${date}
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Time:</strong> ${time}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <h6 class="info-title"><i class="bx bx-shield-check me-2"></i>Security Actions</h6>
+                                    <div class="info-item">
+                                        <strong>Status:</strong>
+                                        <span class="badge bg-warning ms-2">Under Review</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <strong>Auto-flagged:</strong> Yes
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x me-1"></i>Close
+                        </button>
+                        <button type="button" class="btn btn-warning" onclick="flagUser('${userName}')">
+                            <i class="bx bx-flag me-1"></i>Flag User
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="generateReport('${userName}')">
+                            <i class="bx bx-file-export me-1"></i>Generate Report
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2728,6 +3457,200 @@ function viewUserDetails(userName, userPhone, userRole) {
         modal.remove();
     });
 }
+
+// Flag user function
+function flagUser(userName) {
+    const confirmModal = $(`
+        <div class="modal fade" id="flagUserModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title">
+                            <i class="bx bx-flag me-2"></i>Flag User for Review
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to flag <strong>${userName}</strong> for security review?</p>
+                        <div class="alert alert-warning">
+                            <i class="bx bx-info-circle me-2"></i>
+                            This action will notify system administrators and may result in account restrictions.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning" onclick="confirmFlagUser('${userName}')">
+                            <i class="bx bx-flag me-1"></i>Flag User
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+
+    $('body').append(confirmModal);
+    confirmModal.modal('show');
+    confirmModal.on('hidden.bs.modal', function() {
+        confirmModal.remove();
+    });
+}
+
+// Confirm flag user
+function confirmFlagUser(userName) {
+    $('#flagUserModal').modal('hide');
+
+    // Show success message
+    const alertDiv = $(`
+        <div class="alert alert-warning alert-dismissible fade show" style="margin: 1rem 2rem 0;">
+            <i class="bx bx-flag me-2"></i>
+            User <strong>${userName}</strong> has been flagged for security review.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `);
+
+    $('.modern-security-table').prepend(alertDiv);
+    setTimeout(() => alertDiv.remove(), 5000);
+}
+
+// Generate report function
+function generateReport(userName) {
+    const reportModal = $(`
+        <div class="modal fade" id="generateReportModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title">
+                            <i class="bx bx-file-export me-2"></i>Generate Security Report
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Generate detailed security report for <strong>${userName}</strong>?</p>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Report Type:</label>
+                            <select class="form-select" id="reportType">
+                                <option value="summary">Summary Report</option>
+                                <option value="detailed">Detailed Analysis</option>
+                                <option value="timeline">Activity Timeline</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Format:</label>
+                            <select class="form-select" id="reportFormat">
+                                <option value="pdf">PDF Document</option>
+                                <option value="excel">Excel Spreadsheet</option>
+                                <option value="email">Email Report</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-info" onclick="confirmGenerateReport('${userName}')">
+                            <i class="bx bx-download me-1"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+
+    $('body').append(reportModal);
+    reportModal.modal('show');
+    reportModal.on('hidden.bs.modal', function() {
+        reportModal.remove();
+    });
+}
+
+// Confirm generate report
+function confirmGenerateReport(userName) {
+    const reportType = $('#reportType').val();
+    const reportFormat = $('#reportFormat').val();
+
+    $('#generateReportModal').modal('hide');
+
+    // Show processing message
+    const alertDiv = $(`
+        <div class="alert alert-info alert-dismissible fade show" style="margin: 1rem 2rem 0;">
+            <i class="bx bx-loader-alt bx-spin me-2"></i>
+            Generating ${reportType} report for <strong>${userName}</strong> in ${reportFormat} format...
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    `);
+
+    $('.modern-security-table').prepend(alertDiv);
+
+    // Simulate report generation
+    setTimeout(() => {
+        alertDiv.html(`
+            <i class="bx bx-check-circle me-2"></i>
+            Security report for <strong>${userName}</strong> has been generated successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `);
+        alertDiv.removeClass('alert-info').addClass('alert-success');
+
+        setTimeout(() => alertDiv.remove(), 5000);
+    }, 3000);
+}
+
+// Modern table search functionality
+$(document).ready(function() {
+    $('#modernSearchInput').on('keyup', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        $('.violation-row').each(function() {
+            const rowText = $(this).text().toLowerCase();
+            if (rowText.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
+    // Per page selection
+    $('#modernPerPage').on('change', function() {
+        const perPage = parseInt($(this).val());
+        const rows = $('.violation-row:visible');
+
+        rows.each(function(index) {
+            if (index >= perPage) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+});
+
+// Add CSS for modal styling
+const modalStyles = $(`
+    <style>
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid #dc3545;
+        }
+
+        .info-title {
+            color: #dc3545;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-item {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+`);
+
+$('head').append(modalStyles);
 
 // Security Tables Functions
 function showSecurityTable(type) {

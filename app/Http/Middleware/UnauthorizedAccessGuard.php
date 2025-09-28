@@ -50,19 +50,84 @@ class UnauthorizedAccessGuard
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Access Denied</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 50px; text-align: center; }
-        .container { background: white; padding: 40px; border-radius: 8px; max-width: 500px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .error-code { font-size: 48px; color: #dc3545; font-weight: bold; margin-bottom: 20px; }
-        .message { font-size: 18px; color: #333; margin-bottom: 20px; }
-        .btn { background: #17479E; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        .error-code {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        .title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .message {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #2980b9;
+            text-decoration: none;
+            color: white;
+        }
+        .security-notice {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="error-code">403</div>
-        <div class="message">Access Denied</div>
-        <p>This page is only accessible through proper authorization flow.</p>
-        <a href="/" class="btn">Go to Dashboard</a>
+        <div class="title">Access Denied</div>
+        <div class="message">
+            You do not have permission to access this resource. This incident has been logged for security monitoring.
+        </div>
+        <div class="security-notice">
+            <strong>Security Notice:</strong> Unauthorized access attempts are monitored and logged.
+        </div>
+        <a href="/" class="btn">Return to Dashboard</a>
     </div>
 </body>
 </html>', 403)->header('Content-Type', 'text/html');

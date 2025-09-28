@@ -143,8 +143,7 @@ class UnauthorizedAccessController extends Controller
         <div class="error-code">403</div>
         <div class="title">Access Denied</div>
         <div class="message">
-            You do not have permission to access this resource.
-            This incident has been logged for security monitoring.
+            You do not have permission to access this resource. This incident has been logged for security monitoring.
         </div>
         <div class="security-notice">
             <strong>Security Notice:</strong> Unauthorized access attempts are monitored and logged.

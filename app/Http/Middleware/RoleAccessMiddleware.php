@@ -131,7 +131,10 @@ class RoleAccessMiddleware
                 $requiredRoles
             );
 
-            // Check for frequent attempts and alert superadmins
+            // Send immediate SMS alert for every unauthorized access attempt
+            $this->sendImmediateAlert($user, $routeName, $request->fullUrl());
+
+            // Check for frequent attempts and alert superadmins with escalated message
             $this->checkAndAlertFrequentAttempts($user);
 
             // Return secure backend response without template exposure
@@ -278,7 +281,40 @@ class RoleAccessMiddleware
     }
 
     /**
-     * Check for frequent unauthorized attempts and alert superadmins
+     * Send immediate SMS alert for EVERY unauthorized access attempt
+     */
+    private function sendImmediateAlert($user, $routeName, $attemptedUrl)
+    {
+        // Get superadmin users
+        $superAdmins = User::whereHas('roles', function($query) {
+            $query->where('name', 'superadmin');
+        })->get();
+
+        $regionName = $user->region ? $user->region->name : 'N/A';
+        $districtName = $user->district ? $user->district->name : 'N/A';
+        $roleName = $user->roles->first() ? $user->roles->first()->name : 'N/A';
+
+        $message = "🚨 SECURITY BREACH: {$user->name} ({$roleName}) from {$regionName}, {$districtName} tried accessing: {$routeName}. Time: " . now()->format('d/m/Y H:i:s');
+
+        foreach ($superAdmins as $admin) {
+            if ($admin->phone_number) {
+                $this->sendSMS($admin->phone_number, $message);
+            }
+        }
+
+        // Log the alert
+        Log::warning("Immediate security alert sent for unauthorized access", [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'route' => $routeName,
+            'url' => $attemptedUrl,
+            'superadmins_notified' => $superAdmins->count(),
+            'alert_type' => 'immediate'
+        ]);
+    }
+
+    /**
+     * Check for frequent unauthorized attempts and alert superadmins with escalated message
      */
     private function checkAndAlertFrequentAttempts($user)
     {
@@ -311,7 +347,7 @@ class RoleAccessMiddleware
         $districtName = $user->district ? $user->district->name : 'N/A';
         $roleName = $user->roles->first() ? $user->roles->first()->name : 'N/A';
 
-        $message = "SECURITY ALERT: User {$user->name} from {$regionName}, {$districtName} (Role: {$roleName}) attempted unauthorized access 3+ times. Time: " . now()->format('d/m/Y H:i');
+        $message = "🔥 ESCALATED ALERT: User {$user->name} ({$roleName}) from {$regionName}, {$districtName} has made 3+ REPEATED unauthorized access attempts! URGENT ACTION REQUIRED. Time: " . now()->format('d/m/Y H:i:s');
 
         foreach ($superAdmins as $admin) {
             if ($admin->phone_number) {
