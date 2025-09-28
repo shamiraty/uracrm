@@ -451,7 +451,8 @@
                                                     Swal.showValidationMessage('Failed to send OTP: ' + (data.message || 'Unknown error'));
                                                     // Re-enable button
                                                     this.disabled = false;
-                                                    this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>Request New OTP';
+                                                    this.style.background = '#17479E';
+                                                    this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>Resend Verification Code';
                                                 }
                                             }
                                         })
@@ -459,7 +460,8 @@
                                             Swal.showValidationMessage('Error sending OTP: ' + error.message);
                                             // Re-enable button
                                             this.disabled = false;
-                                            this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>Request New OTP';
+                                            this.style.background = '#17479E';
+                                            this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">refresh</i>Resend Verification Code';
                                         });
                                     }
                                 });
