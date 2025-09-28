@@ -393,7 +393,8 @@
                                     if (canRequestOtp) {
                                         // Disable button and show loading
                                         this.disabled = true;
-                                        this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">hourglass_empty</i>Sending...';
+                                        this.style.background = '#6c757d';
+                                        this.innerHTML = '<i class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">hourglass_empty</i>Sending code...';
 
                                         // Send request for new OTP
                                         fetch('/resend-otp', {
