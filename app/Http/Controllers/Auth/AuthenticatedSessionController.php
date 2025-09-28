@@ -34,10 +34,14 @@ public function store(LoginRequest $request)
         if ($user) {
             $user->increment('login_attempts');
 
-            // If login attempts reach 3, set status to inactive
+            // If login attempts reach 3, set status to inactive and notify superadmins
             if ($user->login_attempts >= 3) {
                 $user->status = 'inactive';
                 $user->save();
+
+                // Send SMS notification to superadmins about account lockout
+                $this->notifySuperAdminsAboutFailedLogins($user);
+
                 return redirect()->route('login')->withErrors(['email' => 'Account has been locked due to multiple failed login attempts. Please contact support.']);
             }
             $user->save();
@@ -538,6 +542,32 @@ public function showRequiredPasswordChangeForm()
             ],
             'timestamp' => now()->timestamp
         ]);
+    }
+
+    /**
+     * Notify superadmins about failed login attempts that led to account lockout
+     */
+    private function notifySuperAdminsAboutFailedLogins($user)
+    {
+        // Get superadmin users
+        $superAdmins = User::whereHas('roles', function($query) {
+            $query->where('name', 'superadmin');
+        })->get();
+
+        $regionName = $user->region ? $user->region->name : 'N/A';
+        $districtName = $user->district ? $user->district->name : 'N/A';
+        $roleName = $user->roles->first() ? $user->roles->first()->name : 'N/A';
+
+        $message = "SECURITY ALERT: User {$user->name} from {$regionName}, {$districtName} (Role: {$roleName}) has been locked due to 3+ failed login attempts. Time: " . now()->format('d/m/Y H:i');
+
+        foreach ($superAdmins as $admin) {
+            if ($admin->phone_number) {
+                $this->sendEnquiryapproveSMS($admin->phone_number, $message);
+            }
+        }
+
+        // Log the notification for audit trail
+        \Log::info("Failed login SMS notification sent to superadmins for user: {$user->email}");
     }
 
 }

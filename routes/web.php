@@ -43,41 +43,36 @@ use App\Http\Controllers\CommandController;
 use App\Http\Controllers\CardDetailManagerController;
 
 // Protected Routes with comprehensive middleware
-Route::middleware(['auth', 'user.status','update.activity'])->group(function () {
-
+Route::middleware(['auth', 'user.status', 'update.activity'])->group(function () {
 
     // ============================================
     // USER ACTIVITY AND STATUS ROUTES
     // ============================================
-//-----------------------------------------------	
-/*
-	ROLES:
-	admin
-	superadmin
-    system_admin
-	*/
-    Route::post('/users/update-activity', [UserController::class, 'updateActivity'])
-        ->name('users.update-activity');
+    // ROLES: admin, superadmin, system_admin
+    Route::middleware(['role:admin|superadmin|system_admin'])->group(function () {
+        Route::post('/users/update-activity', [UserController::class, 'updateActivity'])
+            ->name('users.update-activity');
 
-    Route::get('/users/online-users', [UserController::class, 'getOnlineUsersHtml'])
-        ->name('users.online-users');
+        Route::get('/users/online-users', [UserController::class, 'getOnlineUsersHtml'])
+            ->name('users.online-users');
 
-    Route::post('/users/clear-online-status', [UserController::class, 'clearOnlineStatus'])
-        ->name('users.clear-online-status');
+        Route::post('/users/clear-online-status', [UserController::class, 'clearOnlineStatus'])
+            ->name('users.clear-online-status');
 
-    // Export and Analytics Routes
-    Route::post('/users/export', [UserController::class, 'exportUsers'])
-        ->name('users.export');
-    Route::post('/users/export-range', [UserController::class, 'exportUsersRange'])
-        ->name('users.export-range');
-    Route::post('/users/export-quick', [UserController::class, 'exportUsersQuick'])
-        ->name('users.export-quick');
-    Route::post('/users/security-audit', [UserController::class, 'generateSecurityAudit'])
-        ->name('users.security-audit');
-    Route::post('/users/schedule-report', [UserController::class, 'scheduleReport'])
-        ->name('users.schedule-report');
-    Route::get('/users/analytics-data', [UserController::class, 'getAnalyticsData'])
-        ->name('users.analytics-data');
+        // Export and Analytics Routes
+        Route::post('/users/export', [UserController::class, 'exportUsers'])
+            ->name('users.export');
+        Route::post('/users/export-range', [UserController::class, 'exportUsersRange'])
+            ->name('users.export-range');
+        Route::post('/users/export-quick', [UserController::class, 'exportUsersQuick'])
+            ->name('users.export-quick');
+        Route::post('/users/security-audit', [UserController::class, 'generateSecurityAudit'])
+            ->name('users.security-audit');
+        Route::post('/users/schedule-report', [UserController::class, 'scheduleReport'])
+            ->name('users.schedule-report');
+        Route::get('/users/analytics-data', [UserController::class, 'getAnalyticsData'])
+            ->name('users.analytics-data');
+    });
 
 //-----------------------------------------------	
 
@@ -91,91 +86,72 @@ Route::middleware(['auth', 'user.status','update.activity'])->group(function () 
     // ============================================
     // EXPORT ROUTES FOR VARIOUS ENQUIRY TYPES
     // ============================================
-	/*
-	ROLES:
-admin
-accountant
-loanofficer
-Registrar
-superadmin
-system_admin
-public_relation_officer
-registrar_hq
-representative
-general_manager
-branch_manager
-*/
-    Route::get('/loan-applications/export', [EnquiryController::class, 'exportLoanApplication'])
-        ->name('exportLoanApplication');
-    Route::get('export-enquiries', [EnquiryController::class, 'exportMembershipChanges'])
-        ->name('exportEnquiriesUnjoinMembership');
-    Route::get('export-condolences', [EnquiryController::class, 'exportCondolences'])
-        ->name('exportCondolences');
-    Route::get('/deductions/export', [EnquiryController::class, 'export'])
-        ->name('deductions.export');
-    Route::get('/refunds/export', [EnquiryController::class, 'exportRefund'])
-        ->name('exportRefund');
-    Route::get('/residential-disasters/export', [EnquiryController::class, 'ResidentialDisasterExport'])
-        ->name('residential_disasters');
-    Route::get('/retirements/export', [EnquiryController::class, 'exportRetirement'])
-        ->name('exportRetirement');
-    Route::get('/shares/export', [EnquiryController::class, 'exportShare'])
-        ->name('exportShare');
-    Route::get('/sickleave/export', [EnquiryController::class, 'exportSickLeave'])
-        ->name('exportSickLeave');
-    Route::get('/withdrawal/export', [EnquiryController::class, 'WithdrawalExport'])
-        ->name('withdrawalExport');
-    Route::get('/injury/export', [EnquiryController::class, 'InjuryExport'])
-        ->name('injuryExport');
-    Route::get('/membership/export', [EnquiryController::class, 'JoinMembershipExport'])
-        ->name('membershipExport');
-    Route::get('/all-enquiries/export', [EnquiryController::class, 'allEnquiriesExport'])
-        ->name('allEnquiriesExport');
+    // ROLES: admin, accountant, loanofficer, Registrar, superadmin, system_admin, public_relation_officer, registrar_hq, representative, general_manager, branch_manager
+    Route::middleware(['role:admin|accountant|loanofficer|Registrar|superadmin|system_admin|public_relation_officer|registrar_hq|representative|general_manager|branch_manager'])->group(function () {
+        Route::get('/loan-applications/export', [EnquiryController::class, 'exportLoanApplication'])
+            ->name('exportLoanApplication');
+        Route::get('export-enquiries', [EnquiryController::class, 'exportMembershipChanges'])
+            ->name('exportEnquiriesUnjoinMembership');
+        Route::get('export-condolences', [EnquiryController::class, 'exportCondolences'])
+            ->name('exportCondolences');
+        Route::get('/deductions/export', [EnquiryController::class, 'export'])
+            ->name('deductions.export');
+        Route::get('/refunds/export', [EnquiryController::class, 'exportRefund'])
+            ->name('exportRefund');
+        Route::get('/residential-disasters/export', [EnquiryController::class, 'ResidentialDisasterExport'])
+            ->name('residential_disasters');
+        Route::get('/retirements/export', [EnquiryController::class, 'exportRetirement'])
+            ->name('exportRetirement');
+        Route::get('/shares/export', [EnquiryController::class, 'exportShare'])
+            ->name('exportShare');
+        Route::get('/sickleave/export', [EnquiryController::class, 'exportSickLeave'])
+            ->name('exportSickLeave');
+        Route::get('/withdrawal/export', [EnquiryController::class, 'WithdrawalExport'])
+            ->name('withdrawalExport');
+        Route::get('/injury/export', [EnquiryController::class, 'InjuryExport'])
+            ->name('injuryExport');
+        Route::get('/membership/export', [EnquiryController::class, 'JoinMembershipExport'])
+            ->name('membershipExport');
+        Route::get('/all-enquiries/export', [EnquiryController::class, 'allEnquiriesExport'])
+            ->name('allEnquiriesExport');
+    });
 
     
 	
 	
-	// ============================================
+    // ============================================
     // ENQUIRY MANAGEMENT ROUTES
     // ============================================
+
+    // General enquiry listing - accessible to all authenticated users
     Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
-    // Route::get('/enquiries/create', [EnquiryController::class, 'create'])->name('enquiries.create');
-	
-	
-	
-	//registrar_hq
-	//Registrar
-    Route::get('/enquiries/create/{check_number?}', [EnquiryController::class, 'create'])
-    ->name('enquiries.create');
-    Route::get('/enquiries/fetch-payroll/{check_number}', [EnquiryController::class, 'fetchPayroll']);
-    Route::post('/enquiries', [EnquiryController::class, 'store'])->name('enquiries.store');
-	
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
-    Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
-	
-	//registrar_hq
-	//Registrar
-    Route::get('/enquiries/{enquiry}/edit', [EnquiryController::class, 'edit'])->name('enquiries.edit');
-    Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
+
+    // Enquiry creation - ROLES: registrar_hq, Registrar
+    Route::middleware(['role:registrar_hq|Registrar'])->group(function () {
+        Route::get('/enquiries/create/{check_number?}', [EnquiryController::class, 'create'])
+            ->name('enquiries.create');
+        Route::get('/enquiries/fetch-payroll/{check_number}', [EnquiryController::class, 'fetchPayroll']);
+        Route::post('/enquiries', [EnquiryController::class, 'store'])->name('enquiries.store');
+
+        // Enquiry editing
+        Route::get('/enquiries/{enquiry}/edit', [EnquiryController::class, 'edit'])->name('enquiries.edit');
+        Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
+    });
+
+    // Enquiry viewing - ROLES: All roles
+    Route::middleware(['role:admin|accountant|loanofficer|Registrar|superadmin|system_admin|public_relation_officer|registrar_hq|representative|general_manager|branch_manager'])->group(function () {
+        Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
+    });
     Route::delete('/enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->name('enquiries.destroy');
 
 
     // ============================================
     // DASHBOARD ROUTES
     // ============================================
-	
-	//general_manager
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    // ROLES: general_manager
+    Route::middleware(['role:general_manager'])->group(function () {
+        Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    });
 
     // ============================================
     // RESPONSE AND STATUS MANAGEMENT ROUTES
@@ -521,6 +497,33 @@ Route::post('/nmb/reconcile', [NmbDisbursementController::class, 'reconcileTrans
 
 
 require __DIR__.'/auth.php';
+
+// ============================================
+// UNAUTHORIZED ACCESS ROUTES
+// ============================================
+Route::get('/unauthorized-access', [App\Http\Controllers\UnauthorizedAccessController::class, 'show'])
+    ->name('unauthorized.access')
+    ->middleware('auth');
+
+Route::get('/unauthorized-access/data', [App\Http\Controllers\UserController::class, 'getUnauthorizedAccessData'])
+    ->name('unauthorized.access.data')
+    ->middleware('auth');
+
+Route::post('/unauthorized-access/export-excel', [App\Http\Controllers\UserController::class, 'exportUnauthorizedAccessExcel'])
+    ->name('unauthorized.access.export.excel')
+    ->middleware(['auth', 'role.access']);
+
+Route::post('/unauthorized-access/export-pdf', [App\Http\Controllers\UserController::class, 'exportUnauthorizedAccessPdf'])
+    ->name('unauthorized.access.export.pdf')
+    ->middleware(['auth', 'role.access']);
+
+Route::post('/unauthorized-access/export-frequent-pdf', [App\Http\Controllers\UnauthorizedAccessController::class, 'exportFrequentAttemptsToPdf'])
+    ->name('unauthorized.access.export.frequent.pdf')
+    ->middleware(['auth', 'role.access']);
+
+Route::post('/unauthorized-access/export-frequent-csv', [App\Http\Controllers\UnauthorizedAccessController::class, 'exportFrequentAttemptsToCSV'])
+    ->name('unauthorized.access.export.frequent.csv')
+    ->middleware(['auth', 'role.access']);
 
 // ============================================
 // AUTHENTICATION AND OTP ROUTES (Outside Auth Middleware)

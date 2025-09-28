@@ -772,6 +772,11 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="unauthorized-access-tab" data-bs-toggle="tab" data-bs-target="#unauthorized-access" type="button" role="tab">
+                            <i class="bx bx-shield-x me-2"></i>Unauthorized Access Reports
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab">
                             <i class="bx bx-file-export me-2"></i>Reports
                         </button>
@@ -1038,6 +1043,258 @@
                                     <i class="bx bx-time-five me-2"></i>24-Hour Activity Timeline
                                 </h5>
                                 <canvas id="timelineChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unauthorized Access Tab -->
+                    <!-- Unauthorized Access Reports Tab -->
+                    <div class="tab-pane fade" id="unauthorized-access" role="tabpanel">
+                        <div class="p-4">
+                            <!-- Header -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h5 class="text-danger mb-1">
+                                        <i class="bx bx-shield-x me-2"></i>Security Violations Dashboard
+                                    </h5>
+                                    <p class="text-muted mb-0">Monitoring unauthorized access attempts and security breaches</p>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-success btn-sm" onclick="exportUnauthorizedAccessExcel()">
+                                        <i class="bx bx-download me-1"></i>Excel Report
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="exportUnauthorizedAccessPDF()">
+                                        <i class="bx bx-file-pdf me-1"></i>PDF Report
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="refreshUnauthorizedAccessData()">
+                                        <i class="bx bx-refresh me-1"></i>Refresh
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Date Range Filter -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row align-items-end">
+                                        <div class="col-md-3">
+                                            <label class="form-label">From Date</label>
+                                            <input type="date" class="form-control" id="unauthorized-from-date" value="{{ date('Y-m-d', strtotime('-30 days')) }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">To Date</label>
+                                            <input type="date" class="form-control" id="unauthorized-to-date" value="{{ date('Y-m-d') }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">User Role</label>
+                                            <select class="form-select" id="unauthorized-role-filter">
+                                                <option value="">All Roles</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="accountant">Accountant</option>
+                                                <option value="loanofficer">Loan Officer</option>
+                                                <option value="registrar_hq">Registrar HQ</option>
+                                                <option value="representative">Representative</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-primary me-2" onclick="applyUnauthorizedFilters()">
+                                                <i class="bx bx-filter me-1"></i>Apply Filter
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="resetUnauthorizedFilters()">
+                                                <i class="bx bx-reset me-1"></i>Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modern Summary Cards -->
+                            <div class="row g-4 mb-4">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="analytics-metric-card">
+                                        <div class="metric-icon">
+                                            <i class="bx bx-shield-x"></i>
+                                        </div>
+                                        <div class="metric-value text-danger" id="total-violations">{{ $unauthorizedStats['total_count'] ?? 0 }}</div>
+                                        <div class="metric-label">Total Violations</div>
+                                        <div class="metric-change negative">
+                                            <i class="bx bx-error-circle"></i> Critical Alert
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="analytics-metric-card">
+                                        <div class="metric-icon">
+                                            <i class="bx bx-user-x"></i>
+                                        </div>
+                                        <div class="metric-value text-warning" id="unique-users">{{ $unauthorizedStats['unique_users_count'] ?? 0 }}</div>
+                                        <div class="metric-label">Unique Violators</div>
+                                        <div class="metric-change negative">
+                                            <i class="bx bx-user-minus"></i> Need Investigation
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="analytics-metric-card">
+                                        <div class="metric-icon">
+                                            <i class="bx bx-calendar-today"></i>
+                                        </div>
+                                        <div class="metric-value text-info" id="today-violations">{{ $unauthorizedStats['today_count'] ?? 0 }}</div>
+                                        <div class="metric-label">Today's Attempts</div>
+                                        <div class="metric-change {{ ($unauthorizedStats['today_count'] ?? 0) > 0 ? 'negative' : 'positive' }}">
+                                            <i class="bx bx-{{ ($unauthorizedStats['today_count'] ?? 0) > 0 ? 'trending-up' : 'check' }}"></i>
+                                            {{ ($unauthorizedStats['today_count'] ?? 0) > 0 ? 'Active Today' : 'Clean Today' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="analytics-metric-card">
+                                        <div class="metric-icon">
+                                            <i class="bx bx-time"></i>
+                                        </div>
+                                        <div class="metric-value text-success" id="this-week-violations">{{ $unauthorizedStats['this_week_count'] ?? 0 }}</div>
+                                        <div class="metric-label">This Week</div>
+                                        <div class="metric-change {{ ($unauthorizedStats['this_week_count'] ?? 0) > 3 ? 'negative' : 'positive' }}">
+                                            <i class="bx bx-{{ ($unauthorizedStats['this_week_count'] ?? 0) > 3 ? 'alert-triangle' : 'shield-check' }}"></i>
+                                            {{ ($unauthorizedStats['this_week_count'] ?? 0) > 3 ? 'High Activity' : 'Low Activity' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Data Table -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0 text-danger">
+                                                <i class="bx bx-table me-2"></i>Security Violation Records
+                                            </h6>
+                                            <small class="text-muted">Detailed audit trail of unauthorized access attempts</small>
+                                        </div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <div class="input-group" style="width: 250px;">
+                                                <span class="input-group-text"><i class="bx bx-search"></i></span>
+                                                <input type="text" class="form-control" id="unauthorizedSearchInput" placeholder="Search records...">
+                                            </div>
+                                            <select class="form-select" id="unauthorizedPerPage" style="width: 120px;">
+                                                <option value="10">10 per page</option>
+                                                <option value="25" selected>25 per page</option>
+                                                <option value="50">50 per page</option>
+                                                <option value="100">100 per page</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0" id="unauthorizedAccessTable">
+                                            <thead class="table-danger">
+                                                <tr>
+                                                    <th style="width: 12%;">
+                                                        <span class="sortable" data-column="user_name">
+                                                            User Name <i class="bx bx-sort"></i>
+                                                        </span>
+                                                    </th>
+                                                    <th style="width: 10%;">Phone</th>
+                                                    <th style="width: 10%;">
+                                                        <span class="sortable" data-column="user_role">
+                                                            Role <i class="bx bx-sort"></i>
+                                                        </span>
+                                                    </th>
+                                                    <th style="width: 12%;">Region</th>
+                                                    <th style="width: 10%;">Branch</th>
+                                                    <th style="width: 10%;">District</th>
+                                                    <th style="width: 20%;">Page Attempted</th>
+                                                    <th style="width: 8%;">
+                                                        <span class="sortable" data-column="date">
+                                                            Date <i class="bx bx-sort"></i>
+                                                        </span>
+                                                    </th>
+                                                    <th style="width: 8%;">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="unauthorized-access-tbody">
+                                                @if($unauthorizedAttempts && $unauthorizedAttempts->count() > 0)
+                                                    @foreach($unauthorizedAttempts as $index => $attempt)
+                                                        <tr class="table-row" data-user-role="{{ $attempt['user_role'] }}" data-date="{{ $attempt['date'] }}" data-user-name="{{ $attempt['user_name'] }}">
+                                                            <td class="fw-medium">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="avatar-sm me-2">
+                                                                        <div class="avatar-title bg-danger-light text-danger rounded-circle">
+                                                                            {{ substr($attempt['user_name'], 0, 2) }}
+                                                                        </div>
+                                                                    </div>
+                                                                    <span>{{ $attempt['user_name'] }}</span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <small class="text-muted">{{ $attempt['user_phone'] }}</small>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge bg-{{ $attempt['user_role'] === 'admin' ? 'danger' : ($attempt['user_role'] === 'accountant' ? 'warning' : 'secondary') }}">
+                                                                    {{ ucfirst(str_replace('_', ' ', $attempt['user_role'])) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>{{ $attempt['region'] }}</td>
+                                                            <td>{{ $attempt['branch'] }}</td>
+                                                            <td>{{ $attempt['district'] }}</td>
+                                                            <td>
+                                                                <code class="text-danger small">{{ $attempt['route_attempted'] }}</code>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge bg-light text-dark">{{ $attempt['date'] }}</span>
+                                                            </td>
+                                                            <td>
+                                                                <small class="text-muted">{{ $attempt['time'] }}</small>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="9" class="text-center py-5">
+                                                            <div class="text-success">
+                                                                <i class="bx bx-shield-check" style="font-size: 3rem;"></i>
+                                                                <h6 class="mt-3 text-success">All Clear!</h6>
+                                                                <p class="text-muted">No unauthorized access attempts found. System security is functioning properly!</p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Pagination -->
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="text-muted">
+                                            Showing <span id="startRecord">1</span> to <span id="endRecord">{{ min(25, $unauthorizedAttempts ? $unauthorizedAttempts->count() : 0) }}</span>
+                                            of <span id="totalRecords">{{ $unauthorizedAttempts ? $unauthorizedAttempts->count() : 0 }}</span> entries
+                                        </div>
+                                        <nav aria-label="Unauthorized access pagination">
+                                            <ul class="pagination pagination-sm mb-0" id="unauthorizedPagination">
+                                                <!-- Pagination will be generated by JavaScript -->
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Security Notice -->
+                            <div class="alert alert-info mt-4" role="alert">
+                                <div class="d-flex">
+                                    <i class="bx bx-info-circle me-2 mt-1"></i>
+                                    <div>
+                                        <h6 class="alert-heading mb-2">Security Monitoring Information</h6>
+                                        <ul class="mb-0 small">
+                                            <li>All unauthorized access attempts are automatically logged with full user details</li>
+                                            <li>Data includes user information, attempted pages, and exact timestamps</li>
+                                            <li>This information is used for security auditing and role permission reviews</li>
+                                            <li>Frequent violations trigger automatic SMS notifications to system administrators</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1683,6 +1940,567 @@ function exportFilteredData() {
     exportForm.submit();
     document.body.removeChild(exportForm);
 }
+
+// ============================================
+// UNAUTHORIZED ACCESS FUNCTIONS
+// ============================================
+
+// Advanced data table functionality
+let currentPage = 1;
+let recordsPerPage = 25;
+let totalRecords = 0;
+let filteredData = [];
+let sortColumn = '';
+let sortDirection = 'asc';
+
+// Initialize unauthorized access data table when tab is shown
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up unauthorized access tab');
+
+    // Initialize immediately if tab is visible, or wait for tab activation
+    const unauthorizedTab = document.getElementById('unauthorized-access-tab');
+    if (unauthorizedTab) {
+        // Add tab activation listener
+        unauthorizedTab.addEventListener('shown.bs.tab', function() {
+            console.log('Unauthorized access tab shown, initializing...');
+            setTimeout(initializeUnauthorizedTable, 100);
+        });
+
+        // Initialize immediately if it's the active tab
+        if (unauthorizedTab.classList.contains('active')) {
+            setTimeout(initializeUnauthorizedTable, 100);
+        }
+    } else {
+        // If no tab system, initialize immediately
+        setTimeout(initializeUnauthorizedTable, 100);
+    }
+});
+
+function initializeUnauthorizedTable() {
+    console.log('Initializing unauthorized access table...');
+
+    // Get all table rows
+    const rows = document.querySelectorAll('#unauthorized-access-tbody .table-row');
+    console.log('Found table rows:', rows.length);
+
+    totalRecords = rows.length;
+    filteredData = Array.from(rows);
+
+    // Initialize pagination only if we have rows
+    if (rows.length > 0) {
+        updatePagination();
+        displayCurrentPage();
+    }
+
+    // Add event listeners
+    addEventListeners();
+}
+
+function addEventListeners() {
+    console.log('Adding event listeners...');
+
+    // Search functionality
+    const searchInput = document.getElementById('unauthorizedSearchInput');
+    if (searchInput) {
+        console.log('Search input found, adding listener');
+        searchInput.addEventListener('input', function() {
+            console.log('Search input changed:', this.value);
+            filterData();
+        });
+    } else {
+        console.log('Search input not found');
+    }
+
+    // Per page selector
+    const perPageSelect = document.getElementById('unauthorizedPerPage');
+    if (perPageSelect) {
+        console.log('Per page select found, adding listener');
+        perPageSelect.addEventListener('change', function() {
+            console.log('Per page changed:', this.value);
+            recordsPerPage = parseInt(this.value);
+            currentPage = 1;
+            displayCurrentPage();
+            updatePagination();
+        });
+    } else {
+        console.log('Per page select not found');
+    }
+
+    // Sort functionality
+    const sortableElements = document.querySelectorAll('.sortable');
+    console.log('Found sortable elements:', sortableElements.length);
+    sortableElements.forEach(element => {
+        element.addEventListener('click', function() {
+            const column = this.dataset.column;
+            console.log('Sorting by column:', column);
+            sortData(column);
+        });
+    });
+
+    // Filter buttons
+    const applyBtn = document.querySelector('button[onclick="applyUnauthorizedFilters()"]');
+    const resetBtn = document.querySelector('button[onclick="resetUnauthorizedFilters()"]');
+
+    if (applyBtn) {
+        console.log('Apply filter button found');
+    } else {
+        console.log('Apply filter button not found');
+    }
+
+    if (resetBtn) {
+        console.log('Reset filter button found');
+    } else {
+        console.log('Reset filter button not found');
+    }
+}
+
+function filterData() {
+    const searchTerm = document.getElementById('unauthorizedSearchInput').value.toLowerCase();
+    const roleFilter = document.getElementById('unauthorized-role-filter').value;
+    const fromDate = document.getElementById('unauthorized-from-date').value;
+    const toDate = document.getElementById('unauthorized-to-date').value;
+
+    const allRows = document.querySelectorAll('#unauthorized-access-tbody .table-row');
+
+    filteredData = Array.from(allRows).filter(row => {
+        const userName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+        const userRole = row.dataset.userRole;
+        const date = row.dataset.date;
+
+        // Search filter
+        const matchesSearch = userName.includes(searchTerm) ||
+                            row.textContent.toLowerCase().includes(searchTerm);
+
+        // Role filter
+        const matchesRole = !roleFilter || userRole === roleFilter;
+
+        // Date range filter
+        const matchesDateRange = (!fromDate || date >= fromDate) &&
+                                (!toDate || date <= toDate);
+
+        return matchesSearch && matchesRole && matchesDateRange;
+    });
+
+    currentPage = 1;
+    displayCurrentPage();
+    updatePagination();
+}
+
+function sortData(column) {
+    if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortColumn = column;
+        sortDirection = 'asc';
+    }
+
+    filteredData.sort((a, b) => {
+        let aValue, bValue;
+
+        switch(column) {
+            case 'user_name':
+                aValue = a.dataset.userName;
+                bValue = b.dataset.userName;
+                break;
+            case 'user_role':
+                aValue = a.dataset.userRole;
+                bValue = b.dataset.userRole;
+                break;
+            case 'date':
+                aValue = a.dataset.date;
+                bValue = b.dataset.date;
+                break;
+            default:
+                return 0;
+        }
+
+        if (sortDirection === 'asc') {
+            return aValue > bValue ? 1 : -1;
+        } else {
+            return aValue < bValue ? 1 : -1;
+        }
+    });
+
+    displayCurrentPage();
+    updateSortIcons();
+}
+
+function updateSortIcons() {
+    // Reset all sort icons
+    document.querySelectorAll('.sortable i').forEach(icon => {
+        icon.className = 'bx bx-sort';
+    });
+
+    // Update current sort icon
+    const currentSortElement = document.querySelector(`[data-column="${sortColumn}"] i`);
+    if (currentSortElement) {
+        currentSortElement.className = sortDirection === 'asc' ? 'bx bx-sort-up' : 'bx bx-sort-down';
+    }
+}
+
+function displayCurrentPage() {
+    // Hide all rows
+    const allRows = document.querySelectorAll('#unauthorized-access-tbody .table-row');
+    allRows.forEach(row => row.style.display = 'none');
+
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const endIndex = startIndex + recordsPerPage;
+
+    // Show rows for current page
+    const currentPageData = filteredData.slice(startIndex, endIndex);
+    currentPageData.forEach(row => row.style.display = '');
+
+    // Update pagination info
+    const startRecord = filteredData.length > 0 ? startIndex + 1 : 0;
+    const endRecord = Math.min(endIndex, filteredData.length);
+
+    document.getElementById('startRecord').textContent = startRecord;
+    document.getElementById('endRecord').textContent = endRecord;
+    document.getElementById('totalRecords').textContent = filteredData.length;
+}
+
+function updatePagination() {
+    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
+    const pagination = document.getElementById('unauthorizedPagination');
+
+    if (!pagination) return;
+
+    pagination.innerHTML = '';
+
+    // Previous button
+    const prevBtn = createPaginationButton('Previous', currentPage - 1, currentPage === 1);
+    pagination.appendChild(prevBtn);
+
+    // Page numbers
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = createPaginationButton(i.toString(), i, false, i === currentPage);
+        pagination.appendChild(pageBtn);
+    }
+
+    // Next button
+    const nextBtn = createPaginationButton('Next', currentPage + 1, currentPage === totalPages);
+    pagination.appendChild(nextBtn);
+}
+
+function createPaginationButton(text, page, disabled = false, active = false) {
+    const li = document.createElement('li');
+    li.className = `page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}`;
+
+    const a = document.createElement('a');
+    a.className = 'page-link';
+    a.href = '#';
+    a.textContent = text;
+
+    if (!disabled) {
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentPage = page;
+            displayCurrentPage();
+            updatePagination();
+        });
+    }
+
+    li.appendChild(a);
+    return li;
+}
+
+function applyUnauthorizedFilters() {
+    console.log('Apply filters clicked');
+    filterData();
+}
+
+function resetUnauthorizedFilters() {
+    console.log('Reset filters clicked');
+    document.getElementById('unauthorized-from-date').value = '{{ date('Y-m-d', strtotime('-30 days')) }}';
+    document.getElementById('unauthorized-to-date').value = '{{ date('Y-m-d') }}';
+    document.getElementById('unauthorized-role-filter').value = '';
+    document.getElementById('unauthorizedSearchInput').value = '';
+
+    filterData();
+}
+
+// Make functions available globally for debugging
+window.testUnauthorizedFunctions = function() {
+    console.log('Testing unauthorized access functions...');
+    console.log('exportUnauthorizedAccessExcel:', typeof exportUnauthorizedAccessExcel);
+    console.log('exportUnauthorizedAccessPDF:', typeof exportUnauthorizedAccessPDF);
+    console.log('applyUnauthorizedFilters:', typeof applyUnauthorizedFilters);
+    console.log('resetUnauthorizedFilters:', typeof resetUnauthorizedFilters);
+};
+
+function exportUnauthorizedExcel() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+
+    // Handle URL resolution like data loading
+    let actionUrl = '{{ route("unauthorized.access.export.excel") }}';
+    const currentOrigin = window.location.origin;
+    if (!actionUrl.startsWith(currentOrigin)) {
+        actionUrl = '/unauthorized-access/export-excel';
+    }
+    form.action = actionUrl;
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.appendChild(csrfInput);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
+function exportFrequentAttemptsPDF() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+
+    let actionUrl = '{{ route("unauthorized.access.export.frequent.pdf") }}';
+    const currentOrigin = window.location.origin;
+    if (!actionUrl.startsWith(currentOrigin)) {
+        actionUrl = '/unauthorized-access/export-frequent-pdf';
+    }
+    form.action = actionUrl;
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.appendChild(csrfInput);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
+function exportFrequentAttemptsCSV() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+
+    let actionUrl = '{{ route("unauthorized.access.export.frequent.csv") }}';
+    const currentOrigin = window.location.origin;
+    if (!actionUrl.startsWith(currentOrigin)) {
+        actionUrl = '/unauthorized-access/export-frequent-csv';
+    }
+    form.action = actionUrl;
+
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.appendChild(csrfInput);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+}
+
+// Functions for the new unauthorized access tab
+function refreshUnauthorizedAccessData() {
+    const refreshBtn = document.querySelector('button[onclick="refreshUnauthorizedAccessData()"]');
+    if (refreshBtn) {
+        const originalText = refreshBtn.innerHTML;
+        refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Refreshing...';
+        refreshBtn.disabled = true;
+
+        // Simple page reload to get fresh data
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+}
+
+function exportUnauthorizedAccessExcel() {
+    console.log('Excel export clicked');
+
+    // Show loading state
+    const btn = document.querySelector('button[onclick="exportUnauthorizedAccessExcel()"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Generating Excel...';
+    btn.disabled = true;
+
+    // Get current filter values
+    const fromDate = document.getElementById('unauthorized-from-date');
+    const toDate = document.getElementById('unauthorized-to-date');
+    const roleFilter = document.getElementById('unauthorized-role-filter');
+    const searchInput = document.getElementById('unauthorizedSearchInput');
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ route("unauthorized.access.export.excel") }}';
+
+    // Add CSRF token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.appendChild(csrfInput);
+
+    // Add filter parameters if they exist
+    if (fromDate && fromDate.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'from_date';
+        input.value = fromDate.value;
+        form.appendChild(input);
+    }
+
+    if (toDate && toDate.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'to_date';
+        input.value = toDate.value;
+        form.appendChild(input);
+    }
+
+    if (roleFilter && roleFilter.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'role_filter';
+        input.value = roleFilter.value;
+        form.appendChild(input);
+    }
+
+    if (searchInput && searchInput.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'search_term';
+        input.value = searchInput.value;
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    // Reset button after delay
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }, 3000);
+}
+
+function exportUnauthorizedAccessPDF() {
+    console.log('PDF export clicked');
+
+    // Show loading state
+    const btn = document.querySelector('button[onclick="exportUnauthorizedAccessPDF()"]');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Generating PDF...';
+    btn.disabled = true;
+
+    // Get current filter values
+    const fromDate = document.getElementById('unauthorized-from-date');
+    const toDate = document.getElementById('unauthorized-to-date');
+    const roleFilter = document.getElementById('unauthorized-role-filter');
+    const searchInput = document.getElementById('unauthorizedSearchInput');
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ route("unauthorized.access.export.pdf") }}';
+
+    // Add CSRF token
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = '_token';
+    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    form.appendChild(csrfInput);
+
+    // Add filter parameters if they exist
+    if (fromDate && fromDate.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'from_date';
+        input.value = fromDate.value;
+        form.appendChild(input);
+    }
+
+    if (toDate && toDate.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'to_date';
+        input.value = toDate.value;
+        form.appendChild(input);
+    }
+
+    if (roleFilter && roleFilter.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'role_filter';
+        input.value = roleFilter.value;
+        form.appendChild(input);
+    }
+
+    if (searchInput && searchInput.value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'search_term';
+        input.value = searchInput.value;
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    // Reset button after delay
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }, 3000);
+}
+
+// Test filter functionality
+function testFilters() {
+    console.log('Testing filter elements...');
+    console.log('From date:', document.getElementById('unauthorized-from-date'));
+    console.log('To date:', document.getElementById('unauthorized-to-date'));
+    console.log('Role filter:', document.getElementById('unauthorized-role-filter'));
+    console.log('Search input:', document.getElementById('unauthorizedSearchInput'));
+}
+
+// Global debug function accessible from browser console
+window.debugUnauthorizedAccess = function() {
+    console.log('=== UNAUTHORIZED ACCESS DEBUG ===');
+    console.log('1. Tab element:', document.getElementById('unauthorized-access-tab'));
+    console.log('2. Table body:', document.getElementById('unauthorized-access-tbody'));
+    console.log('3. Filter elements:');
+    console.log('   - From date:', document.getElementById('unauthorized-from-date'));
+    console.log('   - To date:', document.getElementById('unauthorized-to-date'));
+    console.log('   - Role filter:', document.getElementById('unauthorized-role-filter'));
+    console.log('   - Search input:', document.getElementById('unauthorizedSearchInput'));
+    console.log('4. Export buttons:');
+    console.log('   - Excel button:', document.querySelector('button[onclick="exportUnauthorizedAccessExcel()"]'));
+    console.log('   - PDF button:', document.querySelector('button[onclick="exportUnauthorizedAccessPDF()"]'));
+    console.log('5. Filter buttons:');
+    console.log('   - Apply button:', document.querySelector('button[onclick="applyUnauthorizedFilters()"]'));
+    console.log('   - Reset button:', document.querySelector('button[onclick="resetUnauthorizedFilters()"]'));
+    console.log('6. CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'));
+    console.log('7. Table rows:', document.querySelectorAll('#unauthorized-access-tbody .table-row').length);
+
+    // Test export functions
+    if (typeof exportUnauthorizedAccessExcel === 'function') {
+        console.log('✅ Export Excel function is available');
+    } else {
+        console.log('❌ Export Excel function is NOT available');
+    }
+
+    if (typeof exportUnauthorizedAccessPDF === 'function') {
+        console.log('✅ Export PDF function is available');
+    } else {
+        console.log('❌ Export PDF function is NOT available');
+    }
+
+    console.log('=== END DEBUG ===');
+    console.log('To test exports manually, try:');
+    console.log('exportUnauthorizedAccessExcel()');
+    console.log('exportUnauthorizedAccessPDF()');
+};
+
 </script>
 
 @endsection

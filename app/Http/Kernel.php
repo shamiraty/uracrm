@@ -66,6 +66,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user.status' => \App\Http\Middleware\CheckUserStatus::class, // Hapa ndio middleware yako
+        'role.access' => \App\Http\Middleware\RoleAccessMiddleware::class, // Role-based access control
+        'role' => \App\Http\Middleware\RoleMiddleware::class, // Simple role middleware with parameters
 
     ];
 
@@ -81,6 +83,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user.status' => \App\Http\Middleware\CheckUserStatus::class, // Hapa ndio middleware yako
         'update.activity' => \App\Http\Middleware\UpdateUserActivity::class,
+        'role.access' => \App\Http\Middleware\RoleAccessMiddleware::class, // Role-based access control
 
     ];
 }

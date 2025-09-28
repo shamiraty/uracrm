@@ -27,6 +27,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 use Illuminate\Support\Facades\Storage;
+use App\Models\UnauthorizedAccess;
 
 
 class UserController extends Controller
@@ -160,6 +161,37 @@ class UserController extends Controller
         $districts = District::all();
         $commands = Command::all();
 
+        // Get unauthorized access data for the tab
+        $unauthorizedAttempts = UnauthorizedAccess::with('user')
+            ->orderBy('attempted_at', 'desc')
+            ->take(100)
+            ->get()
+            ->map(function($attempt) {
+                return [
+                    'id' => $attempt->id,
+                    'user_name' => $attempt->user_details['name'] ?? 'Unknown',
+                    'user_phone' => $attempt->user_details['phone_number'] ?? 'N/A',
+                    'user_role' => $attempt->user_role,
+                    'region' => $attempt->user_details['region'] ?? 'N/A',
+                    'branch' => $attempt->user_details['branch'] ?? 'N/A',
+                    'district' => $attempt->user_details['district'] ?? 'N/A',
+                    'route_attempted' => $attempt->route_name,
+                    'url_attempted' => $attempt->url_attempted,
+                    'required_roles' => $attempt->required_roles,
+                    'attempted_at' => $attempt->attempted_at->format('d/m/Y H:i:s'),
+                    'date' => $attempt->attempted_at->format('d/m/Y'),
+                    'time' => $attempt->attempted_at->format('H:i:s'),
+                    'year' => $attempt->attempted_at->format('Y')
+                ];
+            });
+
+        $unauthorizedStats = [
+            'total_count' => UnauthorizedAccess::count(),
+            'today_count' => UnauthorizedAccess::whereDate('attempted_at', today())->count(),
+            'this_week_count' => UnauthorizedAccess::whereBetween('attempted_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+            'unique_users_count' => $unauthorizedAttempts->pluck('user_name')->unique()->count(),
+        ];
+
         return view('users.index', compact(
             'usersWithStatus',
             'totalUsers',
@@ -177,7 +209,9 @@ class UserController extends Controller
             'regions',
             'departments',
             'districts',
-            'commands'
+            'commands',
+            'unauthorizedAttempts',
+            'unauthorizedStats'
         ));
     }
 
@@ -712,7 +746,17 @@ class UserController extends Controller
             'generated_by' => auth()->user()->name
         ];
 
-        $pdf = Pdf::loadView('reports.users-activity', $data);
+        $pdf = Pdf::loadView('reports.users-activity', $data)
+            ->setPaper('a4', 'landscape')
+            ->setOptions([
+                'defaultFont' => 'DejaVu Sans',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'margin_top' => 10,
+                'margin_right' => 10,
+                'margin_bottom' => 10,
+                'margin_left' => 10
+            ]);
 
         return $pdf->download($filename . '.pdf');
     }
@@ -743,5 +787,209 @@ class UserController extends Controller
         $pdf = Pdf::loadView('reports.analytics-dashboard', $data);
 
         return $pdf->download('analytics_dashboard_' . date('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Get unauthorized access attempts data for the user analytics tab
+     */
+    public function getUnauthorizedAccessData(Request $request)
+    {
+        $attempts = UnauthorizedAccess::with('user')
+            ->orderBy('attempted_at', 'desc')
+            ->take(100)
+            ->get()
+            ->map(function($attempt) {
+                return [
+                    'id' => $attempt->id,
+                    'user_name' => $attempt->user_details['name'] ?? 'Unknown',
+                    'user_phone' => $attempt->user_details['phone_number'] ?? 'N/A',
+                    'user_role' => $attempt->user_role,
+                    'region' => $attempt->user_details['region'] ?? 'N/A',
+                    'branch' => $attempt->user_details['branch'] ?? 'N/A',
+                    'district' => $attempt->user_details['district'] ?? 'N/A',
+                    'route_attempted' => $attempt->route_name,
+                    'url_attempted' => $attempt->url_attempted,
+                    'required_roles' => $attempt->required_roles,
+                    'attempted_at' => $attempt->attempted_at->format('d/m/Y H:i:s'),
+                    'date' => $attempt->attempted_at->format('d/m/Y'),
+                    'time' => $attempt->attempted_at->format('H:i:s'),
+                    'year' => $attempt->attempted_at->format('Y')
+                ];
+            });
+
+        return response()->json([
+            'attempts' => $attempts,
+            'total_count' => UnauthorizedAccess::count(),
+            'today_count' => UnauthorizedAccess::whereDate('attempted_at', today())->count(),
+            'this_week_count' => UnauthorizedAccess::whereBetween('attempted_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+        ]);
+    }
+
+    /**
+     * Export unauthorized access attempts to Excel
+     */
+    public function exportUnauthorizedAccessExcel(Request $request)
+    {
+        // Build query with filters
+        $query = UnauthorizedAccess::with('user')->orderBy('attempted_at', 'desc');
+
+        // Apply date range filter
+        if ($request->filled('from_date')) {
+            $query->whereDate('attempted_at', '>=', $request->from_date);
+        }
+        if ($request->filled('to_date')) {
+            $query->whereDate('attempted_at', '<=', $request->to_date);
+        }
+
+        // Apply role filter
+        if ($request->filled('role_filter')) {
+            $query->where('user_role', $request->role_filter);
+        }
+
+        // Apply search filter
+        if ($request->filled('search_term')) {
+            $searchTerm = $request->search_term;
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereJsonContains('user_details->name', $searchTerm)
+                  ->orWhere('route_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('user_role', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $attempts = $query->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set headers
+        $headers = [
+            'A1' => 'User Name',
+            'B1' => 'Phone Number',
+            'C1' => 'User Role',
+            'D1' => 'Region',
+            'E1' => 'Branch',
+            'F1' => 'District',
+            'G1' => 'Page Attempted',
+            'H1' => 'Required Roles',
+            'I1' => 'Date',
+            'J1' => 'Time',
+            'K1' => 'Year',
+            'L1' => 'Full URL',
+            'M1' => 'IP Address'
+        ];
+
+        foreach ($headers as $cell => $header) {
+            $sheet->setCellValue($cell, $header);
+            $sheet->getStyle($cell)->getFont()->setBold(true);
+            $sheet->getStyle($cell)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setRGB('17479E');
+            $sheet->getStyle($cell)->getFont()->getColor()->setRGB('FFFFFF');
+        }
+
+        // Set data
+        $row = 2;
+        foreach ($attempts as $attempt) {
+            $sheet->setCellValue('A' . $row, $attempt->user_details['name'] ?? 'Unknown');
+            $sheet->setCellValue('B' . $row, $attempt->user_details['phone_number'] ?? 'N/A');
+            $sheet->setCellValue('C' . $row, $attempt->user_role);
+            $sheet->setCellValue('D' . $row, $attempt->user_details['region'] ?? 'N/A');
+            $sheet->setCellValue('E' . $row, $attempt->user_details['branch'] ?? 'N/A');
+            $sheet->setCellValue('F' . $row, $attempt->user_details['district'] ?? 'N/A');
+            $sheet->setCellValue('G' . $row, $attempt->route_name);
+            $sheet->setCellValue('H' . $row, $attempt->required_roles);
+            $sheet->setCellValue('I' . $row, $attempt->attempted_at->format('d/m/Y'));
+            $sheet->setCellValue('J' . $row, $attempt->attempted_at->format('H:i:s'));
+            $sheet->setCellValue('K' . $row, $attempt->attempted_at->format('Y'));
+            $sheet->setCellValue('L' . $row, $attempt->url_attempted);
+            $sheet->setCellValue('M' . $row, $attempt->ip_address);
+            $row++;
+        }
+
+        // Auto-size columns
+        foreach (range('A', 'M') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'unauthorized_access_attempts_' . date('Y-m-d');
+
+        return new StreamedResponse(function() use ($writer) {
+            $writer->save('php://output');
+        }, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '.xlsx"',
+            'Cache-Control' => 'max-age=0',
+        ]);
+    }
+
+    /**
+     * Export unauthorized access attempts to PDF
+     */
+    public function exportUnauthorizedAccessPdf(Request $request)
+    {
+        // Build query with filters (same as Excel export)
+        $query = UnauthorizedAccess::with('user')->orderBy('attempted_at', 'desc');
+
+        // Apply date range filter
+        if ($request->filled('from_date')) {
+            $query->whereDate('attempted_at', '>=', $request->from_date);
+        }
+        if ($request->filled('to_date')) {
+            $query->whereDate('attempted_at', '<=', $request->to_date);
+        }
+
+        // Apply role filter
+        if ($request->filled('role_filter')) {
+            $query->where('user_role', $request->role_filter);
+        }
+
+        // Apply search filter
+        if ($request->filled('search_term')) {
+            $searchTerm = $request->search_term;
+            $query->where(function($q) use ($searchTerm) {
+                $q->whereJsonContains('user_details->name', $searchTerm)
+                  ->orWhere('route_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('user_role', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $attempts = $query->take(100)->get()
+            ->map(function($attempt) {
+                return [
+                    'user_name' => $attempt->user_details['name'] ?? 'Unknown',
+                    'user_phone' => $attempt->user_details['phone_number'] ?? 'N/A',
+                    'user_role' => $attempt->user_role,
+                    'region' => $attempt->user_details['region'] ?? 'N/A',
+                    'branch' => $attempt->user_details['branch'] ?? 'N/A',
+                    'district' => $attempt->user_details['district'] ?? 'N/A',
+                    'route_attempted' => $attempt->route_name,
+                    'attempted_at' => $attempt->attempted_at->format('d/m/Y H:i:s'),
+                    'date' => $attempt->attempted_at->format('d/m/Y'),
+                    'time' => $attempt->attempted_at->format('H:i:s'),
+                    'year' => $attempt->attempted_at->format('Y')
+                ];
+            });
+
+        $data = [
+            'attempts' => $attempts,
+            'total_count' => $attempts->count(),
+            'generated_at' => now()->format('d/m/Y H:i:s'),
+            'generated_by' => auth()->user()->name,
+            'title' => 'Unauthorized Access Attempts Report'
+        ];
+
+        $pdf = Pdf::loadView('reports.unauthorized-access-attempts', $data)
+            ->setPaper('a4', 'landscape')
+            ->setOptions([
+                'defaultFont' => 'DejaVu Sans',
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'margin_top' => 10,
+                'margin_right' => 10,
+                'margin_bottom' => 10,
+                'margin_left' => 10
+            ]);
+
+        return $pdf->download('unauthorized_access_attempts_' . date('Y-m-d') . '.pdf');
     }
 }
