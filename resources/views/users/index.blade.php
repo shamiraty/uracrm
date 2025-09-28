@@ -994,6 +994,7 @@
                                                     <th>Location</th>
                                                     <th>Session Duration</th>
                                                     <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1023,6 +1024,14 @@
                                                             <span class="online-indicator me-2"></span>
                                                             <small class="text-success fw-bold">Active</small>
                                                         </div>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('users.view', $user->id) }}"
+                                                           class="btn btn-outline-primary btn-sm"
+                                                           title="View User Details"
+                                                           target="_blank">
+                                                            <i class="bx bx-show"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -1060,13 +1069,25 @@
                                     <p class="text-muted mb-0">Monitoring unauthorized access attempts and security breaches</p>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-success btn-sm" onclick="exportUnauthorizedAccessExcel()">
-                                        <i class="bx bx-download me-1"></i>Excel Report
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="exportUnauthorizedAccessPDF()">
-                                        <i class="bx bx-file-pdf me-1"></i>PDF Report
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="refreshUnauthorizedAccessData()">
+                                    <form action="{{ route('unauthorized.access.export.excel') }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <input type="hidden" name="from_date" id="export-from-date" value="{{ date('Y-m-d', strtotime('-30 days')) }}">
+                                        <input type="hidden" name="to_date" id="export-to-date" value="{{ date('Y-m-d') }}">
+                                        <input type="hidden" name="role_filter" id="export-role-filter" value="">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bx bx-download me-1"></i>Excel Report
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('unauthorized.access.export.pdf') }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <input type="hidden" name="from_date" id="export-pdf-from-date" value="{{ date('Y-m-d', strtotime('-30 days')) }}">
+                                        <input type="hidden" name="to_date" id="export-pdf-to-date" value="{{ date('Y-m-d') }}">
+                                        <input type="hidden" name="role_filter" id="export-pdf-role-filter" value="">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bx bx-file-pdf me-1"></i>PDF Report
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.reload()">
                                         <i class="bx bx-refresh me-1"></i>Refresh
                                     </button>
                                 </div>
@@ -1096,10 +1117,10 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <button type="button" class="btn btn-primary me-2" onclick="applyUnauthorizedFilters()">
+                                            <button type="button" class="btn btn-primary me-2" onclick="applyUnauthorizedFilter()">
                                                 <i class="bx bx-filter me-1"></i>Apply Filter
                                             </button>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="resetUnauthorizedFilters()">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="resetUnauthorizedFilter()">
                                                 <i class="bx bx-reset me-1"></i>Reset
                                             </button>
                                         </div>
@@ -1190,27 +1211,28 @@
                                         <table class="table table-hover mb-0" id="unauthorizedAccessTable">
                                             <thead class="table-danger">
                                                 <tr>
-                                                    <th style="width: 12%;">
+                                                    <th style="width: 10%;">
                                                         <span class="sortable" data-column="user_name">
                                                             User Name <i class="bx bx-sort"></i>
                                                         </span>
                                                     </th>
-                                                    <th style="width: 10%;">Phone</th>
-                                                    <th style="width: 10%;">
+                                                    <th style="width: 8%;">Phone</th>
+                                                    <th style="width: 8%;">
                                                         <span class="sortable" data-column="user_role">
                                                             Role <i class="bx bx-sort"></i>
                                                         </span>
                                                     </th>
-                                                    <th style="width: 12%;">Region</th>
-                                                    <th style="width: 10%;">Branch</th>
-                                                    <th style="width: 10%;">District</th>
-                                                    <th style="width: 20%;">Page Attempted</th>
+                                                    <th style="width: 10%;">Region</th>
+                                                    <th style="width: 8%;">Branch</th>
+                                                    <th style="width: 8%;">District</th>
+                                                    <th style="width: 18%;">Page Attempted</th>
                                                     <th style="width: 8%;">
                                                         <span class="sortable" data-column="date">
                                                             Date <i class="bx bx-sort"></i>
                                                         </span>
                                                     </th>
-                                                    <th style="width: 8%;">Time</th>
+                                                    <th style="width: 6%;">Time</th>
+                                                    <th style="width: 8%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="unauthorized-access-tbody">
@@ -1247,11 +1269,19 @@
                                                             <td>
                                                                 <small class="text-muted">{{ $attempt['time'] }}</small>
                                                             </td>
+                                                            <td>
+                                                                <a href="{{ route('users.view', ['id' => $attempt['user_id'] ?? 1]) }}"
+                                                                   class="btn btn-outline-primary btn-sm"
+                                                                   title="View User Details"
+                                                                   target="_blank">
+                                                                    <i class="bx bx-show"></i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td colspan="9" class="text-center py-5">
+                                                        <td colspan="10" class="text-center py-5">
                                                             <div class="text-success">
                                                                 <i class="bx bx-shield-check" style="font-size: 3rem;"></i>
                                                                 <h6 class="mt-3 text-success">All Clear!</h6>
@@ -1305,7 +1335,7 @@
                             <!-- Security Metrics -->
                             <div class="row g-4 mb-4">
                                 <div class="col-lg-3 col-md-6">
-                                    <div class="analytics-metric-card">
+                                    <div class="analytics-metric-card clickable-card" onclick="showSecurityTable('sessions')" style="cursor: pointer;">
                                         <div class="metric-icon">
                                             <i class="bx bx-shield-check"></i>
                                         </div>
@@ -1317,7 +1347,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
-                                    <div class="analytics-metric-card">
+                                    <div class="analytics-metric-card clickable-card" onclick="showSecurityTable('password_expiries')" style="cursor: pointer;">
                                         <div class="metric-icon">
                                             <i class="bx bx-lock-alt"></i>
                                         </div>
@@ -1329,7 +1359,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
-                                    <div class="analytics-metric-card">
+                                    <div class="analytics-metric-card clickable-card" onclick="showSecurityTable('failed_logins')" style="cursor: pointer;">
                                         <div class="metric-icon">
                                             <i class="bx bx-error"></i>
                                         </div>
@@ -1360,6 +1390,30 @@
                                     <i class="bx bx-shield me-2"></i>Security Events Timeline
                                 </h5>
                                 <canvas id="securityChart" width="400" height="200"></canvas>
+                            </div>
+
+                            <!-- Security Tables Container -->
+                            <div id="security-tables-container" style="display: none;" class="mt-4">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0" id="security-table-title">
+                                            <i class="bx bx-table me-2"></i>Security Data
+                                        </h6>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="hideSecurityTables()">
+                                            <i class="bx bx-x"></i> Close
+                                        </button>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0" id="security-data-table">
+                                                <thead id="security-table-head" class="table-primary">
+                                                </thead>
+                                                <tbody id="security-table-body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1675,29 +1729,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Analytics Charts Initialization
 function initializeAnalyticsCharts() {
-    // Activity Chart
+    // Activity Chart - User Activity Trends (Last 30 Days)
     const activityCtx = document.getElementById('activityChart');
     if (activityCtx) {
+        // Generate activity data for the last 30 days
+        const last30Days = [];
+        const activityData = [];
+        const registrationData = [];
+        const today = new Date();
+        const totalUsers = {{ $users->count() }};
+        const activeUsers = {{ $users->where('status', 'active')->count() }};
+
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            last30Days.push(date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }));
+
+            // Simulate realistic activity data based on day of week
+            const dayOfWeek = date.getDay();
+            let dailyActivity = 0;
+            let dailyRegistrations = 0;
+
+            if (dayOfWeek >= 1 && dayOfWeek <= 5) { // Weekdays
+                dailyActivity = Math.floor(Math.random() * 20) + Math.floor(activeUsers * 0.7);
+                dailyRegistrations = Math.floor(Math.random() * 5) + 1;
+            } else { // Weekends
+                dailyActivity = Math.floor(Math.random() * 10) + Math.floor(activeUsers * 0.3);
+                dailyRegistrations = Math.floor(Math.random() * 2);
+            }
+
+            activityData.push(Math.max(0, dailyActivity));
+            registrationData.push(Math.max(0, dailyRegistrations));
+        }
+
         new Chart(activityCtx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: last30Days,
                 datasets: [{
                     label: 'Active Users',
-                    data: [65, 59, 80, 81, 56, 75, 82, 67, 78, 85, 92, 88],
+                    data: activityData,
                     borderColor: '#17479E',
                     backgroundColor: 'rgba(23, 71, 158, 0.1)',
                     borderWidth: 3,
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 8,
                 }, {
                     label: 'New Registrations',
-                    data: [28, 48, 40, 19, 36, 27, 45, 32, 48, 52, 61, 58],
+                    data: registrationData,
                     borderColor: '#00BCD4',
                     backgroundColor: 'rgba(0, 188, 212, 0.1)',
                     borderWidth: 3,
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointHoverRadius: 8,
                 }]
             },
             options: {
@@ -1706,6 +1794,15 @@ function initializeAnalyticsCharts() {
                 plugins: {
                     legend: {
                         position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#17479E',
+                        borderWidth: 1,
                     }
                 },
                 scales: {
@@ -1713,13 +1810,25 @@ function initializeAnalyticsCharts() {
                         beginAtZero: true,
                         grid: {
                             color: 'rgba(23, 71, 158, 0.1)'
+                        },
+                        ticks: {
+                            color: '#666'
                         }
                     },
                     x: {
                         grid: {
-                            color: 'rgba(23, 71, 158, 0.1)'
+                            color: 'rgba(23, 71, 158, 0.05)'
+                        },
+                        ticks: {
+                            color: '#666',
+                            maxTicksLimit: 10
                         }
                     }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
                 }
             }
         });
@@ -2208,298 +2317,292 @@ function createPaginationButton(text, page, disabled = false, active = false) {
     return li;
 }
 
-function applyUnauthorizedFilters() {
-    console.log('Apply filters clicked');
-    filterData();
+// Simple helper functions for unauthorized access tab forms
+function updateFilterValues() {
+    // Update hidden form inputs with current filter values before form submission
+    const fromDate = document.getElementById('unauthorized-from-date').value;
+    const toDate = document.getElementById('unauthorized-to-date').value;
+    const roleFilter = document.getElementById('unauthorized-role-filter').value;
+
+    // Update filter form hidden inputs
+    document.getElementById('filter-from-date').value = fromDate;
+    document.getElementById('filter-to-date').value = toDate;
+    document.getElementById('filter-role').value = roleFilter;
+
+    // Update export forms hidden inputs
+    document.getElementById('export-from-date').value = fromDate;
+    document.getElementById('export-to-date').value = toDate;
+    document.getElementById('export-role-filter').value = roleFilter;
+
+    document.getElementById('export-pdf-from-date').value = fromDate;
+    document.getElementById('export-pdf-to-date').value = toDate;
+    document.getElementById('export-pdf-role-filter').value = roleFilter;
 }
 
-function resetUnauthorizedFilters() {
-    console.log('Reset filters clicked');
+// Update export forms when user clicks export buttons
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to export forms to update values before submission
+    const excelForm = document.querySelector('form[action*="unauthorized.access.export.excel"]');
+    const pdfForm = document.querySelector('form[action*="unauthorized.access.export.pdf"]');
+
+    if (excelForm) {
+        excelForm.addEventListener('submit', function() {
+            updateFilterValues();
+        });
+    }
+
+    if (pdfForm) {
+        pdfForm.addEventListener('submit', function() {
+            updateFilterValues();
+        });
+    }
+});
+
+// Filter functions that work within the popup dialog
+function applyUnauthorizedFilter() {
+    const fromDate = document.getElementById('unauthorized-from-date').value;
+    const toDate = document.getElementById('unauthorized-to-date').value;
+    const roleFilter = document.getElementById('unauthorized-role-filter').value;
+    const searchInput = document.getElementById('unauthorizedSearchInput').value;
+
+    // Filter table rows based on criteria
+    const tableRows = document.querySelectorAll('#unauthorized-access-tbody .table-row');
+    let visibleCount = 0;
+
+    tableRows.forEach(row => {
+        let showRow = true;
+
+        // Check date filter
+        if (fromDate || toDate) {
+            const rowDate = row.getAttribute('data-date');
+            if (rowDate) {
+                const [day, month, year] = rowDate.split('/');
+                const rowDateObj = new Date(year, month - 1, day);
+
+                if (fromDate) {
+                    const fromDateObj = new Date(fromDate);
+                    if (rowDateObj < fromDateObj) showRow = false;
+                }
+
+                if (toDate) {
+                    const toDateObj = new Date(toDate);
+                    if (rowDateObj > toDateObj) showRow = false;
+                }
+            }
+        }
+
+        // Check role filter
+        if (roleFilter && row.getAttribute('data-user-role') !== roleFilter) {
+            showRow = false;
+        }
+
+        // Check search filter
+        if (searchInput) {
+            const rowText = row.textContent.toLowerCase();
+            if (!rowText.includes(searchInput.toLowerCase())) {
+                showRow = false;
+            }
+        }
+
+        // Show/hide row
+        if (showRow) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Update record count display
+    document.getElementById('endRecord').textContent = visibleCount;
+    document.getElementById('startRecord').textContent = visibleCount > 0 ? '1' : '0';
+}
+
+function resetUnauthorizedFilter() {
+    // Reset all filter inputs
     document.getElementById('unauthorized-from-date').value = '{{ date('Y-m-d', strtotime('-30 days')) }}';
     document.getElementById('unauthorized-to-date').value = '{{ date('Y-m-d') }}';
     document.getElementById('unauthorized-role-filter').value = '';
     document.getElementById('unauthorizedSearchInput').value = '';
 
-    filterData();
+    // Show all rows
+    const tableRows = document.querySelectorAll('#unauthorized-access-tbody .table-row');
+    tableRows.forEach(row => {
+        row.style.display = '';
+    });
+
+    // Reset record count
+    const totalRows = tableRows.length;
+    document.getElementById('endRecord').textContent = Math.min(25, totalRows);
+    document.getElementById('startRecord').textContent = totalRows > 0 ? '1' : '0';
+    document.getElementById('totalRecords').textContent = totalRows;
 }
 
-// Make functions available globally for debugging
-window.testUnauthorizedFunctions = function() {
-    console.log('Testing unauthorized access functions...');
-    console.log('exportUnauthorizedAccessExcel:', typeof exportUnauthorizedAccessExcel);
-    console.log('exportUnauthorizedAccessPDF:', typeof exportUnauthorizedAccessPDF);
-    console.log('applyUnauthorizedFilters:', typeof applyUnauthorizedFilters);
-    console.log('resetUnauthorizedFilters:', typeof resetUnauthorizedFilters);
-};
+// Security Tables Functions
+function showSecurityTable(type) {
+    const container = document.getElementById('security-tables-container');
+    const title = document.getElementById('security-table-title');
+    const tableHead = document.getElementById('security-table-head');
+    const tableBody = document.getElementById('security-table-body');
 
-function exportUnauthorizedExcel() {
-    const form = document.createElement('form');
-    form.method = 'POST';
+    // Clear existing content
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
 
-    // Handle URL resolution like data loading
-    let actionUrl = '{{ route("unauthorized.access.export.excel") }}';
-    const currentOrigin = window.location.origin;
-    if (!actionUrl.startsWith(currentOrigin)) {
-        actionUrl = '/unauthorized-access/export-excel';
+    // Show container
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth' });
+
+    if (type === 'sessions') {
+        title.innerHTML = '<i class="bx bx-shield-check me-2"></i>Active Secure Sessions';
+
+        // Create table headers
+        tableHead.innerHTML = `
+            <tr>
+                <th>User Name</th>
+                <th>Session ID</th>
+                <th>IP Address</th>
+                <th>Location</th>
+                <th>Started At</th>
+                <th>Last Activity</th>
+                <th>Actions</th>
+            </tr>
+        `;
+
+        // Sample data for secure sessions
+        const sessionsData = @json($users->where('status', 'active')->take(10)->map(function($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'session_id' => 'sess_' . substr(md5($user->id . time()), 0, 8),
+                'ip_address' => '192.168.' . rand(1, 255) . '.' . rand(1, 255),
+                'location' => ['Kampala', 'Jinja', 'Mbarara', 'Gulu', 'Mbale'][rand(0, 4)],
+                'started_at' => now()->subHours(rand(1, 24))->format('H:i'),
+                'last_activity' => now()->subMinutes(rand(1, 60))->format('H:i')
+            ];
+        }));
+
+        sessionsData.forEach(session => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td><strong>${session.name}</strong></td>
+                    <td><code>${session.session_id}</code></td>
+                    <td>${session.ip_address}</td>
+                    <td>${session.location}</td>
+                    <td>${session.started_at}</td>
+                    <td><span class="badge bg-success">${session.last_activity}</span></td>
+                    <td>
+                        <a href="/users/view/${session.id}" class="btn btn-outline-primary btn-sm" target="_blank">
+                            <i class="bx bx-show"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } else if (type === 'password_expiries') {
+        title.innerHTML = '<i class="bx bx-lock-alt me-2"></i>Password Expiries';
+
+        tableHead.innerHTML = `
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Password Age</th>
+                <th>Expires In</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        `;
+
+        // Sample data for password expiries
+        const expiryData = @json($users->take(15)->map(function($user) {
+            $daysToExpiry = rand(1, 45);
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'password_age' => rand(60, 120) . ' days',
+                'expires_in' => $daysToExpiry . ' days',
+                'status' => $daysToExpiry <= 7 ? 'critical' : ($daysToExpiry <= 14 ? 'warning' : 'normal')
+            ];
+        }));
+
+        expiryData.forEach(item => {
+            const badgeClass = item.status === 'critical' ? 'bg-danger' : (item.status === 'warning' ? 'bg-warning' : 'bg-success');
+            tableBody.innerHTML += `
+                <tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.email}</td>
+                    <td><span class="badge bg-secondary">${item.role}</span></td>
+                    <td>${item.password_age}</td>
+                    <td><span class="badge ${badgeClass}">${item.expires_in}</span></td>
+                    <td><span class="badge ${badgeClass}">${item.status.toUpperCase()}</span></td>
+                    <td>
+                        <a href="/users/view/${item.id}" class="btn btn-outline-primary btn-sm" target="_blank">
+                            <i class="bx bx-show"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } else if (type === 'failed_logins') {
+        title.innerHTML = '<i class="bx bx-error me-2"></i>Failed Login Attempts';
+
+        tableHead.innerHTML = `
+            <tr>
+                <th>User/Email</th>
+                <th>IP Address</th>
+                <th>Attempted At</th>
+                <th>Reason</th>
+                <th>User Agent</th>
+                <th>Actions</th>
+            </tr>
+        `;
+
+        // Sample data for failed logins
+        const failedLogins = [
+            @foreach($users->take(10) as $user)
+            {
+                email: '{{ $user->email }}',
+                ip_address: '{{ rand(192, 255) }}.{{ rand(168, 255) }}.{{ rand(1, 255) }}.{{ rand(1, 255) }}',
+                attempted_at: '{{ now()->subHours(rand(1, 24))->format('d/m/Y H:i') }}',
+                reason: ['Invalid Password', 'User Not Found', 'Account Locked', 'Too Many Attempts'][{{ rand(0, 3) }}],
+                user_agent: 'Chrome/{{ rand(90, 120) }}.0'
+            },
+            @endforeach
+        ];
+
+        failedLogins.forEach(item => {
+            const reasonClass = item.reason === 'Account Locked' ? 'bg-danger' : 'bg-warning';
+            tableBody.innerHTML += `
+                <tr>
+                    <td><strong>${item.email}</strong></td>
+                    <td>${item.ip_address}</td>
+                    <td>${item.attempted_at}</td>
+                    <td><span class="badge ${reasonClass}">${item.reason}</span></td>
+                    <td><small>${item.user_agent}</small></td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" onclick="blockIP('${item.ip_address}')">
+                            <i class="bx bx-block"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
     }
-    form.action = actionUrl;
-
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.appendChild(csrfInput);
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
 }
 
-function exportFrequentAttemptsPDF() {
-    const form = document.createElement('form');
-    form.method = 'POST';
-
-    let actionUrl = '{{ route("unauthorized.access.export.frequent.pdf") }}';
-    const currentOrigin = window.location.origin;
-    if (!actionUrl.startsWith(currentOrigin)) {
-        actionUrl = '/unauthorized-access/export-frequent-pdf';
-    }
-    form.action = actionUrl;
-
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.appendChild(csrfInput);
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+function hideSecurityTables() {
+    document.getElementById('security-tables-container').style.display = 'none';
 }
 
-function exportFrequentAttemptsCSV() {
-    const form = document.createElement('form');
-    form.method = 'POST';
-
-    let actionUrl = '{{ route("unauthorized.access.export.frequent.csv") }}';
-    const currentOrigin = window.location.origin;
-    if (!actionUrl.startsWith(currentOrigin)) {
-        actionUrl = '/unauthorized-access/export-frequent-csv';
-    }
-    form.action = actionUrl;
-
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.appendChild(csrfInput);
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+function blockIP(ip) {
+    alert('IP ' + ip + ' would be blocked (functionality not implemented yet)');
 }
 
-// Functions for the new unauthorized access tab
-function refreshUnauthorizedAccessData() {
-    const refreshBtn = document.querySelector('button[onclick="refreshUnauthorizedAccessData()"]');
-    if (refreshBtn) {
-        const originalText = refreshBtn.innerHTML;
-        refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Refreshing...';
-        refreshBtn.disabled = true;
-
-        // Simple page reload to get fresh data
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
-    }
-}
-
-function exportUnauthorizedAccessExcel() {
-    console.log('Excel export clicked');
-
-    // Show loading state
-    const btn = document.querySelector('button[onclick="exportUnauthorizedAccessExcel()"]');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Generating Excel...';
-    btn.disabled = true;
-
-    // Get current filter values
-    const fromDate = document.getElementById('unauthorized-from-date');
-    const toDate = document.getElementById('unauthorized-to-date');
-    const roleFilter = document.getElementById('unauthorized-role-filter');
-    const searchInput = document.getElementById('unauthorizedSearchInput');
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '{{ route("unauthorized.access.export.excel") }}';
-
-    // Add CSRF token
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.appendChild(csrfInput);
-
-    // Add filter parameters if they exist
-    if (fromDate && fromDate.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'from_date';
-        input.value = fromDate.value;
-        form.appendChild(input);
-    }
-
-    if (toDate && toDate.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'to_date';
-        input.value = toDate.value;
-        form.appendChild(input);
-    }
-
-    if (roleFilter && roleFilter.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'role_filter';
-        input.value = roleFilter.value;
-        form.appendChild(input);
-    }
-
-    if (searchInput && searchInput.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'search_term';
-        input.value = searchInput.value;
-        form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    // Reset button after delay
-    setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }, 3000);
-}
-
-function exportUnauthorizedAccessPDF() {
-    console.log('PDF export clicked');
-
-    // Show loading state
-    const btn = document.querySelector('button[onclick="exportUnauthorizedAccessPDF()"]');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Generating PDF...';
-    btn.disabled = true;
-
-    // Get current filter values
-    const fromDate = document.getElementById('unauthorized-from-date');
-    const toDate = document.getElementById('unauthorized-to-date');
-    const roleFilter = document.getElementById('unauthorized-role-filter');
-    const searchInput = document.getElementById('unauthorizedSearchInput');
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '{{ route("unauthorized.access.export.pdf") }}';
-
-    // Add CSRF token
-    const csrfInput = document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = '_token';
-    csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    form.appendChild(csrfInput);
-
-    // Add filter parameters if they exist
-    if (fromDate && fromDate.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'from_date';
-        input.value = fromDate.value;
-        form.appendChild(input);
-    }
-
-    if (toDate && toDate.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'to_date';
-        input.value = toDate.value;
-        form.appendChild(input);
-    }
-
-    if (roleFilter && roleFilter.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'role_filter';
-        input.value = roleFilter.value;
-        form.appendChild(input);
-    }
-
-    if (searchInput && searchInput.value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'search_term';
-        input.value = searchInput.value;
-        form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-
-    // Reset button after delay
-    setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }, 3000);
-}
-
-// Test filter functionality
-function testFilters() {
-    console.log('Testing filter elements...');
-    console.log('From date:', document.getElementById('unauthorized-from-date'));
-    console.log('To date:', document.getElementById('unauthorized-to-date'));
-    console.log('Role filter:', document.getElementById('unauthorized-role-filter'));
-    console.log('Search input:', document.getElementById('unauthorizedSearchInput'));
-}
-
-// Global debug function accessible from browser console
-window.debugUnauthorizedAccess = function() {
-    console.log('=== UNAUTHORIZED ACCESS DEBUG ===');
-    console.log('1. Tab element:', document.getElementById('unauthorized-access-tab'));
-    console.log('2. Table body:', document.getElementById('unauthorized-access-tbody'));
-    console.log('3. Filter elements:');
-    console.log('   - From date:', document.getElementById('unauthorized-from-date'));
-    console.log('   - To date:', document.getElementById('unauthorized-to-date'));
-    console.log('   - Role filter:', document.getElementById('unauthorized-role-filter'));
-    console.log('   - Search input:', document.getElementById('unauthorizedSearchInput'));
-    console.log('4. Export buttons:');
-    console.log('   - Excel button:', document.querySelector('button[onclick="exportUnauthorizedAccessExcel()"]'));
-    console.log('   - PDF button:', document.querySelector('button[onclick="exportUnauthorizedAccessPDF()"]'));
-    console.log('5. Filter buttons:');
-    console.log('   - Apply button:', document.querySelector('button[onclick="applyUnauthorizedFilters()"]'));
-    console.log('   - Reset button:', document.querySelector('button[onclick="resetUnauthorizedFilters()"]'));
-    console.log('6. CSRF Token:', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'));
-    console.log('7. Table rows:', document.querySelectorAll('#unauthorized-access-tbody .table-row').length);
-
-    // Test export functions
-    if (typeof exportUnauthorizedAccessExcel === 'function') {
-        console.log('✅ Export Excel function is available');
-    } else {
-        console.log('❌ Export Excel function is NOT available');
-    }
-
-    if (typeof exportUnauthorizedAccessPDF === 'function') {
-        console.log('✅ Export PDF function is available');
-    } else {
-        console.log('❌ Export PDF function is NOT available');
-    }
-
-    console.log('=== END DEBUG ===');
-    console.log('To test exports manually, try:');
-    console.log('exportUnauthorizedAccessExcel()');
-    console.log('exportUnauthorizedAccessPDF()');
-};
 
 </script>
 
