@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'user.status' => \App\Http\Middleware\CheckUserStatus::class, // Hapa ndio middleware yako
         'role.access' => \App\Http\Middleware\RoleAccessMiddleware::class, // Role-based access control
         'role' => \App\Http\Middleware\RoleMiddleware::class, // Simple role middleware with parameters
+        'unauth.guard' => \App\Http\Middleware\UnauthorizedAccessGuard::class, // Unauthorized access guard
 
     ];
 

@@ -14,11 +14,146 @@ use Carbon\Carbon;
 class UnauthorizedAccessController extends Controller
 {
     /**
-     * Show the unauthorized access page
+     * Show the unauthorized access page - Now uses backend response for security
+     * Only accessible through middleware redirect, not direct access
      */
-    public function show()
+    public function show(Request $request)
     {
-        return view('errors.403');
+        // Note: UnauthorizedAccessGuard middleware already handles access control
+        // If we reach here, it means access is valid through middleware redirect
+
+        \Log::info('Valid unauthorized access page shown', [
+            'user_id' => auth()->id(),
+            'ip' => $request->ip(),
+            'timestamp' => now()
+        ]);
+
+        // Clear the token after use (single use)
+        session()->forget(['unauthorized_access_token', 'unauthorized_timestamp']);
+
+        // For security purposes, avoid template exposure
+        // Return minimal backend-generated response
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Unauthorized.',
+                'error_code' => 'FORBIDDEN',
+                'timestamp' => now()->toISOString()
+            ], 403);
+        }
+
+        // Return secure HTML without exposing system structure
+        return response($this->getSecureUnauthorizedHtml(), 403)
+            ->header('Content-Type', 'text/html')
+            ->header('X-Frame-Options', 'DENY')
+            ->header('X-Content-Type-Options', 'nosniff')
+            ->header('Referrer-Policy', 'no-referrer')
+            ->header('X-XSS-Protection', '1; mode=block');
+    }
+
+    /**
+     * Generate secure unauthorized access HTML
+     */
+    private function getSecureUnauthorizedHtml()
+    {
+        $timestamp = now()->format('Y-m-d H:i:s T');
+
+        return '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+        .error-code {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        .title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .message {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #2980b9;
+            text-decoration: none;
+            color: white;
+        }
+        .timestamp {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #bdc3c7;
+        }
+        .security-notice {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">403</div>
+        <div class="title">Access Denied</div>
+        <div class="message">
+            You do not have permission to access this resource.
+            This incident has been logged for security monitoring.
+        </div>
+        <div class="security-notice">
+            <strong>Security Notice:</strong> Unauthorized access attempts are monitored and logged.
+        </div>
+        <a href="/" class="btn">Return to Dashboard</a>
+        <div class="timestamp">Generated: ' . htmlspecialchars($timestamp) . '</div>
+    </div>
+</body>
+</html>';
     }
 
     /**

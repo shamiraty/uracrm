@@ -134,17 +134,147 @@ class RoleAccessMiddleware
             // Check for frequent attempts and alert superadmins
             $this->checkAndAlertFrequentAttempts($user);
 
-            // Redirect to custom unauthorized page with role information
-            return redirect()->route('unauthorized.access')
-                ->with('unauthorized_data', [
-                    'user_role' => $userRole,
-                    'required_roles' => $requiredRoles,
-                    'attempted_route' => $routeName,
-                    'attempted_url' => $request->fullUrl()
-                ]);
+            // Return secure backend response without template exposure
+            return $this->handleUnauthorizedAccess($request, [
+                'user_role' => $userRole,
+                'required_roles' => $requiredRoles,
+                'attempted_route' => $routeName,
+                'attempted_url' => $request->fullUrl(),
+                'user_id' => $user->id,
+                'user_name' => $user->name
+            ]);
         }
 
         return $next($request);
+    }
+
+    /**
+     * Handle unauthorized access with secure backend response
+     */
+    private function handleUnauthorizedAccess(Request $request, array $data)
+    {
+        // Check if this is an AJAX request or API call
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Insufficient permissions.',
+                'error_code' => 'UNAUTHORIZED_ACCESS',
+                'timestamp' => now()->toISOString(),
+                'request_id' => uniqid('REQ_')
+            ], 403);
+        }
+
+        // For regular web requests, return a secure response without exposing system details
+        $message = "Access denied. You don't have permission to access this resource.";
+
+        // Determine appropriate action based on request type
+        if ($request->isMethod('POST') || $request->isMethod('PUT') || $request->isMethod('DELETE')) {
+            // For form submissions, return back with error
+            return back()->withErrors([
+                'access_denied' => $message
+            ])->withInput();
+        }
+
+        // For GET requests, set security token and redirect to unauthorized page
+        if ($request->route()->getName() !== 'dashboard') {
+            // Set security tokens for authorized access to unauthorized page
+            session([
+                'unauthorized_access_token' => uniqid('unauth_', true),
+                'unauthorized_timestamp' => now()->timestamp
+            ]);
+
+            return redirect()->route('unauthorized.access');
+        }
+
+        // If already on dashboard, return a 403 response with minimal info
+        return response($this->getSecureErrorHtml($message), 403)
+            ->header('Content-Type', 'text/html')
+            ->header('X-Frame-Options', 'DENY')
+            ->header('X-Content-Type-Options', 'nosniff')
+            ->header('Referrer-Policy', 'no-referrer')
+            ->header('X-XSS-Protection', '1; mode=block');
+    }
+
+    /**
+     * Generate secure error HTML without template exposure
+     */
+    private function getSecureErrorHtml($message)
+    {
+        return '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #17479E;
+            margin: 0;
+            padding: 50px;
+            text-align: center;
+        }
+        .error-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .error-code {
+            font-size: 48px;
+            color: #dc3545;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .security-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #856404;
+        }
+        .btn {
+            background: #17479E;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #0F3678;
+            color: white;
+            text-decoration: none;
+        }
+        .timestamp {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">403</div>
+        <div class="error-message">' . htmlspecialchars($message) . '</div>
+        <div class="security-notice">
+            <strong>Security Notice:</strong> This access attempt has been logged and monitored.
+        </div>
+        <a href="/" class="btn">Go to Dashboard</a>
+        <div class="timestamp">Generated: ' . date('Y-m-d H:i:s T') . '</div>
+    </div>
+</body>
+</html>';
     }
 
     /**

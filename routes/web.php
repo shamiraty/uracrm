@@ -499,11 +499,11 @@ Route::post('/nmb/reconcile', [NmbDisbursementController::class, 'reconcileTrans
 require __DIR__.'/auth.php';
 
 // ============================================
-// UNAUTHORIZED ACCESS ROUTES
+// UNAUTHORIZED ACCESS ROUTES - SECURE ACCESS ONLY
 // ============================================
 Route::get('/unauthorized-access', [App\Http\Controllers\UnauthorizedAccessController::class, 'show'])
     ->name('unauthorized.access')
-    ->middleware('auth');
+    ->middleware(['auth', 'unauth.guard']); // Protected by token-based guard
 
 Route::get('/unauthorized-access/data', [App\Http\Controllers\UserController::class, 'getUnauthorizedAccessData'])
     ->name('unauthorized.access.data')

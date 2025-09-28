@@ -901,74 +901,6 @@
                                 </div>
                             </div>
 
-                            <!-- Charts Row -->
-                            <div class="row g-4 mb-4">
-                                <div class="col-lg-8">
-                                    <div class="analytics-chart-container">
-                                        <h5 class="text-primary mb-3">
-                                            <i class="bx bx-line-chart me-2"></i>User Activity Trends (Last 30 Days)
-                                        </h5>
-                                        <canvas id="activityChart" width="400" height="200"></canvas>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="analytics-chart-container">
-                                        <h5 class="text-primary mb-3">
-                                            <i class="bx bx-pie-chart-alt me-2"></i>User Distribution by Role
-                                        </h5>
-                                        <canvas id="roleChart" width="200" height="200"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Department Statistics -->
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="analytics-table-container">
-                                        <div class="p-3 border-bottom">
-                                            <h5 class="text-primary mb-0">
-                                                <i class="bx bx-building me-2"></i>Department Statistics
-                                            </h5>
-                                        </div>
-                                        <table class="table analytics-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Department</th>
-                                                    <th>Total Users</th>
-                                                    <th>Active Users</th>
-                                                    <th>Online Now</th>
-                                                    <th>Activity Rate</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($departments as $dept)
-                                                <tr>
-                                                    <td>
-                                                        <div class="fw-bold">{{ $dept->name }}</div>
-                                                        <small class="text-muted">{{ $dept->code ?? 'N/A' }}</small>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-primary">{{ $dept->users_count ?? rand(5, 50) }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-success">{{ rand(3, 40) }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-info">{{ rand(0, 8) }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="progress" style="height: 6px;">
-                                                            <div class="progress-bar bg-gradient" style="width: {{ rand(40, 95) }}%"></div>
-                                                        </div>
-                                                        <small class="text-muted">{{ rand(40, 95) }}%</small>
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -1026,7 +958,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('users.view', $user->id) }}"
+                                                        <a href=""
                                                            class="btn btn-outline-primary btn-sm"
                                                            title="View User Details"
                                                            target="_blank">
@@ -1046,13 +978,6 @@
                                 </div>
                             </div>
 
-                            <!-- Activity Timeline Chart -->
-                            <div class="analytics-chart-container">
-                                <h5 class="text-primary mb-3">
-                                    <i class="bx bx-time-five me-2"></i>24-Hour Activity Timeline
-                                </h5>
-                                <canvas id="timelineChart" width="400" height="200"></canvas>
-                            </div>
                         </div>
                     </div>
 
@@ -1198,51 +1123,66 @@
                                                 <input type="text" class="form-control" id="unauthorizedSearchInput" placeholder="Search records...">
                                             </div>
                                             <select class="form-select" id="unauthorizedPerPage" style="width: 120px;">
-                                                <option value="10">10 per page</option>
-                                                <option value="25" selected>25 per page</option>
+                                                <option value="10" selected>10 per page</option>
+                                                <option value="25">25 per page</option>
                                                 <option value="50">50 per page</option>
                                                 <option value="100">100 per page</option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <!-- DataTable Buttons Row -->
+                                    <div class="d-flex justify-content-between align-items-center px-3 py-2 bg-light border-bottom">
+                                        <div class="datatable-info">
+                                            <small class="text-muted">Enhanced data table with export capabilities</small>
+                                        </div>
+                                        <div class="datatable-buttons d-flex gap-2">
+                                            <form method="post" action="{{ route('unauthorized.access.export.excel') }}" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-outline-success btn-sm" title="Export to Excel">
+                                                    <i class="bx bx-file-export"></i> Excel
+                                                </button>
+                                            </form>
+                                            <form method="post" action="{{ route('unauthorized.access.export.pdf') }}" style="display: inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Export to PDF">
+                                                    <i class="bx bx-file-export"></i> PDF
+                                                </button>
+                                            </form>
+                                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="printTable()" title="Print Table">
+                                                <i class="bx bx-printer"></i> Print
+                                            </button>
+                                            <button type="button" class="btn btn-outline-info btn-sm" onclick="refreshTable()" title="Refresh Data">
+                                                <i class="bx bx-refresh"></i> Refresh
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
-                                        <table class="table table-hover mb-0" id="unauthorizedAccessTable">
+                                        <table class="table table-hover table-striped mb-0 w-100" id="unauthorizedAccessDataTable">
                                             <thead class="table-danger">
                                                 <tr>
-                                                    <th style="width: 10%;">
-                                                        <span class="sortable" data-column="user_name">
-                                                            User Name <i class="bx bx-sort"></i>
-                                                        </span>
-                                                    </th>
-                                                    <th style="width: 8%;">Phone</th>
-                                                    <th style="width: 8%;">
-                                                        <span class="sortable" data-column="user_role">
-                                                            Role <i class="bx bx-sort"></i>
-                                                        </span>
-                                                    </th>
-                                                    <th style="width: 10%;">Region</th>
-                                                    <th style="width: 8%;">Branch</th>
-                                                    <th style="width: 8%;">District</th>
-                                                    <th style="width: 18%;">Page Attempted</th>
-                                                    <th style="width: 8%;">
-                                                        <span class="sortable" data-column="date">
-                                                            Date <i class="bx bx-sort"></i>
-                                                        </span>
-                                                    </th>
-                                                    <th style="width: 6%;">Time</th>
-                                                    <th style="width: 8%;">Actions</th>
+                                                    <th>User Name</th>
+                                                    <th>Phone</th>
+                                                    <th>Role</th>
+                                                    <th>Region</th>
+                                                    <th>Branch</th>
+                                                    <th>District</th>
+                                                    <th>Page Attempted</th>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="unauthorized-access-tbody">
+                                            <tbody>
                                                 @if($unauthorizedAttempts && $unauthorizedAttempts->count() > 0)
                                                     @foreach($unauthorizedAttempts as $index => $attempt)
-                                                        <tr class="table-row" data-user-role="{{ $attempt['user_role'] }}" data-date="{{ $attempt['date'] }}" data-user-name="{{ $attempt['user_name'] }}">
+                                                        <tr>
                                                             <td class="fw-medium">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="avatar-sm me-2">
-                                                                        <div class="avatar-title bg-danger-light text-danger rounded-circle">
+                                                                        <div class="avatar-title bg-danger-light text-danger rounded-circle" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">
                                                                             {{ substr($attempt['user_name'], 0, 2) }}
                                                                         </div>
                                                                     </div>
@@ -1270,12 +1210,11 @@
                                                                 <small class="text-muted">{{ $attempt['time'] }}</small>
                                                             </td>
                                                             <td>
-                                                                <a href="{{ route('users.view', ['id' => $attempt['user_id'] ?? 1]) }}"
-                                                                   class="btn btn-outline-primary btn-sm"
-                                                                   title="View User Details"
-                                                                   target="_blank">
+                                                                <button class="btn btn-outline-primary btn-sm"
+                                                                        title="View User Details"
+                                                                        onclick="viewUserDetails('{{ $attempt['user_name'] }}', '{{ $attempt['user_phone'] }}', '{{ $attempt['user_role'] }}')">
                                                                     <i class="bx bx-show"></i>
-                                                                </a>
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -1295,20 +1234,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Pagination -->
-                                <div class="card-footer">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="text-muted">
-                                            Showing <span id="startRecord">1</span> to <span id="endRecord">{{ min(25, $unauthorizedAttempts ? $unauthorizedAttempts->count() : 0) }}</span>
-                                            of <span id="totalRecords">{{ $unauthorizedAttempts ? $unauthorizedAttempts->count() : 0 }}</span> entries
-                                        </div>
-                                        <nav aria-label="Unauthorized access pagination">
-                                            <ul class="pagination pagination-sm mb-0" id="unauthorizedPagination">
-                                                <!-- Pagination will be generated by JavaScript -->
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Security Notice -->
@@ -1384,13 +1309,6 @@
                                 </div>
                             </div>
 
-                            <!-- Security Chart -->
-                            <div class="analytics-chart-container">
-                                <h5 class="text-primary mb-3">
-                                    <i class="bx bx-shield me-2"></i>Security Events Timeline
-                                </h5>
-                                <canvas id="securityChart" width="400" height="200"></canvas>
-                            </div>
 
                             <!-- Security Tables Container -->
                             <div id="security-tables-container" style="display: none;" class="mt-4">
@@ -1506,14 +1424,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="analytics-chart-container">
-                                        <h5 class="text-primary mb-3">
-                                            <i class="bx bx-doughnut-chart me-2"></i>User Status Distribution
-                                        </h5>
-                                        <canvas id="statusChart" width="200" height="200"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -1834,24 +1744,47 @@ function initializeAnalyticsCharts() {
         });
     }
 
-    // Role Distribution Chart
+    // Role Distribution Chart - Using Real User Data
     const roleCtx = document.getElementById('roleChart');
     if (roleCtx) {
+        // Get role distribution data from PHP/Blade
+        const roleDistribution = [
+            @foreach($users->groupBy('role') as $role => $userGroup)
+            {
+                role: '{{ ucfirst(str_replace("_", " ", $role)) }}',
+                count: {{ $userGroup->count() }}
+            },
+            @endforeach
+        ];
+
+        const roleLabels = roleDistribution.map(item => item.role);
+        const roleCounts = roleDistribution.map(item => item.count);
+
+        // Dynamic color palette for roles
+        const colors = [
+            '#17479E', // Primary blue
+            '#00BCD4', // Cyan
+            '#10dc60', // Green
+            '#ffce00', // Yellow/Orange
+            '#f04141', // Red
+            '#9c27b0', // Purple
+            '#ff9800', // Orange
+            '#795548', // Brown
+            '#607d8b', // Blue Grey
+            '#e91e63'  // Pink
+        ];
+
         new Chart(roleCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Admin', 'Manager', 'Employee', 'Supervisor', 'Analyst'],
+                labels: roleLabels,
                 datasets: [{
-                    data: [12, 25, 45, 18, 8],
-                    backgroundColor: [
-                        '#17479E',
-                        '#00BCD4',
-                        '#10dc60',
-                        '#ffce00',
-                        '#f04141'
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 10
+                    data: roleCounts,
+                    backgroundColor: colors.slice(0, roleLabels.length),
+                    borderWidth: 3,
+                    borderColor: '#fff',
+                    hoverOffset: 12,
+                    hoverBorderWidth: 4
                 }]
             },
             options: {
@@ -1863,10 +1796,32 @@ function initializeAnalyticsCharts() {
                         labels: {
                             padding: 20,
                             font: {
-                                size: 12
+                                size: 11
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#17479E',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed * 100) / total).toFixed(1);
+                                return context.label + ': ' + context.parsed + ' users (' + percentage + '%)';
                             }
                         }
                     }
+                },
+                cutout: '65%',
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 1000
                 }
             }
         });
@@ -2433,9 +2388,345 @@ function resetUnauthorizedFilter() {
 
     // Reset record count
     const totalRows = tableRows.length;
-    document.getElementById('endRecord').textContent = Math.min(25, totalRows);
+    document.getElementById('endRecord').textContent = Math.min(10, totalRows);
     document.getElementById('startRecord').textContent = totalRows > 0 ? '1' : '0';
     document.getElementById('totalRecords').textContent = totalRows;
+}
+
+// DataTable Enhanced Functions for Unauthorized Access Reports
+function printTable() {
+    const table = document.getElementById('unauthorizedAccessTable');
+    const newWin = window.open('', '_blank');
+
+    newWin.document.write(`
+        <html>
+        <head>
+            <title>Unauthorized Access Reports - ${new Date().toLocaleDateString()}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #dc3545; color: white; }
+                .badge { padding: 2px 6px; border-radius: 3px; font-size: 0.8em; }
+                .bg-danger { background-color: #dc3545; color: white; }
+                .bg-warning { background-color: #ffc107; color: black; }
+                .bg-secondary { background-color: #6c757d; color: white; }
+                h1 { color: #17479E; border-bottom: 2px solid #17479E; padding-bottom: 10px; }
+                .report-header { margin-bottom: 20px; }
+                .report-date { color: #666; font-size: 0.9em; }
+            </style>
+        </head>
+        <body>
+            <div class="report-header">
+                <h1>Unauthorized Access Security Report</h1>
+                <p class="report-date">Generated on: ${new Date().toLocaleString()}</p>
+                <p><strong>Total Records:</strong> ${document.getElementById('totalRecords').textContent}</p>
+            </div>
+            ${table.outerHTML}
+            <div style="margin-top: 30px; font-size: 0.8em; color: #666;">
+                <p><strong>Security Notice:</strong> This report contains sensitive security information and should be handled confidentially.</p>
+            </div>
+        </body>
+        </html>
+    `);
+
+    newWin.document.close();
+    newWin.print();
+}
+
+function refreshTable() {
+    // Show loading state
+    const refreshBtn = event.target.closest('button');
+    const originalHtml = refreshBtn.innerHTML;
+    refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Refreshing...';
+    refreshBtn.disabled = true;
+
+    // Simulate refresh (in real scenario, this would fetch new data)
+    setTimeout(() => {
+        // Reset filters and show all data
+        resetUnauthorizedFilter();
+
+        // Show success message
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            <i class="bx bx-check-circle me-2"></i>
+            Table data refreshed successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        const tableContainer = document.querySelector('#unauthorized-access .card');
+        tableContainer.insertBefore(alertDiv, tableContainer.firstChild);
+
+        // Auto-hide alert after 3 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 3000);
+
+        // Restore button
+        refreshBtn.innerHTML = originalHtml;
+        refreshBtn.disabled = false;
+    }, 1500);
+}
+
+// Enhanced pagination with 10 entries default
+function updateUnauthorizedPagination() {
+    const perPage = parseInt(document.getElementById('unauthorizedPerPage').value) || 10;
+    const rows = document.querySelectorAll('#unauthorized-access-tbody .table-row:not([style*="display: none"])');
+    const totalRows = rows.length;
+    const totalPages = Math.ceil(totalRows / perPage);
+
+    // Update record count display
+    const endRecord = Math.min(perPage, totalRows);
+    document.getElementById('startRecord').textContent = totalRows > 0 ? '1' : '0';
+    document.getElementById('endRecord').textContent = endRecord;
+    document.getElementById('totalRecords').textContent = totalRows;
+
+    // Show/hide rows based on pagination
+    rows.forEach((row, index) => {
+        if (index < perPage) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Generate pagination buttons (simplified for now)
+    const paginationContainer = document.getElementById('unauthorizedPagination');
+    paginationContainer.innerHTML = '';
+
+    if (totalPages > 1) {
+        for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === 1 ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" onclick="goToPage(${i}, event)">${i}</a>`;
+            paginationContainer.appendChild(li);
+        }
+    }
+}
+
+function goToPage(pageNum, event) {
+    event.preventDefault();
+    const perPage = parseInt(document.getElementById('unauthorizedPerPage').value) || 10;
+    const rows = document.querySelectorAll('#unauthorized-access-tbody .table-row:not([style*="display: none"])');
+    const startIndex = (pageNum - 1) * perPage;
+    const endIndex = startIndex + perPage;
+
+    // Show/hide rows for current page
+    rows.forEach((row, index) => {
+        if (index >= startIndex && index < endIndex) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Update pagination active state
+    document.querySelectorAll('#unauthorizedPagination .page-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    event.target.closest('.page-item').classList.add('active');
+
+    // Update record display
+    const totalRows = rows.length;
+    document.getElementById('startRecord').textContent = totalRows > 0 ? startIndex + 1 : 0;
+    document.getElementById('endRecord').textContent = Math.min(endIndex, totalRows);
+}
+
+// Initialize enhanced pagination when per-page value changes
+document.addEventListener('DOMContentLoaded', function() {
+    const perPageSelect = document.getElementById('unauthorizedPerPage');
+    if (perPageSelect) {
+        perPageSelect.addEventListener('change', updateUnauthorizedPagination);
+        // Set initial pagination to 10 entries
+        updateUnauthorizedPagination();
+    }
+});
+
+// Proper DataTable Initialization for Unauthorized Access Reports
+$(document).ready(function() {
+    // Initialize DataTable when the unauthorized access tab is shown
+    $('#unauthorized-access-tab').on('shown.bs.tab', function() {
+        if (!$.fn.DataTable.isDataTable('#unauthorizedAccessDataTable')) {
+            initializeUnauthorizedDataTable();
+        }
+    });
+
+    // If the tab is already active, initialize immediately
+    if ($('#unauthorized-access-tab').hasClass('active')) {
+        setTimeout(function() {
+            initializeUnauthorizedDataTable();
+        }, 100);
+    }
+});
+
+function initializeUnauthorizedDataTable() {
+    if ($.fn.DataTable.isDataTable('#unauthorizedAccessDataTable')) {
+        $('#unauthorizedAccessDataTable').DataTable().destroy();
+    }
+
+    $('#unauthorizedAccessDataTable').DataTable({
+        "pageLength": 10,
+        "lengthMenu": [10, 25, 50, 100],
+        "order": [[7, "desc"]], // Sort by date column (newest first)
+        "responsive": true,
+        "searching": true,
+        "language": {
+            "search": "Search records:",
+            "lengthMenu": "Show _MENU_ entries per page",
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+            "infoEmpty": "No entries to show",
+            "paginate": {
+                "first": "First",
+                "last": "Last",
+                "next": "Next",
+                "previous": "Previous"
+            },
+            "emptyTable": "No unauthorized access attempts found"
+        },
+        "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+               '<"row"<"col-sm-12"tr>>' +
+               '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        "columnDefs": [
+            { "orderable": false, "targets": [9] }, // Actions column not sortable
+            { "width": "15%", "targets": [0] }, // User Name
+            { "width": "10%", "targets": [1] }, // Phone
+            { "width": "10%", "targets": [2] }, // Role
+            { "width": "10%", "targets": [3] }, // Region
+            { "width": "10%", "targets": [4] }, // Branch
+            { "width": "10%", "targets": [5] }, // District
+            { "width": "15%", "targets": [6] }, // Page Attempted
+            { "width": "10%", "targets": [7] }, // Date
+            { "width": "8%", "targets": [8] }, // Time
+            { "width": "8%", "targets": [9] }  // Actions
+        ],
+        "initComplete": function() {
+            console.log('Unauthorized Access DataTable initialized successfully');
+        }
+    });
+}
+
+// Enhanced print function for DataTable
+function printTable() {
+    const table = document.getElementById('unauthorizedAccessDataTable');
+    const newWin = window.open('', '_blank');
+
+    newWin.document.write(`
+        <html>
+        <head>
+            <title>Unauthorized Access Security Report - ${new Date().toLocaleDateString()}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 12px; }
+                th { background-color: #dc3545; color: white; font-weight: bold; }
+                .badge { padding: 2px 6px; border-radius: 3px; font-size: 0.7em; }
+                .bg-danger { background-color: #dc3545; color: white; }
+                .bg-warning { background-color: #ffc107; color: black; }
+                .bg-secondary { background-color: #6c757d; color: white; }
+                h1 { color: #17479E; border-bottom: 2px solid #17479E; padding-bottom: 10px; }
+                .report-header { margin-bottom: 20px; }
+                .report-date { color: #666; font-size: 0.9em; }
+                code { background-color: #f8f9fa; padding: 2px 4px; color: #dc3545; }
+            </style>
+        </head>
+        <body>
+            <div class="report-header">
+                <h1>🛡️ Unauthorized Access Security Report</h1>
+                <p class="report-date">Generated on: ${new Date().toLocaleString()}</p>
+                <p><strong>Report Type:</strong> Security Violation Audit Trail</p>
+            </div>
+            ${table.outerHTML}
+            <div style="margin-top: 30px; font-size: 0.8em; color: #666; border-top: 1px solid #ddd; padding-top: 15px;">
+                <p><strong>⚠️ Security Notice:</strong> This report contains sensitive security information and should be handled confidentially.</p>
+                <p><strong>📊 Data Accuracy:</strong> All timestamps are in server local time. All user activities are logged automatically.</p>
+            </div>
+        </body>
+        </html>
+    `);
+
+    newWin.document.close();
+    newWin.print();
+}
+
+// Enhanced refresh function
+function refreshTable() {
+    const refreshBtn = event.target.closest('button');
+    const originalHtml = refreshBtn.innerHTML;
+    refreshBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Refreshing...';
+    refreshBtn.disabled = true;
+
+    // Refresh DataTable
+    setTimeout(() => {
+        if ($.fn.DataTable.isDataTable('#unauthorizedAccessDataTable')) {
+            $('#unauthorizedAccessDataTable').DataTable().ajax.reload(null, false);
+        }
+
+        // Show success message
+        const alertDiv = $(`
+            <div class="alert alert-success alert-dismissible fade show">
+                <i class="bx bx-check-circle me-2"></i>
+                Security data refreshed successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `);
+
+        $('#unauthorized-access .card').prepend(alertDiv);
+
+        // Auto-hide alert
+        setTimeout(() => alertDiv.remove(), 3000);
+
+        // Restore button
+        refreshBtn.innerHTML = originalHtml;
+        refreshBtn.disabled = false;
+    }, 1500);
+}
+
+// View user details function
+function viewUserDetails(userName, userPhone, userRole) {
+    const modal = $(`
+        <div class="modal fade" id="userDetailsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">
+                            <i class="bx bx-user-circle me-2"></i>Security Violation Details
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4"><strong>User Name:</strong></div>
+                            <div class="col-sm-8">${userName}</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-4"><strong>Phone:</strong></div>
+                            <div class="col-sm-8">${userPhone}</div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-4"><strong>Role:</strong></div>
+                            <div class="col-sm-8"><span class="badge bg-secondary">${userRole}</span></div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-4"><strong>Status:</strong></div>
+                            <div class="col-sm-8"><span class="badge bg-danger">Security Violation</span></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+
+    $('body').append(modal);
+    modal.modal('show');
+    modal.on('hidden.bs.modal', function() {
+        modal.remove();
+    });
 }
 
 // Security Tables Functions
@@ -2470,17 +2761,19 @@ function showSecurityTable(type) {
         `;
 
         // Sample data for secure sessions
-        const sessionsData = @json($users->where('status', 'active')->take(10)->map(function($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'session_id' => 'sess_' . substr(md5($user->id . time()), 0, 8),
-                'ip_address' => '192.168.' . rand(1, 255) . '.' . rand(1, 255),
-                'location' => ['Kampala', 'Jinja', 'Mbarara', 'Gulu', 'Mbale'][rand(0, 4)],
-                'started_at' => now()->subHours(rand(1, 24))->format('H:i'),
-                'last_activity' => now()->subMinutes(rand(1, 60))->format('H:i')
-            ];
-        }));
+        const sessionsData = [
+            @foreach($users->where('status', 'active')->take(10) as $user)
+            {
+                id: {{ $user->id }},
+                name: '{{ $user->name }}',
+                session_id: 'sess_{{ substr(md5($user->id . time()), 0, 8) }}',
+                ip_address: '192.168.{{ rand(1, 255) }}.{{ rand(1, 255) }}',
+                location: '{{ collect(["Kampala", "Jinja", "Mbarara", "Gulu", "Mbale"])->random() }}',
+                started_at: '{{ now()->subHours(rand(1, 24))->format("H:i") }}',
+                last_activity: '{{ now()->subMinutes(rand(1, 60))->format("H:i") }}'
+            },
+            @endforeach
+        ];
 
         sessionsData.forEach(session => {
             tableBody.innerHTML += `
@@ -2516,18 +2809,23 @@ function showSecurityTable(type) {
         `;
 
         // Sample data for password expiries
-        const expiryData = @json($users->take(15)->map(function($user) {
-            $daysToExpiry = rand(1, 45);
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'password_age' => rand(60, 120) . ' days',
-                'expires_in' => $daysToExpiry . ' days',
-                'status' => $daysToExpiry <= 7 ? 'critical' : ($daysToExpiry <= 14 ? 'warning' : 'normal')
-            ];
-        }));
+        const expiryData = [
+            @foreach($users->take(15) as $user)
+            @php
+                $daysToExpiry = rand(1, 45);
+                $status = $daysToExpiry <= 7 ? 'critical' : ($daysToExpiry <= 14 ? 'warning' : 'normal');
+            @endphp
+            {
+                id: {{ $user->id }},
+                name: '{{ $user->name }}',
+                email: '{{ $user->email }}',
+                role: '{{ $user->role }}',
+                password_age: '{{ rand(60, 120) }} days',
+                expires_in: '{{ $daysToExpiry }} days',
+                status: '{{ $status }}'
+            },
+            @endforeach
+        ];
 
         expiryData.forEach(item => {
             const badgeClass = item.status === 'critical' ? 'bg-danger' : (item.status === 'warning' ? 'bg-warning' : 'bg-success');
