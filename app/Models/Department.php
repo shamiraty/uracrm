@@ -15,4 +15,10 @@ class Department extends Model
     {
         return $this->belongsToMany(Branch::class, 'branch_department');
     }
+
+    // Relationship with Users
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

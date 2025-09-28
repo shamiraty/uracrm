@@ -43,19 +43,11 @@ use App\Http\Controllers\CommandController;
 use App\Http\Controllers\CardDetailManagerController;
 
 // Protected Routes with comprehensive middleware
-Route::middleware(['auth', 'user.status','update.activity'])->group(function () {
-
+Route::middleware(['auth'])->group(function () {
 
     // ============================================
     // USER ACTIVITY AND STATUS ROUTES
     // ============================================
-//-----------------------------------------------	
-/*
-	ROLES:
-	admin
-	superadmin
-    system_admin
-	*/
     Route::post('/users/update-activity', [UserController::class, 'updateActivity'])
         ->name('users.update-activity');
 
@@ -79,32 +71,11 @@ Route::middleware(['auth', 'user.status','update.activity'])->group(function () 
     Route::get('/users/analytics-data', [UserController::class, 'getAnalyticsData'])
         ->name('users.analytics-data');
 
-//-----------------------------------------------	
-
-
-
-
-
-
-
+    // Password routes moved outside this middleware group to avoid conflicts
 
     // ============================================
     // EXPORT ROUTES FOR VARIOUS ENQUIRY TYPES
     // ============================================
-	/*
-	ROLES:
-admin
-accountant
-loanofficer
-Registrar
-superadmin
-system_admin
-public_relation_officer
-registrar_hq
-representative
-general_manager
-branch_manager
-*/
     Route::get('/loan-applications/export', [EnquiryController::class, 'exportLoanApplication'])
         ->name('exportLoanApplication');
     Route::get('export-enquiries', [EnquiryController::class, 'exportMembershipChanges'])
@@ -132,39 +103,18 @@ branch_manager
     Route::get('/all-enquiries/export', [EnquiryController::class, 'allEnquiriesExport'])
         ->name('allEnquiriesExport');
 
-    
-	
-	
-	// ============================================
+    // ============================================
     // ENQUIRY MANAGEMENT ROUTES
     // ============================================
     Route::get('/enquiries', [EnquiryController::class, 'index'])->name('enquiries.index');
     // Route::get('/enquiries/create', [EnquiryController::class, 'create'])->name('enquiries.create');
-	
-	
-	
-	//registrar_hq
-	//Registrar
     Route::get('/enquiries/create/{check_number?}', [EnquiryController::class, 'create'])
     ->name('enquiries.create');
+
     Route::get('/enquiries/fetch-payroll/{check_number}', [EnquiryController::class, 'fetchPayroll']);
+
     Route::post('/enquiries', [EnquiryController::class, 'store'])->name('enquiries.store');
-	
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
     Route::get('/enquiries/{enquiry}', [EnquiryController::class, 'show'])->name('enquiries.show');
-	
-	//registrar_hq
-	//Registrar
     Route::get('/enquiries/{enquiry}/edit', [EnquiryController::class, 'edit'])->name('enquiries.edit');
     Route::put('/enquiries/{enquiry}', [EnquiryController::class, 'update'])->name('enquiries.update');
     Route::delete('/enquiries/{enquiry}', [EnquiryController::class, 'destroy'])->name('enquiries.destroy');
@@ -173,21 +123,11 @@ branch_manager
     // ============================================
     // DASHBOARD ROUTES
     // ============================================
-	
-	//general_manager
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     // ============================================
     // RESPONSE AND STATUS MANAGEMENT ROUTES
     // ============================================
-	
-
-//accountant
-//loanofficer
-//Registrar
-//registrar_hq
-//general_manager
-//branch_manager
     Route::get('enquiries/{enquiry}/responses/create', [ResponseController::class, 'create'])->name('responses.create');
     Route::post('enquiries/{enquiry}/responses', [ResponseController::class, 'store'])->name('responses.store');
     Route::post('/enquiries/{enquiry}/change-status', [EnquiryController::class, 'changeStatus'])->name('enquiries.changeStatus');
@@ -195,58 +135,22 @@ branch_manager
     // ============================================
     // NOTIFICATION ROUTES
     // ============================================
-	
-	//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markNotificationAsRead'])->name('notifications.read');
 
     // ============================================
     // MEMBER MANAGEMENT ROUTES
     // ============================================
-
-	//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager	
     Route::get('members/{member}/details', [MemberController::class, 'showDetails'])->name('members.details');
     Route::post('/members/{member}/status/{status}', [MemberController::class, 'updateStatus'])->name('members.updateStatus');
-
-
-
-//registrar_hq
     Route::post('/enquiries/{enquiry}/assign', [EnquiryController::class, 'assignUsersToEnquiry'])->name('enquiries.assign');
     Route::post('/enquiries/{enquiry}/reassign', [EnquiryController::class, 'reassignUsersToEnquiry'])->name('enquiries.reassign');
-	
-	//general_manager
-	//accountant
-//loanofficer
     Route::get('/my-enquiries', [EnquiryController::class, 'myAssignedEnquiries'])->name('enquiries.my');
-	
-	//loanofficer
     Route::get('/my-loan-applications', [LoanController::class, 'loanOfficerDashboard'])->name('loans.my');
 
     // ============================================
     // BULK OPERATIONS ROUTES
     // ============================================
-	
-	//registrar_hq
-    Route::post('/enquiries/bulk-assign', [EnquiryController::class, 'bulkAssign'])->name('enquiries.bulk-assign');	
+    Route::post('/enquiries/bulk-assign', [EnquiryController::class, 'bulkAssign'])->name('enquiries.bulk-assign');
     Route::post('/enquiries/bulk-reassign', [EnquiryController::class, 'bulkReassign'])->name('enquiries.bulk-reassign');
     Route::post('/enquiries/bulk-delete', [EnquiryController::class, 'bulkDelete'])->name('enquiries.bulk-delete');
 
@@ -258,10 +162,6 @@ branch_manager
     Route::resource('users', UserController::class);
 
     // Additional user management routes
-	
-	//superadmin
-//system_admin
-//admin
     Route::get('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
         ->name('users.toggle-status');
     Route::post('/users/{user}/reset-password', [UserController::class, 'resetPassword'])
@@ -278,77 +178,46 @@ branch_manager
     // ============================================
     // LOAN CALCULATION ROUTES
     // ============================================
-	//loanofficer
     Route::post('/calculate-loan/{loanApplicationId}', [LoanController::class, 'calculateLoan'])->name('calculate.loan');
     // ============================================
     // PAYMENT MANAGEMENT ROUTES
     // ============================================
-	
-	//accountant
     Route::get('/enquiries/{enquiry}/payments/create', [PaymentController::class, 'create'])->name('payments.create');
-	
-	//accountant
     Route::post('/enquiries/{enquiry}/payments', [PaymentController::class, 'store'])->name('payments.store');
-	
-	//accountant
     Route::post('/payment/initiate/{enquiryId}', [PaymentController::class, 'initiate'])->name('payment.initiate');
-	
-	//general_manager
     Route::post('/payment/approve/{paymentId}', [PaymentController::class, 'approve'])->name('payment.approve');
-	
-	//accountant
     Route::post('/payment/pay/{paymentId}', [PaymentController::class, 'pay'])->name('payment.pay');
-	
-	//general_manager
-	//accountant
     Route::match(['POST', 'PUT'], '/payment/reject/{paymentId}', [PaymentController::class, 'reject'])->name('payment.reject');
-	
-	//general_manager
-	//accountant
     Route::get('/payments/{paymentId}/timeline', [PaymentController::class, 'showTimeline'])->name('payments.timeline');
-	
-	//general_manager
-	//accountant
     Route::get('/payments/type/{type}', [PaymentController::class, 'showByType'])->name('payments.type');
-
-
 
     // ============================================
     // OTP VERIFICATION ROUTES
     // ============================================
-	//general_manager
     Route::post('/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('send.otp.approve');
     Route::post('/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('verify.otp.approve');
 
     // Payment Dashboard Routes
-	//accountant
     Route::get('/payment/accountant/dashboard', [PaymentController::class, 'accountantDashboard'])->name('payment.accountant.dashboard');
-	
-	//general_manager
-	//accountant
     Route::get('/payment/manager/dashboard', [PaymentController::class, 'managerDashboard'])->name('payment.manager.dashboard');
 
     // Single Payment OTP Routes
-	//general_manager
-	//accountant
     Route::post('/payment/send-otp-approve/{paymentId}', [PaymentController::class, 'sendOtpApprove'])->name('payment.send.otp.approve');
     Route::post('/payment/verify-otp-approve/{paymentId}', [PaymentController::class, 'verifyOtpApprove'])->name('payment.verify.otp.approve');
     Route::post('/payment/{paymentId}/send-otp-pay', [PaymentController::class, 'sendOtpPay'])->name('send.otp.pay');
     Route::post('/payment/{paymentId}/verify-otp-pay', [PaymentController::class, 'verifyOtpPay'])->name('verify.otp.pay');
 
-   //general_manager
-	//accountant
+    // Bulk Actions Routes
     Route::post('/payment/bulk-reject', [PaymentController::class, 'bulkReject'])->name('payment.bulk.reject');
     Route::post('/payment/manager-bulk-reject', [PaymentController::class, 'managerBulkReject'])->name('payment.manager.bulk.reject');
     Route::post('/payment/bulk-approve', [PaymentController::class, 'bulkApprove'])->name('payment.bulk.approve');
     Route::post('/payment/send-bulk-otp', [PaymentController::class, 'sendBulkOTP'])->name('payment.send.bulk.otp');
 
     // Loan Application Approval Routes (Manager)
-	//general_manager
-	//loanofficer
     Route::post('/payment/send-loan-otp/{paymentId}', [PaymentController::class, 'sendLoanOTP'])->name('payment.send.loan.otp');
     Route::post('/payment/verify-loan-otp/{paymentId}', [PaymentController::class, 'verifyLoanOTP'])->name('payment.verify.loan.otp');
     Route::post('/payment/reject-loan-application', [PaymentController::class, 'rejectLoanApplication'])->name('payment.reject.loan.application');
+
     Route::get('loans/{member}/amortization-form', [LoanController::class, 'showAmortizationForm'])->name('loans.amortizationForm');
     Route::post('loans/{member}/amortization', [LoanController::class, 'calculateAmortization'])->name('loans.calculate');
     Route::post('/payment/pay/{paymentId}', [PaymentController::class, 'pay'])->name('payment.pay');
@@ -359,16 +228,16 @@ Route::post('/loans/{loanApplication}/send-otp-approve-loan', [LoanController::c
 Route::post('/loans/{loanApplication}/verify-otp-approve-loan', [LoanController::class, 'verifyOtpApproveLoan'])->name('loans.verify-otp-approve');
 Route::post('/loans/bulk-reject', [LoanController::class, 'bulkReject'])->name('loans.bulk-reject');
 Route::get('/mortgage-form', [MortgageCalculatorController::class, 'showForm'])->name('mortgage.form');
+
+
 Route::post('/calculate-loanable-amount', [MortgageCalculatorController::class, 'calculateLoanableAmount'])->name('calculate.loanable.amount');
 
-
-
-	//general_manager
-	//loanofficer
 Route::post('upload-data', [MemberController::class, 'store'])->name('members.store');
+
 Route::get('processed-loans', [MemberController::class, 'showProcessedLoans'])->name('members.processedLoans');
 Route::get('upload-form', [MemberController::class, 'showUploadForm'])->name('members.uploadForm');
 Route::post('store-members', [MemberController::class, 'store'])->name('members.store');
+
 Route::get('loans/{member}/amortization-form', [LoanController::class, 'showAmortizationForm'])->name('loans.amortizationForm');
 Route::post('loans/{member}/amortization', [LoanController::class, 'calculateAmortization'])->name('loans.calculate');
 
@@ -395,10 +264,12 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('representatives', RepresentativeController::class);
 Route::get('/trends', [DashboardTrendsController::class, 'index'])->name('trends');
     Route::get('/loan_trends', [LoanTrendController::class, 'index'])->name('loan_trends');
+
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
+
 Route::get('/payroll/upload', [PayrollController::class, 'showUploadForm'])->name('payroll.showUpload');
 Route::post('/payroll/upload', [PayrollController::class, 'uploadExcel'])->name('payroll.upload');
 Route::resource('files', FileController::class);
@@ -406,35 +277,27 @@ Route::resource('file_series', FileSeriesController::class);
 Route::resource('keywords', KeywordController::class);
 Route::post('keywords/import', [KeywordController::class, 'import'])->name('keywords.import');
 Route::get('keywords/import/show', [KeywordController::class, 'showImportForm'])->name('keywords.showImportForm');
-
-
-//HIZI ROUTES  HAZIHITAJI USER LOGIN KSWA SABABU ZINAUNGANISHA NA MFUMO WA NJE/ SIJAJUA SECURITY YAKE INAWEKWA VIPI
 Route::get('/testapi',[HomeController::class, 'showData'] )->name('test.api');
 Route::get('/api-response', [HomeController::class, 'consumeExternalService']);
 Route::get('/send-xml', [App\Http\Controllers\ApiController::class, 'sendXmlData']);
+
 Route::get('/consume-xml', [App\Http\Controllers\ApiController::class, 'consumeXml']);
 Route::get('/send-product-details', [App\Http\Controllers\ApiController::class, 'sendProductDetails']);
 Route::post('/product-decommission', [App\Http\Controllers\ApiController::class, 'sendProductDecommission'])->name('product.decommission');
 Route::get('/trigger-decommission', [App\Http\Controllers\ApiController::class, 'triggerDecommission'])
      ->name('trigger.decommission');
-	 
-	 
-	 
-	 
 
 // ============================================
 // LOAN MANAGEMENT ROUTES
 // ============================================
 
 // Loan Status Views (Using EmployeeLoanController for now)
-//loanofficer
 Route::get('/loans/pending', [EmployeeLoanController::class, 'pendingLoans'])->name('loans.pending');
 Route::get('/loans/approved', [EmployeeLoanController::class, 'approvedLoans'])->name('loans.approved');
 Route::get('/loans/rejected', [EmployeeLoanController::class, 'rejectedLoans'])->name('loans.rejected');
 Route::get('/loans/disbursed', [EmployeeLoanController::class, 'disbursedLoans'])->name('loans.disbursed');
 
 // Disbursement Management Routes
-//accountant
 Route::get('/disbursements/pending', [EmployeeLoanController::class, 'pendingDisbursements'])->name('disbursements.pending');
 Route::post('/disbursements/process', [EmployeeLoanController::class, 'processDisbursement'])->name('disbursements.process');
 Route::post('/disbursements/reject', [EmployeeLoanController::class, 'rejectDisbursement'])->name('disbursements.reject');
@@ -448,7 +311,6 @@ Route::post('/loans/bulk-approve', [EmployeeLoanController::class, 'bulkApprove'
 Route::post('/loans/bulk-reject', [EmployeeLoanController::class, 'bulkReject'])->name('loans.bulk-reject');
 
 // Reports and Analytics
-//loanofficer
 Route::get('/loans/reports', [EmployeeLoanController::class, 'reports'])->name('loans.reports');
 Route::get('/loans/collections', [EmployeeLoanController::class, 'collections'])->name('loans.collections');
 
@@ -464,38 +326,33 @@ Route::put('/loan-offers/{id}', [EmployeeLoanController::class, 'updateLoanOffer
 
 // API routes for loan offers
 Route::get('/loan-offers/{id}', [EmployeeLoanController::class, 'showLoanOffer'])->name('loan-offers.show');
-
-
-//accountant
 Route::post('/loan-offers/batch-disburse', [EmployeeLoanController::class, 'batchDisbursement'])->name('loan-offers.batch-disburse');
 Route::post('/loan-offers/{id}/reject-disbursement', [EmployeeLoanController::class, 'rejectDisbursement'])->name('loan-offers.reject-disbursement');
+
 // Disbursement Management Routes
 Route::get('/disbursements', [EmployeeLoanController::class, 'disbursementsIndex'])->name('disbursements.index');
-  
-
-  
+     
 // Add this with your other loan-offers routes
-
-//loanofficer
 Route::get('/loan-offers/{id}/details', [EmployeeLoanController::class, 'getLoanOfferDetails'])->name('loan-offers.details');
 Route::get('/loan-offers/{loanOffer}/callbacks', [App\Http\Controllers\EmployeeLoanController::class, 'showCallbacks'])->name('loan-offers.callbacks');
 // Add this with your other loan-offers routes
 Route::get('/loan-offers/{loanOffer}/callbacks-ajax', [App\Http\Controllers\EmployeeLoanController::class, 'fetchCallbacksAjax'])->name('loan-offers.callbacks.ajax');
+
 Route::get('/test-nmb-hardcoded', [App\Http\Controllers\EmployeeLoanController::class, 'testNmbHardcoded']);
 Route::get('/monthly-deductions', [EmployeeLoanController::class, 'listMonthlyDeductions'])->name('monthly-deductions.list');
+
 // Export and Sync routes
 Route::get('/loan-offers/export', [EmployeeLoanController::class, 'export'])->name('loan-offers.export');
 Route::post('/loan-offers/sync', [EmployeeLoanController::class, 'syncFromESS'])->name('loan-offers.sync');
 Route::post('/loan-offers/bulk-action', [EmployeeLoanController::class, 'bulkAction'])->name('loan-offers.bulk-action');
+
 // Import Existing Loans Routes
 Route::get('/existing-loans/import', [ExistingLoanImportController::class, 'showImportForm'])->name('existing-loans.import-form');
 Route::post('/existing-loans/import', [ExistingLoanImportController::class, 'import'])->name('existing-loans.import');
 Route::post('/existing-loans/import-default', [ExistingLoanImportController::class, 'importDefault'])->name('existing-loans.import-default');
 Route::get('/existing-loans/template', [ExistingLoanImportController::class, 'downloadTemplate'])->name('existing-loans.template');
 
-
-
-// NMB Integration Routes  hazihitaji userlogin  inaunga na mfumo wa nje
+// NMB Integration Routes
 Route::post('/nmb/callback', [NmbDisbursementController::class, 'handleCallback'])->name('nmb.callback');
 
 Route::get('/nmb/callback', function() {
@@ -505,6 +362,9 @@ Route::get('/nmb/callback', function() {
         'timestamp' => now()->toIso8601String()
     ]);
 })->name('nmb.callback.verify');
+
+
+
 
 Route::post('/nmb/bulk-disbursement', [NmbDisbursementController::class, 'processBulkDisbursement'])->name('nmb.bulk.disbursement')->middleware('auth');
 Route::get('/nmb/status/{batchId}', [NmbDisbursementController::class, 'checkStatus'])->name('nmb.status.check')->middleware('auth');
@@ -534,7 +394,7 @@ Route::get('/otp-verify', function () {
     return view('auth.otp-verify');
 })->name('otp.verify');
 
-// Password change routes (outside main middleware)  hizi hazina role yoyote  ni pale user anaingia kwa mara ya kwanza  labada iwepo  user.status 
+// Password change routes (outside main middleware)
 Route::middleware(['auth'])->group(function () {
     Route::get('/password/change/first', [AuthenticatedSessionController::class, 'showFirstPasswordChangeForm'])->name('password.change.first');
     Route::post('/password/change/first', [AuthenticatedSessionController::class, 'storeFirstPasswordChange'])->name('password.change.first.store');
@@ -542,9 +402,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/password/change/required', [AuthenticatedSessionController::class, 'storeRequiredPasswordChange'])->name('password.change.required.store');
 });
 
-
-
-//loanOfficer
 // Redirect authenticated users to loan offers
 Route::get('/', function () {
     if (auth()->check()) {
@@ -555,18 +412,6 @@ Route::get('/', function () {
 
 
 
-
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
 Route::get('/deduction-headers/{checkDate}', [DeductionApiController::class, 'getDeductionHeaders']);
 Route::get('/deduction-details/{checkDate}', [DeductionApiController::class, 'getDeductionDetails']);
 Route::get('/deduction-details', [DeductionApiController::class, 'showDeductionDetails'])->name('deduction.details');
@@ -583,29 +428,12 @@ Route::get('/deductions/import', [DeductionApiController::class, 'importAllDeduc
 Route::get('/deductions/import/form', [DeductionApiController::class, 'showImportForm'])
     ->name('deductions.import.form');
 
-
-
-//superadmin
-//system_admin
-//admin
 Route::post('/deductions/import', [DeductionApiController::class, 'importAllDeductions'])
     ->name('deductions.import');
 
 // ============================================
 // DEDUCTION MANAGEMENT ROUTES
 // ============================================
-
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
 Route::get('/deductions/contributions', [DeductionApiController::class, 'handleContributions'])
     ->name('deductions.contributions.handle');
 Route::get('export-salary-pdf/{checkNumber}', [DeductionApiController::class, 'exportSalaryDetailPdf'])
@@ -640,45 +468,15 @@ Route::get('/de/analysis/export', [ContributionAnalysisController::class, 'expor
 // ============================================
 // MEMBERSHIP AND USER PROFILE ROUTES
 // ============================================
-
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
 Route::resource('members', MembershipController::class);
 Route::resource('uramembers', MemberController::class);
-
-//superadmin
-//system_admin
 Route::post('uramembers/import', [MemberController::class, 'import'])->name('uramembers.import');
-
-
-//admin
-//accountant
-//loanofficer
-//Registrar
-//superadmin
-//system_admin
-//public_relation_officer
-//registrar_hq
-//representative
-//general_manager
-//branch_manager
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 Route::post('/profile/update-password', [UserController::class, 'updatePassword'])->name('profile.update-password');
 
 // ============================================
 // COMMAND AND RANK MANAGEMENT ROUTES
 // ============================================
-//superadmin
-//system_admin
 Route::resource('commands', CommandController::class);
 Route::get('/ranks/create', [RankController::class, 'create'])->name('ranks.create');
 Route::post('/ranks', [RankController::class, 'store'])->name('ranks.store');
@@ -689,8 +487,6 @@ Route::delete('/ranks/{id}', [RankController::class, 'destroy']);
 // ============================================
 // DISTRICTS AND REGIONS ROUTES
 // ============================================
-//superadmin
-//system_admin
 Route::get('/districts/{regionId}', function($regionId) {
     $districts = District::where('region_id', $regionId)->get();
     return response()->json($districts);
@@ -699,20 +495,11 @@ Route::get('/districts/{regionId}', function($regionId) {
 // ============================================
 // EXPORT AND ANALYTICS ROUTES
 // ============================================
-//loanofficer
 Route::get('/export-loan-applications', [LoanController::class, 'loanOfficerDashboard'])->name('export.loan.applications');
 
 // ============================================
 // BULK SMS AND CAMPAIGN ROUTES
 // ============================================
-
-//admin
-//accountant
-//loanofficer
-//superadmin
-//system_admin
-//public_relation_officer
-//general_manager
 Route::get('/bulk-sms-form', [BulkSMSController::class, 'showForm'])->name('bulk.sms.form');
 Route::post('/bulk-sms-parse', [BulkSMSController::class, 'parseCSV'])->name('bulk.sms.parse');
 Route::post('/bulk-sms-send', [BulkSMSController::class, 'sendBulkSMS'])->name('bulk.sms.send');
@@ -722,8 +509,6 @@ Route::post('/bulk-sms/export-failed', [BulkSMSController::class, 'exportFailedS
 // ============================================
 // CARD DETAILS MANAGEMENT ROUTES
 // ============================================
-//superadmin
-//system_admin
 Route::get('/card-details', [CardDetailManagerController::class, 'index'])->name('card-details.index');
 Route::post('/card-details/sync', [CardDetailManagerController::class, 'syncFromApi'])->name('card-details.sync');
 Route::get('/card-details/{id}/edit', [CardDetailManagerController::class, 'edit'])->name('card-details.edit');

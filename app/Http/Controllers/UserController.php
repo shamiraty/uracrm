@@ -728,8 +728,12 @@ class UserController extends Controller
             'users' => $users,
             'total_count' => $users->count(),
             'active_count' => $users->where('status', 'active')->count(),
-            'online_count' => $users->where('last_activity', '>', $onlineThreshold)->count(),
-            'logged_today' => $users->whereDate('last_login', today())->count(),
+            'online_count' => $users->filter(function($user) use ($onlineThreshold) {
+                return $user->last_activity && $user->last_activity > $onlineThreshold;
+            })->count(),
+            'logged_today' => $users->filter(function($user) {
+                return $user->last_login && $user->last_login->isToday();
+            })->count(),
             'generated_at' => now()->format('Y-m-d H:i:s'),
             'generated_by' => auth()->user()->name,
             'departments' => Department::withCount('users')->get(),
