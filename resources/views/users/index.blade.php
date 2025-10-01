@@ -1164,7 +1164,11 @@
                 <div class="modern-card-header">
                     <h5 class="modern-card-title">
                         <i class="bx bx-table"></i>
-                        All System Users ({{ count($usersWithStatus) }} records)
+                        All System Users
+                        <span class="badge bg-primary ms-2" style="font-size: 0.85rem; padding: 0.5rem 0.75rem; border-radius: 20px;">
+                            <i class="bx bx-loader-alt bx-spin" id="userCountLoader" style="display: none;"></i>
+                            <span id="userCountDisplay">Loading...</span>
+                        </span>
                     </h5>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-analytics" data-bs-toggle="modal" data-bs-target="#analyticsModal">
@@ -2137,12 +2141,38 @@
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize DataTables
-    $('#dataTable').DataTable({
+    // Show loader
+    $('#userCountLoader').show();
+    $('#userCountDisplay').text('Loading...');
+
+    // Initialize DataTables with server-side processing
+    const dataTable = $('#dataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("users.data") }}',
+            type: 'GET',
+            dataSrc: function (json) {
+                // Update user count display
+                $('#userCountLoader').hide();
+                $('#userCountDisplay').text(json.recordsTotal + ' records');
+                return json.data;
+            }
+        },
+        columns: [
+            { data: 0, name: 'name', orderable: true },
+            { data: 1, name: 'role', orderable: true },
+            { data: 2, name: 'branch', orderable: true },
+            { data: 3, name: 'phone_number', orderable: true },
+            { data: 4, name: 'status', orderable: true },
+            { data: 5, name: 'created_at', orderable: true },
+            { data: 6, name: 'actions', orderable: false }
+        ],
         responsive: true,
-        pageLength: 25,
-        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
         language: {
+            processing: '<div style="text-align: center; padding: 2rem;"><i class="bx bx-loader-alt bx-spin" style="font-size: 3rem; color: #17479E;"></i><div style="margin-top: 1rem; color: #17479E; font-weight: 600;">Loading users...</div></div>',
             search: "Search Users:",
             lengthMenu: "Show _MENU_ users per page",
             info: "Showing _START_ to _END_ of _TOTAL_ users",
@@ -2153,13 +2183,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 last: "Last",
                 next: "Next",
                 previous: "Previous"
-            }
+            },
+            zeroRecords: "No matching users found",
+            emptyTable: "No users available in database"
         },
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        dom: '<"row mb-3"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row mt-3"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         order: [[0, 'asc']],
-        columnDefs: [
-            { orderable: false, targets: [6] } // Disable sorting on Actions column
-        ]
+        drawCallback: function(settings) {
+            // Update count after each draw (search, pagination, etc.)
+            var api = this.api();
+            $('#userCountDisplay').text(api.page.info().recordsTotal + ' records');
+        }
     });
 
 

@@ -721,8 +721,8 @@
     <!-- Main Form Container -->
     <div class="modern-form-container">
         <!-- Compact Header -->
-        <div class="form-header">
-            <h3><i class="fas fa-plus-circle me-2"></i>Create New Enquiry</h3>
+        <div class="form-header text-white">
+            <h3 class="text-white"><i class="fas fa-plus-circle me-2"></i>Create New Enquiry</h3>
             <p>Fill in the required information to submit your enquiry request</p>
         </div>
 
@@ -937,23 +937,23 @@
                             <label class="form-label">
                                 Select Enquiry Type <span class="text-danger">*</span>
                             </label>
-                            <select name="type" id="enquiry_type" class="form-select" required>
-                                <option value="">Choose an enquiry type</option>
-                                <option value="loan_application">Loan Application</option>
-                                <option value="refund">Refund</option>
-                                <option value="share_enquiry">Share Enquiry</option>
-                                <option value="retirement">Retirement</option>
-                                <option value="deduction_add">Add Deduction of Savings</option>
-                                <option value="withdraw_savings">Withdraw Savings</option>
-                                <option value="withdraw_deposit">Withdraw Deposit</option>
-                                <option value="unjoin_membership">Unjoin Membership</option>
-                                <option value="ura_mobile">URA Mobile</option>
-                                <option value="sick_for_30_days">Sick Leave (30+ Days)</option>
-                                <option value="condolences">Condolences</option>
-                                <option value="injured_at_work">Work Injury</option>
-                                <option value="residential_disaster">Residential Disaster</option>
-                                <option value="join_membership">Join Membership</option>
-                            </select>
+                           <select name="type" id="enquiry_type" class="form-select text-uppercase fw-bold" required>
+  <option value="">Choose an enquiry type / Chagua aina ya maombi</option>
+  <option value="loan_application">Loan Application (Mkopo wa akiba)</option>
+  <option value="refund">Refund (Kurejeshewa fedha)</option>
+  <option value="share_enquiry">Share Enquiry (Kununua Hisa)</option>
+  <option value="retirement">Retirement (Kustaafu kazi)</option>
+  <option value="deduction_add">Add Deduction of Savings (Kuongeza/kupunguza akiba)</option>
+  <option value="withdraw_savings">Withdraw Savings (Kuomba sehemu ya akiba)</option>
+  <option value="withdraw_deposit">Withdraw Deposit (Kutoa Amana)</option>
+  <option value="unjoin_membership">Unjoin Membership (Kujitoa Uanachama)</option>
+  <option value="ura_mobile">URA Mobile (Ura mobile)</option>
+  <option value="sick_for_30_days">Sick Leave 30+ Days (Ugonjwa siku 30)</option>
+  <option value="condolences">Condolences (Rambirambi)</option>
+  <option value="injured_at_work">Work Injury (Kuumia kazini)</option>
+  <option value="residential_disaster">Residential Disaster (Majanga ya asili)</option>
+  <option value="join_membership">Join Membership (Kujiunga uanachama)</option>
+</select>
                             <div class="error-message" id="enquiry_type_error"></div>
                         </div>
                     </div>
@@ -976,7 +976,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Loan Purpose <span class="text-danger">*</span></label>
-                                <select name="loan_type" class="form-select">
+                                <select name="loan_type" class="form-select text-uppercase">
                                     <option value="">Select Purpose</option>
                                     <option value="business">Business</option>
                                     <option value="education">Education</option>
@@ -1222,12 +1222,12 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Disaster Cause <span class="text-danger">*</span></label>
-                                <select name="disaster_type" class="form-select">
+                                <select name="disaster_type" class="form-select text-uppercase">
                                     <option value="">Select Disaster Cause</option>
-                                    <option value="fire">Fire</option>
-                                    <option value="hurricane">Hurricane</option>
-                                    <option value="flood">Flood</option>
-                                    <option value="earthquake">Earthquake</option>
+                                    <option value="fire">Fire (Ajali ya moto)</option>
+                                    <option value="hurricane">Hurricane (Kimbunga)</option>
+                                    <option value="flood">Flood (Mafuriko)</option>
+                                    <option value="earthquake">Earthquake (Tetemeko la ardhi)</option>
                                 </select>
                             </div>
                         </div>
@@ -1262,7 +1262,7 @@
                             <label class="form-label">
                                 Region <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select" id="region" name="region_id" required>
+                            <select class="form-select text-uppercase" id="region" name="region_id" required>
                                 <option value="">Select Region</option>
                                 @foreach ($regions as $region)
                                     <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -1277,18 +1277,18 @@
                             <label class="form-label">
                                 District <span class="text-danger">*</span>
                             </label>
-                            <select class="form-select" id="district" name="district_id" required>
+                            <select class="form-select text-uppercase" id="district" name="district_id" required>
                                 <option value="">Select District</option>
                             </select>
                             <div class="error-message" id="district_error"></div>
                         </div>
                     </div>
 
-                    @if(auth()->user()->hasRole(['admin', 'registrar_hq', 'superadmin']))
+                    @if(auth()->user()->hasRole(['registrar_hq']))
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="form-label">Command</label>
-                            <select class="form-select" id="command_id" name="command_id">
+                            <select class="form-select text-uppercase" id="command_id" name="command_id">
                                 <option value="">Select Command</option>
                                 @foreach ($commands as $command)
                                     <option value="{{ $command->id }}">{{ $command->name }}</option>

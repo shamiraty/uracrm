@@ -729,7 +729,7 @@
     }
 </style>
 
-<div class="container-fluid">
+<div class="container">
     <!-- Breadcrumb -->
     <div class="modern-breadcrumb">
         <nav aria-label="breadcrumb">
@@ -742,7 +742,7 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('enquiries.index') }}">Enquiries</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">
+                <li class="breadcrumb-item active text-white" aria-current="page">
                     Edit Enquiry #{{ $enquiry->id }}
                 </li>
             </ol>
@@ -764,8 +764,11 @@
     <!-- Main Form Container -->
     <div class="modern-form-container">
         <!-- Compact Header -->
-        <div class="form-header">
-            <h3><i class="fas fa-edit me-2"></i>Edit Enquiry #{{ $enquiry->id }}</h3>
+        <div class="form-header text-white">
+           <h3 class="text-white">
+    <i class="fas fa-edit me-2"></i>
+    Edit Enquiry for {{ $enquiry->full_name }} of [ {{ str_replace('_', ' ', $enquiry->type) }} ]
+</h3>
             <p>Update your enquiry information as needed</p>
         </div>
 
@@ -968,23 +971,23 @@
                             <label class="form-label">
                                 Enquiry Type <span class="text-danger">*</span>
                             </label>
-                            <select name="type" id="enquiry_type" class="form-select" required>
-                                <option value="">Choose an enquiry type</option>
-                                <option value="loan_application" {{ $enquiry->type === 'loan_application' ? 'selected' : '' }}>Loan Application</option>
-                                <option value="refund" {{ $enquiry->type === 'refund' ? 'selected' : '' }}>Refund</option>
-                                <option value="share_enquiry" {{ $enquiry->type === 'share_enquiry' ? 'selected' : '' }}>Share Enquiry</option>
-                                <option value="retirement" {{ $enquiry->type === 'retirement' ? 'selected' : '' }}>Retirement</option>
-                                <option value="deduction_add" {{ $enquiry->type === 'deduction_add' ? 'selected' : '' }}>Add Deduction of Savings</option>
-                                <option value="withdraw_savings" {{ $enquiry->type === 'withdraw_savings' ? 'selected' : '' }}>Withdraw Savings</option>
-                                <option value="withdraw_deposit" {{ $enquiry->type === 'withdraw_deposit' ? 'selected' : '' }}>Withdraw Deposit</option>
-                                <option value="unjoin_membership" {{ $enquiry->type === 'unjoin_membership' ? 'selected' : '' }}>Unjoin Membership</option>
-                                <option value="ura_mobile" {{ $enquiry->type === 'ura_mobile' ? 'selected' : '' }}>URA Mobile</option>
-                                <option value="sick_for_30_days" {{ $enquiry->type === 'sick_for_30_days' ? 'selected' : '' }}>Sick Leave (30+ Days)</option>
-                                <option value="condolences" {{ $enquiry->type === 'condolences' ? 'selected' : '' }}>Condolences</option>
-                                <option value="injured_at_work" {{ $enquiry->type === 'injured_at_work' ? 'selected' : '' }}>Work Injury</option>
-                                <option value="residential_disaster" {{ $enquiry->type === 'residential_disaster' ? 'selected' : '' }}>Residential Disaster</option>
-                                <option value="join_membership" {{ $enquiry->type === 'join_membership' ? 'selected' : '' }}>Join Membership</option>
-                            </select>
+                           <select name="type" id="enquiry_type" class="form-select text-uppercase" required>
+    <option value="">Choose an enquiry type / Chagua aina ya maombi</option>
+    <option value="loan_application" {{ $enquiry->type === 'loan_application' ? 'selected' : '' }}>LOAN APPLICATION (Mkopo wa akiba)</option>
+    <option value="refund" {{ $enquiry->type === 'refund' ? 'selected' : '' }}>REFUND (Kurejeshewa fedha)</option>
+    <option value="share_enquiry" {{ $enquiry->type === 'share_enquiry' ? 'selected' : '' }}>SHARE ENQUIRY (Kununua Hisa)</option>
+    <option value="retirement" {{ $enquiry->type === 'retirement' ? 'selected' : '' }}>RETIREMENT (Kustaafu kazi)</option>
+    <option value="deduction_add" {{ $enquiry->type === 'deduction_add' ? 'selected' : '' }}>ADD DEDUCTION OF SAVINGS (Kuongeza/kupunguza akiba)</option>
+    <option value="withdraw_savings" {{ $enquiry->type === 'withdraw_savings' ? 'selected' : '' }}>WITHDRAW SAVINGS (Kuomba sehemu ya akiba)</option>
+    <option value="withdraw_deposit" {{ $enquiry->type === 'withdraw_deposit' ? 'selected' : '' }}>WITHDRAW DEPOSIT (Kutoa Amana)</option>
+    <option value="unjoin_membership" {{ $enquiry->type === 'unjoin_membership' ? 'selected' : '' }}>UNJOIN MEMBERSHIP (Kujitoa Uanachama)</option>
+    <option value="ura_mobile" {{ $enquiry->type === 'ura_mobile' ? 'selected' : '' }}>URA MOBILE</option>
+    <option value="sick_for_30_days" {{ $enquiry->type === 'sick_for_30_days' ? 'selected' : '' }}>SICK LEAVE 30+ DAYS (Ugonjwa siku 30+)</option>
+    <option value="condolences" {{ $enquiry->type === 'condolences' ? 'selected' : '' }}>CONDOLENCES (Rambirambi)</option>
+    <option value="injured_at_work" {{ $enquiry->type === 'injured_at_work' ? 'selected' : '' }}>WORK INJURY (Kuumia kazini)</option>
+    <option value="residential_disaster" {{ $enquiry->type === 'residential_disaster' ? 'selected' : '' }}>RESIDENTIAL DISASTER (Majanga ya asili)</option>
+    <option value="join_membership" {{ $enquiry->type === 'join_membership' ? 'selected' : '' }}>JOIN MEMBERSHIP (Kujiunga uanachama)</option>
+</select>
                             <div class="error-message" id="enquiry_type_error"></div>
                         </div>
                     </div>
@@ -1007,7 +1010,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Loan Purpose <span class="text-danger">*</span></label>
-                                <select name="loan_type" class="form-select" required>
+                                <select name="loan_type" class="form-select text-uppercase" required>
                                     <option value="">Select Purpose</option>
                                     @php $loanType = $enquiry->loanApplication->loan_type ?? '' @endphp
                                     <option value="business" {{ $loanType === 'business' ? 'selected' : '' }}>Business</option>

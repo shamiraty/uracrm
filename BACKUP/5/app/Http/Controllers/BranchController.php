@@ -1,0 +1,631 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Branch;
+use App\Models\District;
+use App\Models\Region;
+use Illuminate\Http\Request;
+
+class BranchController extends Controller
+{
+    public function index()
+    {
+        $branches = Branch::all();
+        $districts = District::all(); // Get all districts
+        $regions = Region::all(); // Get all regions
+        return view('branches.index', compact('branches', 'districts', 'regions'));
+    }
+
+    public function create()
+    {
+        $districts = District::all();
+        $regions = Region::all();
+        return view('branches.create', compact('districts', 'regions'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validate that all fields are required
+        $request->validate([
+            'name' => 'required|string|max:255|unique:branches,name', // Ensure 'name' is unique
+            'district_id' => 'required|exists:districts,id',
+            'region_id' => 'required|exists:regions,id',
+        ]);
+
+        // Check if the branch name already exists
+        $existingBranch = Branch::where('name', $request->name)->first();
+        if ($existingBranch) {
+            return redirect()->route('branches.index')->with('error', 'Branch name already exists!');
+        }
+
+        // Create the new branch
+        Branch::create($request->all());
+        return redirect()->route('branches.index')->with('success', 'Branch created successfully.');
+    }
+
+    public function show(Branch $branch)
+    {
+        return view('branches.show', compact('branch'));
+    }
+
+    public function edit(Branch $branch)
+    {
+        $districts = District::all();
+        $regions = Region::all();
+        return view('branches.edit', compact('branch', 'districts', 'regions'));
+    }
+
+    public function update(Request $request, Branch $branch)
+    {
+        // Validate that all fields are required
+        $request->validate([
+            'name' => 'required|string|max:255|unique:branches,name,' . $branch->id, // Ensure 'name' is unique, excluding the current branch
+            'district_id' => 'required|exists:districts,id',
+            'region_id' => 'required|exists:regions,id',
+        ]);
+
+        // Check if the branch name already exists (excluding the current branch)
+        $existingBranch = Branch::where('name', $request->name)->where('id', '!=', $branch->id)->first();
+        if ($existingBranch) {
+            return redirect()->route('branches.index')->with('error', 'Branch name already exists!');
+        }
+
+        // Update the existing branch
+        $branch->update($request->all());
+        return redirect()->route('branches.index')->with('success', 'Branch updated successfully.');
+    }
+
+    public function destroy(Branch $branch)
+    {
+        $branch->delete();
+        return redirect()->route('branches.index')->with('success', 'Branch deleted successfully.');
+    }
+
+    /**
+     * Branch Manager Dashboard
+     * Display analytics and enquiries for the branch manager's branch
+     */
+    public function managerDashboard(Request $request)
+    {
+        $user = auth()->user();
+
+        // Verify user is a branch manager and has a branch
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Access denied. You must be assigned to a branch.');
+        }
+
+        $branch = $user->branch;
+
+        // Get all users who registered enquiries from this branch
+        $branchUserIds = \App\Models\User::where('branch_id', $branch->id)->pluck('id');
+
+        // Get all unique region IDs from enquiries registered by branch users
+        $regionIdsInBranch = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->whereNotNull('region_id')
+            ->distinct()
+            ->pluck('region_id');
+
+        // Get all regions that have enquiries from this branch
+        $regionsInBranch = \App\Models\Region::whereIn('id', $regionIdsInBranch)->get();
+
+        // Get all unique district IDs from enquiries registered by branch users
+        $districtIdsInBranch = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->whereNotNull('district_id')
+            ->distinct()
+            ->pluck('district_id');
+
+        // If region is selected, filter districts by that region
+        if ($request->filled('region_id')) {
+            $districtsInBranch = \App\Models\District::where('region_id', $request->region_id)
+                ->whereIn('id', $districtIdsInBranch)
+                ->get();
+        } else {
+            $districtsInBranch = \App\Models\District::whereIn('id', $districtIdsInBranch)->get();
+        }
+
+        // Build base query for enquiries from this branch
+        $enquiriesQuery = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds);
+
+        // Apply filters
+        if ($request->filled('region_id')) {
+            $enquiriesQuery->where('region_id', $request->region_id);
+        }
+
+        if ($request->filled('district_id')) {
+            $enquiriesQuery->where('district_id', $request->district_id);
+        }
+
+        if ($request->filled('type')) {
+            $enquiriesQuery->where('type', $request->type);
+        }
+
+        if ($request->filled('status')) {
+            $enquiriesQuery->where('status', $request->status);
+        }
+
+        if ($request->filled('date_from')) {
+            $enquiriesQuery->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $enquiriesQuery->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $enquiriesQuery->where(function($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('check_number', 'like', "%{$search}%")
+                  ->orWhere('force_no', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Get enquiries with pagination
+        $perPage = $request->get('per_page', 15);
+        $enquiries = $enquiriesQuery->with(['district', 'region', 'users', 'registeredBy'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+        // Calculate analytics for the entire branch (unfiltered)
+        $analytics = [
+            'total' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->count(),
+            'pending' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->where('status', 'pending')->count(),
+            'assigned' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->where('status', 'assigned')->count(),
+            'approved' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->where('status', 'approved')->count(),
+            'rejected' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->where('status', 'rejected')->count(),
+            'pending_overdue' => \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('status', 'pending')
+                ->where('created_at', '<=', now()->subDays(3))
+                ->count(),
+        ];
+
+        // Calculate analytics for CURRENT FILTERED data (intensive analytics)
+        $filteredEnquiriesForAnalytics = clone $enquiriesQuery;
+        $filteredAnalytics = [
+            'total' => $filteredEnquiriesForAnalytics->count(),
+            'pending' => (clone $filteredEnquiriesForAnalytics)->where('status', 'pending')->count(),
+            'assigned' => (clone $filteredEnquiriesForAnalytics)->where('status', 'assigned')->count(),
+            'approved' => (clone $filteredEnquiriesForAnalytics)->where('status', 'approved')->count(),
+            'rejected' => (clone $filteredEnquiriesForAnalytics)->where('status', 'rejected')->count(),
+            'pending_overdue' => (clone $filteredEnquiriesForAnalytics)->where('status', 'pending')
+                ->where('created_at', '<=', now()->subDays(3))
+                ->count(),
+        ];
+
+        // Analytics by enquiry type
+        $analyticsByType = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->selectRaw('type, COUNT(*) as count, status')
+            ->groupBy('type', 'status')
+            ->get()
+            ->groupBy('type');
+
+        // Analytics by region
+        $analyticsByRegion = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->selectRaw('region_id, COUNT(*) as count, status')
+            ->groupBy('region_id', 'status')
+            ->get()
+            ->groupBy('region_id');
+
+        // Analytics by district
+        $analyticsByDistrict = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->selectRaw('district_id, COUNT(*) as count, status')
+            ->groupBy('district_id', 'status')
+            ->get()
+            ->groupBy('district_id');
+
+        // Child table statistics
+        $childTableStats = $this->getChildTableStatistics($branchUserIds);
+
+        // Get all enquiry types
+        $enquiryTypes = [
+            'loan_application', 'refund', 'share_enquiry', 'retirement',
+            'deduction_add', 'withdraw_savings', 'withdraw_deposit',
+            'unjoin_membership', 'condolences', 'injured_at_work',
+            'sick_for_30_days', 'benefit_from_disasters', 'join_membership', 'ura_mobile'
+        ];
+
+        return view('branches.manager.index', compact(
+            'branch',
+            'enquiries',
+            'analytics',
+            'filteredAnalytics',
+            'analyticsByType',
+            'analyticsByRegion',
+            'analyticsByDistrict',
+            'childTableStats',
+            'districtsInBranch',
+            'regionsInBranch',
+            'enquiryTypes'
+        ));
+    }
+
+    /**
+     * Get districts by region for branch manager (AJAX)
+     */
+    public function getDistrictsByRegion(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $regionId = $request->get('region_id');
+        $branchUserIds = \App\Models\User::where('branch_id', $user->branch_id)->pluck('id');
+
+        // Get districts in this region that have enquiries from branch users
+        $districtIdsInBranch = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+            ->whereNotNull('district_id')
+            ->distinct()
+            ->pluck('district_id');
+
+        $districts = \App\Models\District::where('region_id', $regionId)
+            ->whereIn('id', $districtIdsInBranch)
+            ->get(['id', 'name']);
+
+        return response()->json($districts);
+    }
+
+    /**
+     * Get region-specific analytics data (JSON for DataTable)
+     */
+    public function regionAnalytics(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return response()->json(['error' => 'Access denied.'], 403);
+        }
+
+        $branch = $user->branch;
+        $branchUserIds = \App\Models\User::where('branch_id', $branch->id)->pluck('id');
+
+        // Get all regions with enquiries from branch users
+        $regions = \App\Models\Region::whereHas('enquiries', function($query) use ($branchUserIds) {
+            $query->whereIn('registered_by', $branchUserIds);
+        })->get();
+
+        $data = [];
+        foreach ($regions as $index => $region) {
+            $total = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('region_id', $region->id)
+                ->count();
+
+            $pending = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('region_id', $region->id)
+                ->where('status', 'pending')
+                ->count();
+
+            $assigned = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('region_id', $region->id)
+                ->where('status', 'assigned')
+                ->count();
+
+            $approved = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('region_id', $region->id)
+                ->where('status', 'approved')
+                ->count();
+
+            $rejected = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('region_id', $region->id)
+                ->where('status', 'rejected')
+                ->count();
+
+            $data[] = [
+                'DT_RowIndex' => $index + 1,
+                'name' => $region->name,
+                'total' => $total,
+                'pending' => $pending,
+                'assigned' => $assigned,
+                'approved' => $approved,
+                'rejected' => $rejected,
+            ];
+        }
+
+        return response()->json(['data' => $data]);
+    }
+
+    /**
+     * Get district-specific analytics data (JSON for DataTable)
+     */
+    public function districtAnalytics(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return response()->json(['error' => 'Access denied.'], 403);
+        }
+
+        $branch = $user->branch;
+        $branchUserIds = \App\Models\User::where('branch_id', $branch->id)->pluck('id');
+
+        // Get all districts with enquiries from branch users
+        $districts = \App\Models\District::whereHas('enquiries', function($query) use ($branchUserIds) {
+            $query->whereIn('registered_by', $branchUserIds);
+        })->with('region')->get();
+
+        $data = [];
+        foreach ($districts as $index => $district) {
+            $total = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('district_id', $district->id)
+                ->count();
+
+            $pending = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('district_id', $district->id)
+                ->where('status', 'pending')
+                ->count();
+
+            $assigned = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('district_id', $district->id)
+                ->where('status', 'assigned')
+                ->count();
+
+            $approved = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('district_id', $district->id)
+                ->where('status', 'approved')
+                ->count();
+
+            $rejected = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)
+                ->where('district_id', $district->id)
+                ->where('status', 'rejected')
+                ->count();
+
+            $data[] = [
+                'DT_RowIndex' => $index + 1,
+                'name' => $district->name,
+                'region' => $district->region->name ?? 'N/A',
+                'total' => $total,
+                'pending' => $pending,
+                'assigned' => $assigned,
+                'approved' => $approved,
+                'rejected' => $rejected,
+            ];
+        }
+
+        return response()->json(['data' => $data]);
+    }
+
+    /**
+     * Get statistics from child tables for branch enquiries
+     */
+    private function getChildTableStatistics($branchUserIds)
+    {
+        $stats = [];
+
+        // Get all enquiry IDs from this branch
+        $enquiryIds = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds)->pluck('id');
+
+        // Loan Applications
+        $stats['loan_applications'] = [
+            'total' => \App\Models\LoanApplication::whereIn('enquiry_id', $enquiryIds)->count(),
+            'total_amount' => \App\Models\LoanApplication::whereIn('enquiry_id', $enquiryIds)->sum('loan_amount'),
+            'by_type' => \App\Models\LoanApplication::whereIn('enquiry_id', $enquiryIds)
+                ->selectRaw('loan_type, COUNT(*) as count, SUM(loan_amount) as total')
+                ->groupBy('loan_type')
+                ->get(),
+        ];
+
+        // Payments
+        $stats['payments'] = [
+            'total' => \App\Models\Payment::whereIn('enquiry_id', $enquiryIds)->count(),
+            'total_amount' => \App\Models\Payment::whereIn('enquiry_id', $enquiryIds)->sum('amount'),
+            'by_status' => \App\Models\Payment::whereIn('enquiry_id', $enquiryIds)
+                ->selectRaw('status, COUNT(*) as count, SUM(amount) as total')
+                ->groupBy('status')
+                ->get(),
+        ];
+
+        // Refunds
+        $stats['refunds'] = [
+            'total' => \App\Models\Refund::whereIn('enquiry_id', $enquiryIds)->count(),
+            'total_amount' => \App\Models\Refund::whereIn('enquiry_id', $enquiryIds)->sum('refund_amount'),
+        ];
+
+        // Withdrawals
+        $stats['withdrawals'] = [
+            'total' => \App\Models\Withdrawal::whereIn('enquiry_id', $enquiryIds)->count(),
+            'total_amount' => \App\Models\Withdrawal::whereIn('enquiry_id', $enquiryIds)->sum('amount'),
+        ];
+
+        // Retirements
+        $stats['retirements'] = [
+            'total' => \App\Models\Retirement::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Shares
+        $stats['shares'] = [
+            'total' => \App\Models\Share::whereIn('enquiry_id', $enquiryIds)->count(),
+            'total_amount' => \App\Models\Share::whereIn('enquiry_id', $enquiryIds)->sum('share_amount'),
+        ];
+
+        // Condolences
+        $stats['condolences'] = [
+            'total' => \App\Models\Condolence::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Injuries
+        $stats['injuries'] = [
+            'total' => \App\Models\Injury::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Sick Leaves
+        $stats['sick_leaves'] = [
+            'total' => \App\Models\SickLeave::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Benefits
+        $stats['benefits'] = [
+            'total' => \App\Models\Benefit::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Membership Changes
+        $stats['membership_changes'] = [
+            'total' => \App\Models\MembershipChange::whereIn('enquiry_id', $enquiryIds)->count(),
+            'joins' => \App\Models\MembershipChange::whereIn('enquiry_id', $enquiryIds)->where('action', 'join')->count(),
+            'unjoins' => \App\Models\MembershipChange::whereIn('enquiry_id', $enquiryIds)->where('action', 'unjoin')->count(),
+        ];
+
+        // Deductions
+        $stats['deductions'] = [
+            'total' => \App\Models\Deduction::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // URA Mobile
+        $stats['ura_mobile'] = [
+            'total' => \App\Models\URAMobile::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        // Residential Disasters
+        $stats['residential_disasters'] = [
+            'total' => \App\Models\ResidentialDisaster::whereIn('enquiry_id', $enquiryIds)->count(),
+        ];
+
+        return $stats;
+    }
+
+    /**
+     * Export Branch Manager Data to Excel
+     */
+    public function exportBranchManagerData(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return redirect()->back()->with('error', 'Access denied.');
+        }
+
+        $branch = $user->branch;
+        $branchUserIds = \App\Models\User::where('branch_id', $branch->id)->pluck('id');
+
+        $enquiriesQuery = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds);
+
+        // Apply same filters as dashboard
+        if ($request->filled('region_id')) {
+            $enquiriesQuery->where('region_id', $request->region_id);
+        }
+        if ($request->filled('district_id')) {
+            $enquiriesQuery->where('district_id', $request->district_id);
+        }
+        if ($request->filled('type')) {
+            $enquiriesQuery->where('type', $request->type);
+        }
+        if ($request->filled('date_from')) {
+            $enquiriesQuery->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $enquiriesQuery->whereDate('created_at', '<=', $request->date_to);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $enquiriesQuery->where(function($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('check_number', 'like', "%{$search}%")
+                  ->orWhere('force_no', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $enquiries = $enquiriesQuery->with(['district', 'region', 'users', 'registeredBy'])->get();
+
+        return \Excel::download(
+            new \App\Exports\BranchManagerEnquiriesExport($enquiries, $branch, $request->get('type')),
+            'branch_manager_report_' . date('Y-m-d') . '.xlsx'
+        );
+    }
+
+    /**
+     * Export Branch Manager Data to PDF
+     */
+    public function exportBranchManagerPDF(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->hasRole('branch_manager') || !$user->branch_id) {
+            return redirect()->back()->with('error', 'Access denied.');
+        }
+
+        $branch = $user->branch;
+        $branchUserIds = \App\Models\User::where('branch_id', $branch->id)->pluck('id');
+
+        $enquiriesQuery = \App\Models\Enquiry::whereIn('registered_by', $branchUserIds);
+
+        // Apply filters
+        if ($request->filled('region_id')) {
+            $enquiriesQuery->where('region_id', $request->region_id);
+        }
+        if ($request->filled('district_id')) {
+            $enquiriesQuery->where('district_id', $request->district_id);
+        }
+        if ($request->filled('type')) {
+            $enquiriesQuery->where('type', $request->type);
+        }
+        if ($request->filled('date_from')) {
+            $enquiriesQuery->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $enquiriesQuery->whereDate('created_at', '<=', $request->date_to);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $enquiriesQuery->where(function($q) use ($search) {
+                $q->where('full_name', 'like', "%{$search}%")
+                  ->orWhere('check_number', 'like', "%{$search}%")
+                  ->orWhere('force_no', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Load appropriate child table based on type filter
+        $with = ['district', 'region', 'users', 'registeredBy'];
+        if ($request->filled('type')) {
+            $childRelation = $this->getRelationshipForExportType($request->type);
+            if ($childRelation) {
+                $with[] = $childRelation;
+            }
+        }
+
+        $enquiries = $enquiriesQuery->with($with)->get();
+
+        $analytics = [
+            'total' => $enquiries->count(),
+            'pending' => $enquiries->where('status', 'pending')->count(),
+            'assigned' => $enquiries->where('status', 'assigned')->count(),
+            'approved' => $enquiries->where('status', 'approved')->count(),
+            'rejected' => $enquiries->where('status', 'rejected')->count(),
+        ];
+
+        $enquiryType = $request->get('type');
+
+        $pdf = \PDF::loadView('branches.manager.pdf_report', compact('enquiries', 'branch', 'analytics', 'enquiryType'));
+
+        return $pdf->download('branch_manager_report_' . date('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Get relationship name for export based on enquiry type
+     */
+    private function getRelationshipForExportType($type)
+    {
+        $relationships = [
+            'loan_application' => 'loanApplication',
+            'refund' => 'refund',
+            'withdraw_savings' => 'withdrawal',
+            'withdraw_deposit' => 'withdrawal',
+            'deduction_add' => 'deduction',
+            'condolences' => 'condolence',
+            'injured_at_work' => 'injury',
+            'sick_for_30_days' => 'sickLeave',
+            'benefit_from_disasters' => 'benefit',
+            'retirement' => 'retirement',
+            'share_enquiry' => 'share',
+            'unjoin_membership' => 'membershipChange',
+            'join_membership' => 'membershipChange',
+            'ura_mobile' => 'uraMobile',
+        ];
+
+        return $relationships[$type] ?? null;
+    }
+}

@@ -374,7 +374,111 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with(['branch', 'roles', 'region', 'department', 'district', 'command', 'rank'])->findOrFail($id);
-        return view('users.view', compact('user'));
+
+        // Get enquiry statistics for this user
+        $enquiries = \App\Models\Enquiry::where('registered_by', $id)->get();
+
+        // Total enquiries
+        $totalEnquiries = $enquiries->count();
+
+        // Enquiries by type (with formatted names)
+        $enquiriesByType = $enquiries->groupBy('type')->map(function($items, $type) {
+            return [
+                'type' => ucwords(str_replace('_', ' ', $type)),
+                'count' => $items->count()
+            ];
+        })->values();
+
+        // Enquiries by status
+        $enquiriesByStatus = $enquiries->groupBy('status')->map(function($items, $status) {
+            return [
+                'status' => ucfirst($status),
+                'count' => $items->count()
+            ];
+        })->values();
+
+        // Last enquiry
+        $lastEnquiry = \App\Models\Enquiry::where('registered_by', $id)
+            ->latest('created_at')
+            ->first();
+
+        // Recent enquiries (last 5)
+        $recentEnquiries = \App\Models\Enquiry::where('registered_by', $id)
+            ->with(['district', 'region'])
+            ->latest('created_at')
+            ->take(5)
+            ->get();
+
+        return view('users.view', compact(
+            'user',
+            'totalEnquiries',
+            'enquiriesByType',
+            'enquiriesByStatus',
+            'lastEnquiry',
+            'recentEnquiries'
+        ));
+    }
+
+    /**
+     * Generate PDF report for a user
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePDF($id)
+    {
+        $user = User::with(['branch', 'region', 'department', 'district', 'command', 'rank'])->findOrFail($id);
+
+        // Get ALL enquiry statistics for this user
+        $enquiries = \App\Models\Enquiry::where('registered_by', $id)->get();
+
+        // Total enquiries
+        $totalEnquiries = $enquiries->count();
+
+        // Enquiries by type (with formatted names)
+        $enquiriesByType = $enquiries->groupBy('type')->map(function($items, $type) {
+            return [
+                'type' => ucwords(str_replace('_', ' ', $type)),
+                'count' => $items->count()
+            ];
+        })->values();
+
+        // Enquiries by status
+        $enquiriesByStatus = $enquiries->groupBy('status')->map(function($items, $status) {
+            return [
+                'status' => ucfirst($status),
+                'count' => $items->count()
+            ];
+        })->values();
+
+        // Last enquiry
+        $lastEnquiry = \App\Models\Enquiry::where('registered_by', $id)
+            ->latest('created_at')
+            ->first();
+
+        // ALL enquiries with relationships (for complete details table)
+        $allEnquiries = \App\Models\Enquiry::where('registered_by', $id)
+            ->with(['district', 'region'])
+            ->latest('created_at')
+            ->get();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('users.pdf', compact(
+            'user',
+            'totalEnquiries',
+            'enquiriesByType',
+            'enquiriesByStatus',
+            'lastEnquiry',
+            'allEnquiries'
+        ));
+
+        // Set paper size and orientation
+        $pdf->setPaper('A4', 'portrait');
+
+        // Download PDF with filename
+        $fileName = 'User_Report_' . Str::slug($user->name) . '_' . date('YmdHis') . '.pdf';
+
+        return $pdf->download($fileName);
     }
 
     /**
@@ -992,5 +1096,140 @@ class UserController extends Controller
             ]);
 
         return $pdf->download('unauthorized_access_attempts_' . date('Y-m-d') . '.pdf');
+    }
+
+    /**
+     * Get users data for DataTables AJAX request
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUsersData(Request $request)
+    {
+        $draw = $request->get('draw');
+        $start = $request->get('start');
+        $length = $request->get('length');
+        $searchValue = $request->get('search')['value'] ?? '';
+        $orderColumn = $request->get('order')[0]['column'] ?? 0;
+        $orderDir = $request->get('order')[0]['dir'] ?? 'asc';
+
+        // Column mapping for ordering
+        $columns = ['name', 'email', 'phone_number', 'branch', 'role', 'status'];
+        $orderByColumn = $columns[$orderColumn] ?? 'name';
+
+        // Base query with relationships
+        $query = User::with(['branch', 'role', 'region', 'department', 'district', 'command', 'rank']);
+
+        // Apply search
+        if (!empty($searchValue)) {
+            $query->where(function($q) use ($searchValue) {
+                $q->where('name', 'like', "%{$searchValue}%")
+                  ->orWhere('email', 'like', "%{$searchValue}%")
+                  ->orWhere('phone_number', 'like', "%{$searchValue}%")
+                  ->orWhere('designation', 'like', "%{$searchValue}%")
+                  ->orWhereHas('branch', function($q) use ($searchValue) {
+                      $q->where('name', 'like', "%{$searchValue}%");
+                  })
+                  ->orWhereHas('roles', function($q) use ($searchValue) {
+                      $q->where('name', 'like', "%{$searchValue}%");
+                  });
+            });
+        }
+
+        // Get total records (before filtering)
+        $totalRecords = User::count();
+
+        // Get filtered records count
+        $filteredRecords = $query->count();
+
+        // Apply ordering
+        if ($orderByColumn === 'branch') {
+            $query->join('branches', 'users.branch_id', '=', 'branches.id')
+                  ->orderBy('branches.name', $orderDir)
+                  ->select('users.*');
+        } elseif ($orderByColumn === 'role') {
+            $query->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                  ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                  ->orderBy('roles.name', $orderDir)
+                  ->select('users.*')
+                  ->distinct();
+        } else {
+            $query->orderBy($orderByColumn, $orderDir);
+        }
+
+        // Apply pagination
+        $users = $query->skip($start)->take($length)->get();
+
+        // Online threshold (5 minutes)
+        $onlineThreshold = Carbon::now()->subMinutes(5);
+
+        // Format data for DataTables
+        $data = $users->map(function($user) use ($onlineThreshold) {
+            $isOnline = $user->last_activity && Carbon::parse($user->last_activity)->greaterThan($onlineThreshold);
+
+            $roleName = $user->getRoleNames()->first() ?? 'N/A';
+            $branchName = $user->branch->name ?? 'N/A';
+
+            // Status badge
+            $statusBadge = $user->status === 'active'
+                ? '<span class="status-badge status-active">Active</span>'
+                : '<span class="status-badge status-inactive">Inactive</span>';
+
+            // Online indicator
+            $onlineIndicator = $isOnline
+                ? '<span class="status-badge status-online"><span class="online-indicator me-1"></span>Online</span>'
+                : '';
+
+            // User display with avatar
+            $userDisplay = '
+                <div class="d-flex align-items-center">
+                    <div class="user-avatar me-2">' . strtoupper(substr($user->name, 0, 2)) . '</div>
+                    <div>
+                        <div class="fw-bold">' . e($user->name) . '</div>
+                        <small class="text-muted">' . e($user->email) . '</small>
+                    </div>
+                </div>
+            ';
+
+            // Action buttons
+            $actions = '
+                <div class="btn-group" role="group">
+                    <a href="' . route('users.edit', $user->id) . '"
+                       class="btn btn-sm btn-outline-primary"
+                       title="Edit User">
+                        <i class="bx bx-edit"></i>
+                    </a>
+                    <form action="' . route('users.destroy', $user->id) . '"
+                          method="POST"
+                          style="display: inline;"
+                          onsubmit="return confirm(\'Are you sure you want to delete this user?\');">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger"
+                                title="Delete User">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            ';
+
+            return [
+                $userDisplay,
+                '<span class="badge bg-primary">' . e($roleName) . '</span>',
+                e($branchName),
+                e($user->phone_number ?? 'N/A'),
+                $statusBadge . ' ' . $onlineIndicator,
+                e($user->created_at->format('Y-m-d')),
+                $actions
+            ];
+        });
+
+        return response()->json([
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ]);
     }
 }

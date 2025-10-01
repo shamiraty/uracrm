@@ -233,6 +233,10 @@ Route::middleware(['auth', 'user.status', 'update.activity'])->group(function ()
     Route::resource('permissions', PermissionController::class);
     Route::resource('users', UserController::class);
 
+    // DataTables AJAX route for users
+    Route::get('/users-data', [UserController::class, 'getUsersData'])->name('users.data');
+    Route::get('/users/{id}/pdf', [UserController::class, 'generatePDF'])->name('users.pdf');
+
     // Additional user management routes
 	
 	//superadmin
@@ -367,6 +371,16 @@ Route::get('/branches/{branch}', [BranchController::class, 'show'])->name('branc
 Route::get('/branches/{branch}/edit', [BranchController::class, 'edit'])->name('branches.edit');
 Route::put('/branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
 Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])->name('branches.destroy');
+
+// Branch Manager Dashboard Routes
+Route::middleware(['role:branch_manager'])->group(function () {
+    Route::get('/branches/manager/dashboard', [BranchController::class, 'managerDashboard'])->name('branches.manager.dashboard');
+    Route::get('/branches/manager/export-excel', [BranchController::class, 'exportBranchManagerData'])->name('branches.manager.export.excel');
+    Route::get('/branches/manager/export-pdf', [BranchController::class, 'exportBranchManagerPDF'])->name('branches.manager.export.pdf');
+    Route::get('/branches/manager/districts-by-region', [BranchController::class, 'getDistrictsByRegion'])->name('branches.manager.districts.by.region');
+    Route::get('/branches/manager/region/{region}', [BranchController::class, 'regionAnalytics'])->name('branches.manager.region.analytics');
+    Route::get('/branches/manager/district/{district}', [BranchController::class, 'districtAnalytics'])->name('branches.manager.district.analytics');
+});
 Route::resource('departments', DepartmentController::class);
 Route::resource('representatives', RepresentativeController::class);
 Route::get('/trends', [DashboardTrendsController::class, 'index'])->name('trends');
@@ -547,11 +561,10 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-//loanOfficer
-// Redirect authenticated users to loan offers
+// Redirect authenticated users to dashboard (zuia  asirudi kwenye login au verify OTP au password change)
 Route::get('/', function () {
     if (auth()->check()) {
-        return redirect()->route('loan-offers.index');
+        return redirect()->route('dashboard');
     }
     return redirect()->route('login');
 });
