@@ -3,56 +3,8 @@
 @section('content')
 <!-- Enhanced Modern Styling -->
 <style>
-
-
-
-
-
-
-
-
-
- /* Badge improvements */
-    .badge {
-        padding: 8px 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        border-radius: 20px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Checkbox styling */
-    .form-check-input {
-        border-radius: 6px;
-        border: 2px solid #dee2e6;
-        width: 18px;
-        height: 18px;
-        transition: all 0.3s ease;
-    }
-
-    .form-check-input:checked {
-        background-color: #87CEEB;
-        border-color: #87CEEB;
-        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
-    }
-
-    .form-check-input:focus {
-        border-color: #87CEEB;
-        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
-    }
-
-    /* Sticky header improvements */
-    .sticky-top {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-
-
-
-  .btn:hover {
+    /* Button hover effects */
+    .btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
@@ -109,6 +61,201 @@
         transform: scale(1.1);
     }
 
+    /* Table enhancements */
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.002);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+    }
+
+    /* Dropdown enhancements */
+    
+    /* Card enhancements */
+    .card {
+        border-radius: 12px;
+    }
+
+    /* Breadcrumb styling */
+    .hover-text-primary:hover {
+        color: #007bff !important;
+        transition: color 0.3s ease;
+    }
+
+    /* Enhanced table styling */
+    .table-responsive {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+        background: white;
+        border: 1px solid #e9ecef;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: linear-gradient(90deg, #f8f9fa, #e9ecef);
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: linear-gradient(90deg, #87CEEB, #17479e);
+        border-radius: 10px;
+        border: 2px solid #f8f9fa;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(90deg, #17479e, #87CEEB);
+    }
+
+    .table-responsive::-webkit-scrollbar-corner {
+        background: #f8f9fa;
+    }
+
+
+    /* Modern table design */
+    .table {
+        margin-bottom: 0;
+        background: white;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #f1f3f4;
+        position: relative;
+    }
+
+    .table tbody tr::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover::before {
+        background: linear-gradient(180deg, #87CEEB, #17479e);
+    }
+
+    /* Cell styling improvements */
+    .table td {
+        border: none;
+        position: relative;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #fafbfc;
+    }
+
+    .table tbody tr:hover {
+        background: linear-gradient(90deg, #f8f9ff 0%, #ffffff 100%) !important;
+        box-shadow: 0 6px 20px rgba(135, 206, 235, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Badge improvements */
+    .badge {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Checkbox styling */
+    .form-check-input {
+        border-radius: 6px;
+        border: 2px solid #dee2e6;
+        width: 18px;
+        height: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .form-check-input:checked {
+        background-color: #87CEEB;
+        border-color: #87CEEB;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
+    }
+
+    .form-check-input:focus {
+        border-color: #87CEEB;
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.25);
+    }
+
+    /* Sticky header improvements */
+    .sticky-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /* Fix dropdown visibility and positioning */
+    .table td .dropdown {
+        position: static;
+    }
+
+    .table .dropdown-menu {
+        position: absolute !important;
+        transform: translate3d(0px, 38px, 0px) !important;
+        top: 0px !important;
+        left: 0px !important;
+        will-change: transform;
+        z-index: 1060;
+        border: none;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        border-radius: 12px;
+        padding: 8px 0;
+        min-width: 200px;
+        max-width: 250px;
+        overflow: visible;
+    }
+
+    /* Ensure dropdown doesn't get cut off by table overflow */
+    .table-responsive {
+        overflow: visible;
+    }
+
+    .table-responsive .table {
+        position: relative;
+        z-index: 1;
+    }
+
+    .table tbody tr {
+        position: relative;
+    }
+
+    .table tbody tr:last-child .dropdown-menu {
+        bottom: 100%;
+        top: auto;
+        transform: translate3d(0px, -8px, 0px) !important;
+    }
+
+    .sticky-top th {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Modern Table Styling */
+    .modern-table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
 
     .modern-table thead th {
         border: none !important;
@@ -157,9 +304,32 @@
     }
 
     /* Pagination styling */
-    
+    .pagination {
+        margin: 0;
+    }
 
- 
+    .page-link {
+        border: 1px solid #dee2e6;
+        color: #6c757d;
+        padding: 8px 12px;
+        margin: 0 2px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .page-link:hover {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+    }
+
     /* Card enhancements */
     .card {
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
@@ -209,83 +379,6 @@
     .loading {
         animation: pulse 1.5s infinite;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-   .table {
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.table thead th {
-    border: none !important;
-    padding: 1rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.85rem;
-    color: white !important;
-}
-
-.table tbody td {
-    border: none !important;
-    border-bottom: 1px solid rgba(0,0,0,0.05) !important;
-    padding: 1.25rem 1rem !important;
-    vertical-align: middle;
-}
-
-
-
-.table .btn-sm {
-    border-radius: 8px !important;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    font-size: 11px !important;
-    letter-spacing: 0.5px;
-}
-
-
-
-.table .badge {
-    transition: all 0.2s ease;
-}
-
-.table .badge:hover {
-    transform: scale(1.05);
-}
-
-
-
-
-
-
-
-
-
-
-.dropdown {
-    position: static !important;
-}
-
-.dropdown-menu {
-    position: absolute !important;
-    z-index: 1055 !important;
-}
-
-
-
-
-
 </style>
 <div class="container-fluid py-4">
 
@@ -539,8 +632,12 @@
                                             <input class="form-check-input" type="checkbox" id="selectAll" style="border-color: white;">
                                         </div>
                                     </th>
-                                    
-                                 
+                                    <th width="60" class="text-center border-0">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <i class="fas fa-hashtag me-1"></i>
+                                            <span class="fw-bold">SELECT</span>
+                                        </div>
+                                    </th>
                                      <th width="60" class="text-center border-0">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <i class="fas fa-hashtag me-1"></i>
@@ -612,32 +709,25 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                       <div class="d-flex flex-column">
-    <strong class="text-dark">
-        {{ $enquiry->date_received ? \Carbon\Carbon::createFromFormat('d/m/Y', $enquiry->date_received)->format('d/m/Y') : $enquiry->created_at->format('d/m/Y') }}
-    </strong>
-    <small class="text-muted">
-        @php
-            $dateTime = $enquiry->date_received ? \Carbon\Carbon::createFromFormat('d/m/Y', $enquiry->date_received) : $enquiry->created_at;
-        @endphp
-        {{ ucfirst(strtolower($dateTime->format('l'))) }} {{ $dateTime->format('H:i') }} HRS
-    </small>
-</div>
+                                        <div class="d-flex flex-column">
+                                            <strong class="text-dark">{{ $enquiry->date_received ?? $enquiry->created_at->format('M d, Y') }}</strong>
+                                            <small class="text-muted">{{ $enquiry->created_at->format('H:i') }}</small>
+                                        </div>
                                     </td>
                                     <td class="align-middle">
                                         <div class="d-flex align-items-center">
-                                            <strong class="text-primary px-2 py-1">
+                                            <span class="badge bg-primary-soft text-primary px-2 py-1">
                                                 {{ $enquiry->check_number }}
-</strong>
+                                            </span>
                                         </div>
                                     </td>
                                     <td class="align-middle">
                                         <div class="d-flex flex-column">
-                                            <strong class="text-primary text-uppercase">{{ ucwords($enquiry->full_name) }}</strong>
-                                            <small class="text-muted text-primary mt-1">
-                                                <i class="fas fa-map-marker-alt me-1"></i>{{ ucwords($enquiry->district->name ?? 'N/A') }}, {{ ucwords($enquiry->region->name ?? 'N/A') }}
+                                            <strong class="text-dark">{{ ucwords($enquiry->full_name) }}</strong>
+                                            <small class="text-muted">
+                                                <i class="fas fa-id-card me-1"></i>{{ $enquiry->force_no ?? 'N/A' }}
                                             </small>
-                                            <small class="text-muted text-primary">
+                                            <small class="text-muted">
                                                 <i class="fas fa-phone me-1"></i>{{ $enquiry->phone ?? 'N/A' }}
                                             </small>
                                         </div>
@@ -652,10 +742,12 @@
                                     </td>
                                     <td class="align-middle">
                                         <div class="d-flex flex-column align-items-center">
-                                            <small class="text-muted px-2 py-1 text-uppercase fw-bold">
+                                            <span class="badge bg-primary text-white px-2 py-1">
                                                 {{ ucfirst(str_replace('_', ' ', $enquiry->type)) }}
-                                           </small>
-                                          
+                                            </span>
+                                            <small class="text-muted mt-1">
+                                                <i class="fas fa-map-marker-alt me-1"></i>{{ ucwords($enquiry->district->name ?? 'N/A') }}
+                                            </small>
                                         </div>
                                     </td>
                                     <td class="align-middle">
@@ -698,9 +790,9 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <div class="dropdown">
-                                              <button class="btn btn-lg btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-             
-        </button>
+                                            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-cog me-1"></i>Actions
+                                            </button>
                                             <ul class="dropdown-menu shadow border-0" style="min-width: 200px;">
                                                 <!-- View Action -->
                                                 <li><a class="dropdown-item" href="{{ route('enquiries.show', $enquiry->id) }}">
