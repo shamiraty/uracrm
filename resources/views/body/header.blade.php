@@ -260,14 +260,25 @@
 
     /* Dark mode styles */
     body.dark-mode {
-        background-color: #1a1a1a;
+        background-color: #17479E;
         color: #ffffff;
     }
     
     body.dark-mode .topbar {
-        background: #0d1421;
+        background: #17479E;
         border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     }
+
+    body.dark-mode p,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: white;
+}
+
     
     body.dark-mode .dropdown-menu {
         background: rgba(26, 26, 26, 0.95);

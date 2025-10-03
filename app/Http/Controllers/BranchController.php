@@ -163,6 +163,21 @@ class BranchController extends Controller
             });
         }
 
+        // Handle exports
+        if ($request->has('export')) {
+            if ($request->export === 'excel_general') {
+                // General report - export all without filters
+                $generalRequest = new Request();
+                return $this->exportBranchManagerData($generalRequest);
+            } elseif ($request->export === 'excel') {
+                // Custom report with filters
+                return $this->exportBranchManagerData($request);
+            } elseif ($request->export === 'pdf') {
+                // PDF report with filters
+                return $this->exportBranchManagerPDF($request);
+            }
+        }
+
         // Get enquiries with pagination
         $perPage = $request->get('per_page', 15);
         $enquiries = $enquiriesQuery->with(['district', 'region', 'users', 'registeredBy'])
@@ -432,7 +447,7 @@ class BranchController extends Controller
     }
 
     /**
-     * Export Branch Manager Data to Excel
+     * Export Branch Manager Data to Excel with child table fields
      */
     public function exportBranchManagerData(Request $request)
     {
@@ -457,6 +472,9 @@ class BranchController extends Controller
         if ($request->filled('type')) {
             $enquiriesQuery->where('type', $request->type);
         }
+        if ($request->filled('status')) {
+            $enquiriesQuery->where('status', $request->status);
+        }
         if ($request->filled('date_from')) {
             $enquiriesQuery->whereDate('created_at', '>=', $request->date_from);
         }
@@ -473,12 +491,72 @@ class BranchController extends Controller
             });
         }
 
-        $enquiries = $enquiriesQuery->with(['district', 'region', 'users', 'registeredBy'])->get();
+        // Load child relationships if type filter is applied
+        $with = ['district', 'region', 'users', 'registeredBy', 'branch'];
+        if ($request->filled('type')) {
+            $childRelation = $this->getRelationshipForType($request->type);
+            if ($childRelation) {
+                $with[] = $childRelation;
+            }
+        }
 
-        return \Excel::download(
-            new \App\Exports\BranchManagerEnquiriesExport($enquiries, $branch, $request->get('type')),
-            'branch_manager_report_' . date('Y-m-d') . '.xlsx'
-        );
+        $enquiries = $enquiriesQuery->with($with)->get();
+        $enquiryType = $request->get('type');
+
+        $headers = [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => 'attachment; filename="branch_manager_report_' . date('Y-m-d_H-i-s') . '.xls"'
+        ];
+
+        $content = '<table border="1">';
+        $content .= '<tr>';
+        $content .= '<th>S/N</th>';
+        $content .= '<th>Date Received</th>';
+        $content .= '<th>Check Number</th>';
+        $content .= '<th>Full Name</th>';
+        $content .= '<th>Force Number</th>';
+        $content .= '<th>Phone</th>';
+        $content .= '<th>Bank Name</th>';
+        $content .= '<th>Account Number</th>';
+        $content .= '<th>Type</th>';
+
+        // Add type-specific headers based on enquiry type
+        if ($enquiryType) {
+            $content .= $this->getChildTableHeaders($enquiryType);
+        }
+
+        $content .= '<th>Region</th>';
+        $content .= '<th>District</th>';
+        $content .= '<th>Branch</th>';
+        $content .= '<th>Registered By</th>';
+        $content .= '</tr>';
+
+        foreach ($enquiries as $index => $enquiry) {
+            $content .= '<tr>';
+            $content .= '<td>' . ($index + 1) . '</td>';
+            $content .= '<td>' . ($enquiry->date_received ?? $enquiry->created_at->format('Y-m-d')) . '</td>';
+            $content .= '<td>' . $enquiry->check_number . '</td>';
+            $content .= '<td>' . ucwords($enquiry->full_name) . '</td>';
+            $content .= '<td>' . ($enquiry->force_no ?? 'N/A') . '</td>';
+            $content .= '<td>' . ($enquiry->phone ?? 'N/A') . '</td>';
+            $content .= '<td>' . strtoupper($enquiry->bank_name ?? 'N/A') . '</td>';
+            $content .= '<td>' . ($enquiry->account_number ?? 'N/A') . '</td>';
+            $content .= '<td>' . ucfirst(str_replace('_', ' ', $enquiry->type)) . '</td>';
+
+            // Add type-specific data
+            if ($enquiryType) {
+                $content .= $this->getChildTableData($enquiry, $enquiryType);
+            }
+
+            $content .= '<td>' . ($enquiry->region->name ?? 'N/A') . '</td>';
+            $content .= '<td>' . ($enquiry->district->name ?? 'N/A') . '</td>';
+            $content .= '<td>' . ($enquiry->branch->name ?? 'N/A') . '</td>';
+            $content .= '<td>' . ($enquiry->registeredBy->name ?? 'N/A') . '</td>';
+            $content .= '</tr>';
+        }
+        $content .= '</table>';
+
+        return response($content, 200, $headers);
     }
 
     /**
@@ -506,6 +584,9 @@ class BranchController extends Controller
         }
         if ($request->filled('type')) {
             $enquiriesQuery->where('type', $request->type);
+        }
+        if ($request->filled('status')) {
+            $enquiriesQuery->where('status', $request->status);
         }
         if ($request->filled('date_from')) {
             $enquiriesQuery->whereDate('created_at', '>=', $request->date_from);
@@ -550,9 +631,9 @@ class BranchController extends Controller
     }
 
     /**
-     * Get relationship name for export based on enquiry type
+     * Get relationship name based on enquiry type
      */
-    private function getRelationshipForExportType($type)
+    private function getRelationshipForType($type)
     {
         $relationships = [
             'loan_application' => 'loanApplication',
@@ -566,11 +647,138 @@ class BranchController extends Controller
             'benefit_from_disasters' => 'benefit',
             'retirement' => 'retirement',
             'share_enquiry' => 'share',
-            'unjoin_membership' => 'membershipChange',
-            'join_membership' => 'membershipChange',
-            'ura_mobile' => 'uraMobile',
+            'unjoin_membership' => 'membershipChanges',
+            'join_membership' => 'membershipChanges',
+            'ura_mobile' => null,
         ];
 
         return $relationships[$type] ?? null;
+    }
+
+    /**
+     * Get relationship name for export based on enquiry type (alias for PDF compatibility)
+     */
+    private function getRelationshipForExportType($type)
+    {
+        return $this->getRelationshipForType($type);
+    }
+
+    /**
+     * Get child table headers for Excel export
+     */
+    private function getChildTableHeaders($type)
+    {
+        $headers = '';
+        switch ($type) {
+            case 'loan_application':
+                $headers = '<th>Loan Type</th><th>Loan Amount</th><th>Loan Duration</th><th>Interest Rate</th><th>Monthly Deduction</th>';
+                break;
+            case 'refund':
+                $headers = '<th>Refund Amount</th><th>Refund Duration</th>';
+                break;
+            case 'withdraw_savings':
+            case 'withdraw_deposit':
+                $headers = '<th>Withdrawal Amount</th><th>Withdrawal Reason</th><th>Days Since Request</th>';
+                break;
+            case 'deduction_add':
+                $headers = '<th>From Amount</th><th>To Amount</th><th>Changes</th><th>Status</th>';
+                break;
+            case 'condolences':
+                $headers = '<th>Dependent Type</th><th>Gender</th>';
+                break;
+            case 'injured_at_work':
+                $headers = '<th>Injury Description</th>';
+                break;
+            case 'sick_for_30_days':
+                $headers = '<th>Start Date</th><th>End Date</th><th>Days</th>';
+                break;
+            case 'retirement':
+                $headers = '<th>Retirement Date</th>';
+                break;
+            case 'share_enquiry':
+                $headers = '<th>Share Amount</th>';
+                break;
+            case 'unjoin_membership':
+            case 'join_membership':
+                $headers = '<th>Category</th><th>Membership Status</th>';
+                break;
+            case 'residential_disaster':
+                $headers = '<th>Disaster Type</th>';
+                break;
+        }
+        return $headers;
+    }
+
+    /**
+     * Get child table data for Excel export
+     */
+    private function getChildTableData($enquiry, $type)
+    {
+        $data = '';
+        switch ($type) {
+            case 'loan_application':
+                $loan = $enquiry->loanApplication;
+                $data = '<td>' . ($loan->loan_type ?? 'N/A') . '</td>';
+                $data .= '<td>' . ($loan ? number_format($loan->loan_amount) : 'N/A') . '</td>';
+                $data .= '<td>' . ($loan->loan_duration ?? 'N/A') . '</td>';
+                $data .= '<td>' . ($loan->interest_rate ?? 'N/A') . '%</td>';
+                $data .= '<td>' . ($loan ? number_format($loan->monthly_deduction) : 'N/A') . '</td>';
+                break;
+            case 'refund':
+                $refund = $enquiry->refund;
+                $data = '<td>' . ($refund ? number_format($refund->refund_amount) : 'N/A') . '</td>';
+                $data .= '<td>' . ($refund->refund_duration ?? 'N/A') . '</td>';
+                break;
+            case 'withdraw_savings':
+            case 'withdraw_deposit':
+                $withdrawal = $enquiry->withdrawal;
+                $data = '<td>' . ($withdrawal ? number_format($withdrawal->amount) : 'N/A') . '</td>';
+                $data .= '<td>' . ($withdrawal->reason ?? 'N/A') . '</td>';
+                $data .= '<td>' . ($withdrawal->days ?? '0') . '</td>';
+                break;
+            case 'deduction_add':
+                $deduction = $enquiry->deduction;
+                $data = '<td>' . ($deduction ? number_format($deduction->from_amount) : 'N/A') . '</td>';
+                $data .= '<td>' . ($deduction ? number_format($deduction->to_amount) : 'N/A') . '</td>';
+                $data .= '<td>' . ($deduction ? number_format($deduction->changes) : 'N/A') . '</td>';
+                $data .= '<td>' . ucfirst($deduction->status ?? 'N/A') . '</td>';
+                break;
+            case 'condolences':
+                $condolence = $enquiry->condolence;
+                $data = '<td>' . ucfirst($condolence->dependent_member_type ?? 'N/A') . '</td>';
+                $data .= '<td>' . ucfirst($condolence->gender ?? 'N/A') . '</td>';
+                break;
+            case 'injured_at_work':
+                $injury = $enquiry->injury;
+                $data = '<td>' . ($injury->description ?? 'N/A') . '</td>';
+                break;
+            case 'sick_for_30_days':
+                $sickLeave = $enquiry->sickLeave;
+                $data = '<td>' . ($sickLeave->startdate ?? 'N/A') . '</td>';
+                $data .= '<td>' . ($sickLeave->enddate ?? 'N/A') . '</td>';
+                $data .= '<td>' . ($sickLeave->days ?? 'N/A') . '</td>';
+                break;
+            case 'retirement':
+                $retirement = $enquiry->retirement;
+                $data = '<td>' . ($retirement->date_of_retirement ?? 'N/A') . '</td>';
+                break;
+            case 'share_enquiry':
+                $share = $enquiry->share;
+                $data = '<td>' . ($share ? number_format($share->share_amount) : 'N/A') . '</td>';
+                break;
+            case 'unjoin_membership':
+            case 'join_membership':
+                $membership = $enquiry->membershipChanges->where('action', $type == 'join_membership' ? 'join' : 'unjoin')->first();
+                $data = '<td>' . ucfirst($membership->category ?? 'N/A') . '</td>';
+                $data .= '<td>' . ucfirst($membership->membership_status ?? 'N/A') . '</td>';
+                break;
+            case 'residential_disaster':
+                $disaster = $enquiry->residentialDisaster;
+                $data = '<td>' . ucfirst($disaster->disaster_type ?? 'N/A') . '</td>';
+                break;
+            default:
+                $data = '<td>N/A</td>';
+        }
+        return $data;
     }
 }

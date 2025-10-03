@@ -2,9 +2,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold" id="assignUserModalLabel-{{ $enquiry->id }}">
+                <h5 class="modal-title fw-bold text-white text-uppercase" id="assignUserModalLabel-{{ $enquiry->id }}">
                     <i class="mdi mdi-account-arrow-right me-2"></i>
-                    Assign {{ ucfirst(str_replace('_', ' ', $enquiry->type)) }} #{{ $enquiry->id }}
+                    Assign {{ ucfirst(str_replace('_', ' ', $enquiry->type)) }}  
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -24,7 +24,7 @@
                         <label for="user_ids_{{ $enquiry->id }}" class="form-label fw-semibold">
                             <i class="mdi mdi-account me-1"></i>Select User to Assign
                         </label>
-                        <select class="form-select" id="user_ids_{{ $enquiry->id }}" name="user_ids[]" required>
+                        <select class="form-select text-uppercase text-primary fw-bold" id="user_ids_{{ $enquiry->id }}" name="user_ids[]" required>
                             <option value="">Choose user...</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}">

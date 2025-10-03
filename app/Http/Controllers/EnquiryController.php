@@ -118,6 +118,36 @@ class EnquiryController extends Controller
             $query->whereDate('created_at', '<=', $dateTo);
         }
 
+        // Handle exports
+        if ($request->has('export')) {
+            if ($request->export === 'excel_general') {
+                // General report - export all without filters
+                $generalQuery = Enquiry::with(['registeredBy', 'region', 'district', 'branch']);
+                if (!$currentUser->hasAnyRole($allowedRoles)) {
+                    $generalQuery->where('registered_by', $currentUser->id);
+                }
+                return $this->exportEnquiryExcel($generalQuery, new \Illuminate\Http\Request());
+            } elseif ($request->export === 'excel') {
+                // Load child table relationship if type filter is applied
+                if ($type) {
+                    $childRelation = $this->getRelationshipForType($type);
+                    if ($childRelation) {
+                        $query->with($childRelation);
+                    }
+                }
+                return $this->exportEnquiryExcel($query, $request);
+            } elseif ($request->export === 'pdf') {
+                // Load child table relationship if type filter is applied
+                if ($type) {
+                    $childRelation = $this->getRelationshipForType($type);
+                    if ($childRelation) {
+                        $query->with($childRelation);
+                    }
+                }
+                return $this->exportEnquiryPDF($query, $request);
+            }
+        }
+
         // Get paginated results
         $enquiries = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
@@ -518,14 +548,37 @@ private function createAssociatedModel(Enquiry $enquiry, $type, $data)
             $model = new Retirement(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'deduction_add':
-            $model = new Deduction(array_merge($data, ['enquiry_id' => $enquiry->id]));
+            // Calculate changes and status for deduction
+            $fromAmount = $data['from_amount'] ?? 0;
+            $toAmount = $data['to_amount'] ?? 0;
+
+            $changes = 0;
+            $status = '';
+
+            if ($fromAmount > $toAmount) {
+                $changes = $fromAmount - $toAmount;
+                $status = 'decrease';
+            } elseif ($toAmount > $fromAmount) {
+                $changes = $toAmount - $fromAmount;
+                $status = 'increase';
+            }
+
+            $model = new Deduction([
+                'enquiry_id' => $enquiry->id,
+                'from_amount' => $fromAmount,
+                'to_amount' => $toAmount,
+                'changes' => $changes,
+                'status' => $status,
+            ]);
             break;
         case 'withdraw_savings':
+            // Calculate days for savings withdrawal (created_at to current date)
             $model = new Withdrawal([
                 'enquiry_id' => $enquiry->id,
                 'amount' => $data['withdraw_saving_amount'] ?? 0,
                 'type' => 'savings',
                 'reason' => $data['withdraw_saving_reason'] ?? 'None',
+                'days' => 0, // Will be updated automatically on subsequent views
             ]);
             break;
         case 'withdraw_deposit':
@@ -547,7 +600,23 @@ private function createAssociatedModel(Enquiry $enquiry, $type, $data)
             $model = new Benefit(array_merge($data, ['enquiry_id' => $enquiry->id]));
             break;
         case 'sick_for_30_days':
-            $model = new SickLeave(array_merge($data, ['enquiry_id' => $enquiry->id]));
+            // Calculate days between startdate and enddate
+            $startDate = $data['startdate'] ?? null;
+            $endDate = $data['enddate'] ?? null;
+
+            $days = 0;
+            if ($startDate && $endDate) {
+                $start = \Carbon\Carbon::parse($startDate);
+                $end = \Carbon\Carbon::parse($endDate);
+                $days = $start->diffInDays($end);
+            }
+
+            $model = new SickLeave([
+                'enquiry_id' => $enquiry->id,
+                'startdate' => $startDate,
+                'enddate' => $endDate,
+                'days' => $days,
+            ]);
             break;
         case 'residential_disaster':
             $model = new ResidentialDisaster(array_merge($data, ['enquiry_id' => $enquiry->id]));
@@ -562,6 +631,7 @@ private function createAssociatedModel(Enquiry $enquiry, $type, $data)
             $model = new MembershipChange([
                 'enquiry_id' => $enquiry->id,
                 'membership_status' => $data['membership_status'] ?? 'civilian',
+                'category' => $data['membership_status'] ?? 'civilian', // Use membership_status as category
                 'action' => 'join',
             ]);
             break;
@@ -583,24 +653,35 @@ private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
 {
     switch ($type) {
         case 'loan_application':
+            // Calculate loan details like in create method
+            $loanDetails = $this->calculateLoanableAmount($enquiry);
+            $loanDetails['loan_type'] = $data['loan_type'] ?? null;
+            $loanDetails['loan_category'] = $data['loan_category'] ?? null;
+
             $enquiry->loanApplication()->updateOrCreate(
                 ['enquiry_id' => $enquiry->id],
-                [
-                    'loan_type' => $data['loan_type'] ?? null,
-                    'loan_amount' => $data['loan_amount'] ?? 0,
-                    'loan_duration' => $data['loan_duration'] ?? 0,
-                    'loan_category' => $data['loan_category'] ?? null,
-                ]
+                $loanDetails
             );
             break;
 
         case 'withdraw_savings':
+            // Calculate days for savings type
+            $withdrawData = [
+                'amount' => $data['withdraw_saving_amount'] ?? 0,
+                'reason' => $data['withdraw_saving_reason'] ?? 'None',
+            ];
+
+            // Calculate days (current date - created_at)
+            $withdrawal = $enquiry->withdrawals()->where('type', 'savings')->first();
+            if ($withdrawal) {
+                $createdDate = \Carbon\Carbon::parse($withdrawal->created_at);
+                $currentDate = \Carbon\Carbon::now();
+                $withdrawData['days'] = $createdDate->diffInDays($currentDate);
+            }
+
             $enquiry->withdrawals()->updateOrCreate(
                 ['enquiry_id' => $enquiry->id, 'type' => 'savings'],
-                [
-                    'amount' => $data['withdraw_saving_amount'] ?? 0,
-                    'reason' => $data['withdraw_saving_reason'] ?? 'None',
-                ]
+                $withdrawData
             );
             break;
 
@@ -643,11 +724,28 @@ private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
             break;
 
         case 'deduction_add':
+            // Calculate changes and status
+            $fromAmount = $data['from_amount'] ?? 0;
+            $toAmount = $data['to_amount'] ?? 0;
+
+            $changes = 0;
+            $status = '';
+
+            if ($fromAmount > $toAmount) {
+                $changes = $fromAmount - $toAmount;
+                $status = 'decrease';
+            } elseif ($toAmount > $fromAmount) {
+                $changes = $toAmount - $fromAmount;
+                $status = 'increase';
+            }
+
             $enquiry->deduction()->updateOrCreate(
                 ['enquiry_id' => $enquiry->id],
                 [
-                    'from_amount' => $data['from_amount'] ?? 0,
-                    'to_amount' => $data['to_amount'] ?? 0,
+                    'from_amount' => $fromAmount,
+                    'to_amount' => $toAmount,
+                    'changes' => $changes,
+                    'status' => $status,
                 ]
             );
             break;
@@ -672,11 +770,23 @@ private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
             break;
 
         case 'sick_for_30_days':
+            // Calculate days between startdate and enddate
+            $startDate = $data['startdate'] ?? null;
+            $endDate = $data['enddate'] ?? null;
+
+            $days = 0;
+            if ($startDate && $endDate) {
+                $start = \Carbon\Carbon::parse($startDate);
+                $end = \Carbon\Carbon::parse($endDate);
+                $days = $start->diffInDays($end);
+            }
+
             $enquiry->sickLeave()->updateOrCreate(
                 ['enquiry_id' => $enquiry->id],
                 [
-                    'startdate' => $data['startdate'] ?? null,
-                    'enddate' => $data['enddate'] ?? null,
+                    'startdate' => $startDate,
+                    'enddate' => $endDate,
+                    'days' => $days,
                 ]
             );
             break;
@@ -686,7 +796,7 @@ private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
                 ['enquiry_id' => $enquiry->id, 'action' => 'unjoin'],
                 [
                     'reason' => $data['unjoin_reason'] ?? null,
-                    'category' => $data['unjoin_category'] ?? null,
+                    'category' => $data['category'] ?? null,
                 ]
             );
             break;
@@ -696,7 +806,8 @@ private function updateOrCreateAssociatedModel(Enquiry $enquiry, $type, $data)
                 ['enquiry_id' => $enquiry->id, 'action' => 'join'],
                 [
                     'reason' => $data['join_reason'] ?? null,
-                    'category' => $data['join_category'] ?? null,
+                    'membership_status' => $data['membership_status'] ?? 'civilian',
+                    'category' => $data['membership_status'] ?? 'civilian', // Use membership_status as category
                 ]
             );
             break;
@@ -810,6 +921,21 @@ private function handleFileUpload(Request $request, Enquiry $enquiry)
 
     // Save the path relative to the public directory
     $path = 'attachments/' . $filename;
+
+    // Delete old folio files from disk and database
+    if ($enquiry->folios && $enquiry->folios->count() > 0) {
+        foreach ($enquiry->folios as $oldFolio) {
+            // Delete old file from disk if exists
+            $oldFilePath = public_path($oldFolio->file_path);
+            if (File::exists($oldFilePath)) {
+                File::delete($oldFilePath);
+            }
+            // Delete old folio record from database
+            $oldFolio->delete();
+        }
+        // Refresh folios relationship after deletion
+        $enquiry->load('folios');
+    }
 
     // Create a new Folio entry linked to the enquiry
     $enquiry->folios()->create([
@@ -961,7 +1087,8 @@ private function constructMessageBasedOnType($data)
             'residentialDisaster',
             'sickLeave',
             'uraMobile',
-            'benefit' // Add benefit relationship
+            'benefit', // Add benefit relationship
+            'folios' // Load folio files
         ]);
 
         $files = File::all();
@@ -1040,7 +1167,40 @@ private function constructMessageBasedOnType($data)
             case 'unjoin_membership':
                 $rules = array_merge($rules, [
                     'unjoin_reason' => 'sometimes|string|max:255',
-                    'unjoin_category' => 'sometimes|in:normal,job_termination',
+                    'category' => 'sometimes|in:normal,job_termination',
+                ]);
+                break;
+
+            case 'sick_for_30_days':
+                $rules = array_merge($rules, [
+                    'startdate' => 'sometimes|date',
+                    'enddate' => 'sometimes|date',
+                ]);
+                break;
+
+            case 'condolences':
+                $rules = array_merge($rules, [
+                    'dependent_member_type' => 'sometimes|string|max:255',
+                    'gender' => 'sometimes|in:male,female',
+                ]);
+                break;
+
+            case 'injured_at_work':
+                $rules = array_merge($rules, [
+                    'description' => 'sometimes|string|max:600',
+                ]);
+                break;
+
+            case 'residential_disaster':
+                $rules = array_merge($rules, [
+                    'disaster_type' => 'sometimes|in:fire,hurricane,flood,earthquake',
+                ]);
+                break;
+
+            case 'join_membership':
+                $rules = array_merge($rules, [
+                    'membership_status' => 'sometimes|string|max:255',
+                    'category' => 'sometimes|string|max:255',
                 ]);
                 break;
 
@@ -1256,10 +1416,10 @@ private function getRoleForEnquiryType($enquiryType)
         'withdraw_savings' => 'accountant',
         'withdraw_deposit' => 'accountant',
         'unjoin_membership' => 'accountant',
-        'condolences' => 'loanofficer',
-        'injured_at_work' => 'loanofficer',
-        'sick_for_30_days' => 'loanofficer',
-        'benefit_from_disasters' => 'loanofficer',
+        'condolences' => 'accountant',
+        'injured_at_work' => 'accountant',
+        'sick_for_30_days' => 'accountant',
+        'benefit_from_disasters' => 'accountant',
         'join_membership' => 'accountant',
         'ura_mobile' => 'superadmin',
         // Default to null for other types (allows accountant/loanofficer)
@@ -2329,6 +2489,371 @@ public function allEnquiriesExport(Request $request)
 public function exportLoanOfficerApplications()
 {
     return Excel::download(new LoanOfficerApplicationsExport, 'loan_officer_applications.csv');
+}
+
+/**
+ * Export Enquiries to PDF
+ * Uses SAME role access logic as index() - nani anaona nini
+ */
+public function exportEnquiriesPDF(Request $request)
+{
+    // Increase timeout and memory for large datasets
+    set_time_limit(300); // 5 minutes
+    ini_set('memory_limit', '512M');
+
+    $currentUser = auth()->user();
+    $type = $request->query('type');
+    $status = $request->query('status');
+    $search = $request->query('search');
+    $dateFrom = $request->query('date_from');
+    $dateTo = $request->query('date_to');
+    $dateRange = $request->query('date_range', 'this_week'); // Default: this_week
+
+    $allowedRoles = ['registrar_hq', 'general_manager', 'assistant_general_manager', 'superadmin', 'system_admin'];
+
+    // Build query based on SAME user role logic as index()
+    // OPTIMIZE: Only select needed columns and eager load minimal relations
+    $query = Enquiry::select([
+        'id', 'check_number', 'full_name', 'force_no', 'type', 'status',
+        'created_at', 'registered_by', 'region_id', 'district_id', 'branch_id'
+    ])->with([
+        'region:id,name',
+        'district:id,name',
+        'registeredBy:id,name',
+        'branch:id,name'
+    ]);
+
+    // ROLE ACCESS LOGIC - nani anaona nini
+    if (!$currentUser->hasAnyRole($allowedRoles)) {
+        $query->where('registered_by', $currentUser->id);
+    }
+
+    // Apply SAME filters as index()
+    if ($type) {
+        $query->where('type', $type);
+    }
+
+    if ($status) {
+        // Handle special statuses
+        if ($status === 'pending_overdue') {
+            $threeDaysAgo = Carbon::now()->subWeekdays(3);
+            $query->where('status', 'pending')
+                  ->where('created_at', '<', $threeDaysAgo);
+        } else {
+            $query->where('status', $status);
+        }
+    }
+
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('full_name', 'like', "%{$search}%")
+              ->orWhere('check_number', 'like', "%{$search}%")
+              ->orWhere('force_no', 'like', "%{$search}%")
+              ->orWhere('account_number', 'like', "%{$search}%");
+        });
+    }
+
+    // Apply date range filter (NEW LOGIC)
+    if ($dateRange) {
+        switch ($dateRange) {
+            case 'today':
+                $query->whereDate('created_at', Carbon::today());
+                break;
+
+            case 'this_week':
+                $startOfWeek = Carbon::now()->startOfWeek();
+                $endOfWeek = Carbon::now()->endOfWeek();
+                $query->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+                break;
+
+            case 'this_month':
+                $query->whereMonth('created_at', Carbon::now()->month)
+                      ->whereYear('created_at', Carbon::now()->year);
+                break;
+
+            case 'jan_to_june':
+                $query->whereBetween('created_at', [
+                    Carbon::now()->year . '-01-01 00:00:00',
+                    Carbon::now()->year . '-06-30 23:59:59'
+                ]);
+                break;
+
+            case 'july_to_dec':
+                $query->whereBetween('created_at', [
+                    Carbon::now()->year . '-07-01 00:00:00',
+                    Carbon::now()->year . '-12-31 23:59:59'
+                ]);
+                break;
+
+            case 'this_year':
+                $query->whereYear('created_at', Carbon::now()->year);
+                break;
+
+            case 'lifetime':
+                // No date filter - all records (but limited to 2000)
+                break;
+        }
+    }
+
+    // Apply legacy date filtering (if provided)
+    if ($dateFrom) {
+        $query->whereDate('created_at', '>=', $dateFrom);
+    }
+
+    if ($dateTo) {
+        $query->whereDate('created_at', '<=', $dateTo);
+    }
+
+    // Get filtered enquiries first
+    $enquiries = $query->orderBy('created_at', 'desc')->limit(2000)->get();
+
+    // Calculate analytics from FILTERED enquiries (not all data)
+    $analytics = [
+        'total' => $enquiries->count(),
+        'pending' => $enquiries->where('status', 'pending')->count(),
+        'assigned' => $enquiries->where('status', 'assigned')->count(),
+        'approved' => $enquiries->where('status', 'approved')->count(),
+        'rejected' => $enquiries->where('status', 'rejected')->count(),
+        'pending_overdue' => $enquiries->filter(function($enquiry) {
+            return $enquiry->status == 'pending' &&
+                   $enquiry->created_at->diffInWeekdays(Carbon::now()) >= 3;
+        })->count(),
+    ];
+
+    // Generate PDF with timeout protection
+    try {
+        $pdf = \PDF::loadView('enquiries.pdf_report', compact('enquiries', 'analytics', 'currentUser', 'type', 'status', 'search', 'dateFrom', 'dateTo', 'dateRange'));
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->setOption('enable-local-file-access', true);
+
+        $filename = 'Enquiries_Report_' . now()->format('Y-m-d_His') . '.pdf';
+        return $pdf->download($filename);
+    } catch (\Exception $e) {
+        return back()->with('error', 'PDF generation failed. Data too large. Please apply filters to reduce records.');
+    }
+}
+
+/**
+ * Export enquiry data to Excel with child table fields
+ */
+private function exportEnquiryExcel($query, $request)
+{
+    // Load child relationships if type filter is applied
+    $with = ['registeredBy', 'region', 'district', 'branch'];
+    if ($request->filled('type')) {
+        $childRelation = $this->getRelationshipForType($request->type);
+        if ($childRelation) {
+            $with[] = $childRelation;
+        }
+    }
+
+    $enquiries = $query->with($with)->get();
+    $enquiryType = $request->get('type');
+
+    $headers = [
+        'Content-Type' => 'application/vnd.ms-excel',
+        'Content-Disposition' => 'attachment; filename="enquiry_report_' . date('Y-m-d_H-i-s') . '.xls"'
+    ];
+
+    $content = '<table border="1">';
+    $content .= '<tr>';
+    $content .= '<th>S/N</th>';
+    $content .= '<th>Date Received</th>';
+    $content .= '<th>Check Number</th>';
+    $content .= '<th>Full Name</th>';
+    $content .= '<th>Force Number</th>';
+    $content .= '<th>Phone</th>';
+    $content .= '<th>Bank Name</th>';
+    $content .= '<th>Account Number</th>';
+    $content .= '<th>Type</th>';
+
+    // Add type-specific headers based on enquiry type
+    if ($enquiryType) {
+        $content .= $this->getChildTableHeaders($enquiryType);
+    }
+
+    $content .= '<th>Region</th>';
+    $content .= '<th>District</th>';
+    $content .= '<th>Branch</th>';
+    $content .= '<th>Registered By</th>';
+    $content .= '<th>Status</th>';
+    $content .= '</tr>';
+
+    foreach ($enquiries as $index => $enquiry) {
+        $content .= '<tr>';
+        $content .= '<td>' . ($index + 1) . '</td>';
+        $content .= '<td>' . $enquiry->created_at->format('Y-m-d') . '</td>';
+        $content .= '<td>' . $enquiry->check_number . '</td>';
+        $content .= '<td>' . ucwords($enquiry->full_name) . '</td>';
+        $content .= '<td>' . ($enquiry->force_no ?? 'N/A') . '</td>';
+        $content .= '<td>' . ($enquiry->phone ?? 'N/A') . '</td>';
+        $content .= '<td>' . strtoupper($enquiry->bank_name ?? 'N/A') . '</td>';
+        $content .= '<td>' . ($enquiry->account_number ?? 'N/A') . '</td>';
+        $content .= '<td>' . ucfirst(str_replace('_', ' ', $enquiry->type)) . '</td>';
+
+        // Add type-specific data
+        if ($enquiryType) {
+            $content .= $this->getChildTableData($enquiry, $enquiryType);
+        }
+
+        $content .= '<td>' . ($enquiry->region->name ?? 'N/A') . '</td>';
+        $content .= '<td>' . ($enquiry->district->name ?? 'N/A') . '</td>';
+        $content .= '<td>' . ($enquiry->branch->name ?? 'N/A') . '</td>';
+        $content .= '<td>' . ($enquiry->registeredBy->name ?? 'N/A') . '</td>';
+        $content .= '<td>' . ucfirst($enquiry->status) . '</td>';
+        $content .= '</tr>';
+    }
+    $content .= '</table>';
+
+    return response($content, 200, $headers);
+}
+
+/**
+ * Export enquiry data to PDF with child table fields
+ */
+private function exportEnquiryPDF($query, $request)
+{
+    // Load child relationships if type filter is applied
+    $with = ['registeredBy', 'region', 'district', 'branch'];
+    if ($request->filled('type')) {
+        $childRelation = $this->getRelationshipForType($request->type);
+        if ($childRelation) {
+            $with[] = $childRelation;
+        }
+    }
+
+    $enquiries = $query->with($with)->get();
+
+    $threeDaysAgo = \Carbon\Carbon::now()->subWeekdays(3);
+    $analytics = [
+        'total' => $enquiries->count(),
+        'pending' => $enquiries->where('status', 'pending')->count(),
+        'assigned' => $enquiries->where('status', 'assigned')->count(),
+        'approved' => $enquiries->where('status', 'approved')->count(),
+        'pending_overdue' => $enquiries->where('status', 'pending')->filter(function($e) use ($threeDaysAgo) {
+            return $e->created_at < $threeDaysAgo;
+        })->count(),
+    ];
+
+    $enquiryType = $request->get('type');
+    $user = auth()->user();
+
+    $pdf = \PDF::loadView('enquiries.pdf_report', compact('enquiries', 'analytics', 'enquiryType', 'user'));
+
+    return $pdf->download('enquiry_report_' . date('Y-m-d') . '.pdf');
+}
+
+/**
+ * Get relationship name based on enquiry type
+ */
+private function getRelationshipForType($type)
+{
+    $relationships = [
+        'loan_application' => 'loanApplication',
+        'refund' => 'refund',
+        'withdraw_savings' => 'withdrawal',
+        'withdraw_deposit' => 'withdrawal',
+        'deduction_add' => 'deduction',
+        'condolences' => 'condolence',
+        'injured_at_work' => 'injury',
+        'sick_for_30_days' => 'sickLeave',
+        'benefit_from_disasters' => 'benefit',
+        'retirement' => 'retirement',
+        'share_enquiry' => 'share',
+        'unjoin_membership' => 'membershipChanges',
+        'join_membership' => 'membershipChanges',
+        'ura_mobile' => null,
+    ];
+
+    return $relationships[$type] ?? null;
+}
+
+/**
+ * Get child table headers based on enquiry type
+ */
+private function getChildTableHeaders($type)
+{
+    $headers = '';
+
+    switch ($type) {
+        case 'loan_application':
+            $headers .= '<th>Loan Type</th>';
+            $headers .= '<th>Loan Category</th>';
+            $headers .= '<th>Interest Rate (%)</th>';
+            $headers .= '<th>Monthly Deduction</th>';
+            break;
+        case 'refund':
+            $headers .= '<th>Refund Amount</th>';
+            $headers .= '<th>Reason</th>';
+            break;
+        case 'withdraw_savings':
+        case 'withdraw_deposit':
+            $headers .= '<th>Withdrawal Amount</th>';
+            $headers .= '<th>Reason</th>';
+            break;
+        case 'deduction_add':
+            $headers .= '<th>From Amount</th>';
+            $headers .= '<th>To Amount</th>';
+            $headers .= '<th>Changes</th>';
+            $headers .= '<th>Status</th>';
+            break;
+        case 'retirement':
+            $headers .= '<th>Retirement Date</th>';
+            $headers .= '<th>Years of Service</th>';
+            break;
+        case 'share_enquiry':
+            $headers .= '<th>Share Amount</th>';
+            break;
+    }
+
+    return $headers;
+}
+
+/**
+ * Get child table data based on enquiry type
+ */
+private function getChildTableData($enquiry, $type)
+{
+    $data = '';
+
+    switch ($type) {
+        case 'loan_application':
+            $loan = $enquiry->loanApplication;
+            $data .= '<td>' . ($loan->loan_type ?? 'N/A') . '</td>';
+            $data .= '<td>' . ($loan->loan_category ?? 'N/A') . '</td>';
+            $data .= '<td>' . ($loan->interest_rate ?? 'N/A') . '</td>';
+            $data .= '<td>' . ($loan->monthly_deduction ? number_format($loan->monthly_deduction) : 'N/A') . '</td>';
+            break;
+        case 'refund':
+            $refund = $enquiry->refund;
+            $data .= '<td>' . ($refund ? number_format($refund->amount) : 'N/A') . '</td>';
+            $data .= '<td>' . ($refund->reason ?? 'N/A') . '</td>';
+            break;
+        case 'withdraw_savings':
+        case 'withdraw_deposit':
+            $withdrawal = $enquiry->withdrawal;
+            $data .= '<td>' . ($withdrawal ? number_format($withdrawal->amount) : 'N/A') . '</td>';
+            $data .= '<td>' . ($withdrawal->reason ?? 'N/A') . '</td>';
+            break;
+        case 'deduction_add':
+            $deduction = $enquiry->deduction;
+            $data .= '<td>' . ($deduction ? number_format($deduction->from_amount) : 'N/A') . '</td>';
+            $data .= '<td>' . ($deduction ? number_format($deduction->to_amount) : 'N/A') . '</td>';
+            $data .= '<td>' . ($deduction ? number_format($deduction->changes) : 'N/A') . '</td>';
+            $data .= '<td>' . ($deduction->status ?? 'N/A') . '</td>';
+            break;
+        case 'retirement':
+            $retirement = $enquiry->retirement;
+            $data .= '<td>' . ($retirement->retirement_date ?? 'N/A') . '</td>';
+            $data .= '<td>' . ($retirement->years_of_service ?? 'N/A') . '</td>';
+            break;
+        case 'share_enquiry':
+            $share = $enquiry->share;
+            $data .= '<td>' . ($share ? number_format($share->amount) : 'N/A') . '</td>';
+            break;
+    }
+
+    return $data;
 }
 
 }

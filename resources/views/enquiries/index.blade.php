@@ -610,21 +610,46 @@
 </div>
     <!-- Filter Button -->
     <div class="row mb-4">
+        <div class="card">
+            <div class="card-body"> 
         <div class="col-12 d-flex justify-content-between align-items-center">
             <div class="d-flex gap-2 align-items-center">
-                <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#filterModal">
-                    <i class="fas fa-filter me-2"></i>Filter Enquiries
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <i class="fas fa-filter me-2 text-white"></i> 
                     @if(request()->hasAny(['search', 'type', 'status', 'date_from', 'date_to']))
                         <span class="badge bg-danger ms-2">{{ collect(['search', 'type', 'status', 'date_from', 'date_to'])->filter(fn($key) => request($key))->count() }}</span>
                     @endif
                 </button>
                 @if(request()->hasAny(['search', 'type', 'status', 'date_from', 'date_to']))
-                    <a href="{{ route('enquiries.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('enquiries.index') }}" class="btn btn-danger btn-sm">
                         <i class="fas fa-times me-1"></i>Clear Filters
                     </a>
                 @endif
             </div>
-          
+
+            <!-- Export Buttons -->
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success btn-sm" onclick="window.location.href='{{ route('enquiries.index', ['export' => 'excel_general']) }}'">
+                    <i class="fas fa-file-excel me-1"></i>General Report
+                </button>
+                <button type="button" class="btn btn-success btn-sm" onclick="exportCustomExcel()">
+                    <i class="fas fa-file-excel me-1"></i>Custom Report
+                </button>
+                <button type="button" class="btn btn-success btn-sm" onclick="exportCustomPDF()">
+                    <i class="fas fa-file-pdf me-1"></i>Summary Report
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Export Progress Overlay -->
+    <div id="exportProgress" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 20px; padding: 40px; text-align: center; min-width: 400px;">
+            <div style="width: 80px; height: 80px; border: 8px solid #f3f3f3; border-top: 8px solid #17479E; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <h5 class="mb-2">Generating PDF Export...</h5>
+            <p class="text-muted mb-0">Please wait while we prepare your enquiries report</p>
         </div>
     </div>
 
@@ -659,7 +684,6 @@
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-lg">
-               
                 <div class="card-body p-0">
                     <div class="table-responsive" style="overflow-x: auto;">
                         <table class="table table-striped table-hover mb-0 modern-table" style="min-width: 1200px;">
@@ -673,28 +697,25 @@
                                     <th width="60" class="text-center border-0">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <i class="fas fa-hashtag me-1"></i>
-                                            <span class="fw-bold">#</span>
+                                            <span class="fw-bold">SN</span>
                                         </div>
                                     </th>
-                                    <th class="border-0 sortable" style="cursor: pointer;">
+                                    <th class="border-0">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-calendar me-2"></i>
                                             <span class="fw-bold">Date & Time</span>
-                                            <i class="fas fa-sort ms-1 opacity-75"></i>
                                         </div>
                                     </th>
-                                    <th class="border-0 sortable" style="cursor: pointer;">
+                                    <th class="border-0">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-receipt me-2"></i>
                                             <span class="fw-bold">Check Reference</span>
-                                            <i class="fas fa-sort ms-1 opacity-75"></i>
                                         </div>
                                     </th>
-                                    <th class="border-0 sortable" style="cursor: pointer;">
+                                    <th class="border-0">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-user me-2"></i>
                                             <span class="fw-bold">Member Details</span>
-                                            <i class="fas fa-sort ms-1 opacity-75"></i>
                                         </div>
                                     </th>
                                     <th class="border-0">
@@ -709,20 +730,13 @@
                                             <span class="fw-bold">Category</span>
                                         </div>
                                     </th>
-                                    <th class="border-0 sortable" style="cursor: pointer;">
+                                    <th class="border-0">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-chart-pie me-2"></i>
                                             <span class="fw-bold">Status & Progress</span>
-                                            <i class="fas fa-sort ms-1 opacity-75"></i>
                                         </div>
                                     </th>
-                                    <th width="150" class="text-center border-0">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-tools me-2"></i>
-                                            <span class="fw-bold">Actions</span>
-                                        </div>
-                                    </th>
-                                     <th width="150" class="text-center border-0">
+                                    <th width="120" class="text-center border-0">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <i class="fas fa-tools me-2"></i>
                                             <span class="fw-bold">Actions</span>
@@ -901,7 +915,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="12" class="text-center py-5">
+                                    <td colspan="9" class="text-center py-5">
                                         <div class="text-muted">
                                             <i class="fas fa-inbox fa-3x mb-3 opacity-50"></i>
                                             <h5>No enquiries found</h5>
@@ -947,7 +961,7 @@
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header" style="background: linear-gradient(135deg, #87CEEB 0%, #17479e 100%);">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title text-white fw-bold" id="filterModalLabel">
                     <i class="fas fa-filter me-2"></i>Filter Enquiries
                 </h5>
@@ -958,7 +972,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold text-dark">
-                                <i class="fas fa-search me-1"></i>Search
+                               Search
                             </label>
                             <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search enquiries...">
                         </div>
@@ -966,39 +980,39 @@
                             <label class="form-label fw-semibold text-dark">
                                 <i class="fas fa-list me-1"></i>Enquiry Type
                             </label>
-                            <select class="form-select" name="type">
-                                <option value="">All Types</option>
-                                <option value="loan_application" {{ request('type') == 'loan_application' ? 'selected' : '' }}>Loan Application</option>
-                                <option value="refund" {{ request('type') == 'refund' ? 'selected' : '' }}>Refund</option>
-                                <option value="share_enquiry" {{ request('type') == 'share_enquiry' ? 'selected' : '' }}>Share Enquiry</option>
-                                <option value="retirement" {{ request('type') == 'retirement' ? 'selected' : '' }}>Retirement</option>
-                                <option value="deduction_add" {{ request('type') == 'deduction_add' ? 'selected' : '' }}>Add Deduction</option>
-                                <option value="withdraw_savings" {{ request('type') == 'withdraw_savings' ? 'selected' : '' }}>Withdraw Savings</option>
-                                <option value="withdraw_deposit" {{ request('type') == 'withdraw_deposit' ? 'selected' : '' }}>Withdraw Deposit</option>
-                                <option value="unjoin_membership" {{ request('type') == 'unjoin_membership' ? 'selected' : '' }}>Unjoin Membership</option>
-                                <option value="condolences" {{ request('type') == 'condolences' ? 'selected' : '' }}>Condolences</option>
-                                <option value="injured_at_work" {{ request('type') == 'injured_at_work' ? 'selected' : '' }}>Injured at Work</option>
-                                <option value="sick_for_30_days" {{ request('type') == 'sick_for_30_days' ? 'selected' : '' }}>Sick for 30 Days</option>
-                                <option value="benefit_from_disasters" {{ request('type') == 'benefit_from_disasters' ? 'selected' : '' }}>Benefit from Disasters</option>
-                                <option value="join_membership" {{ request('type') == 'join_membership' ? 'selected' : '' }}>Join Membership</option>
-                                <option value="ura_mobile" {{ request('type') == 'ura_mobile' ? 'selected' : '' }}>URA Mobile</option>
+                            <select class="form-select form-select-md text-primary" name="type">
+                                <option value="">ALL ENQUIRY TYPES</option>
+                                <option value="loan_application" {{ request('type') === 'loan_application' ? 'selected' : '' }}>LOAN APPLICATION (KUOMBA MKOPO)</option>
+                                <option value="refund" {{ request('type') === 'refund' ? 'selected' : '' }}>REFUND (KUREJESHEWA FEDHA)</option>
+                                <option value="share_enquiry" {{ request('type') === 'share_enquiry' ? 'selected' : '' }}>SHARE ENQUIRY (KUNUNUA HISA)</option>
+                                <option value="retirement" {{ request('type') === 'retirement' ? 'selected' : '' }}>RETIREMENT (KUSTAAFU KAZI)</option>
+                                <option value="deduction_add" {{ request('type') === 'deduction_add' ? 'selected' : '' }}>ADD DEDUCTION OF SAVINGS (KUONGEZA/KUPUNGUZA AKIBA)</option>
+                                <option value="withdraw_savings" {{ request('type') === 'withdraw_savings' ? 'selected' : '' }}>WITHDRAW SAVINGS (KUOMBA SEHEMU YA AKIBA)</option>
+                                <option value="withdraw_deposit" {{ request('type') === 'withdraw_deposit' ? 'selected' : '' }}>WITHDRAW DEPOSIT (KUTOA AMANA)</option>
+                                <option value="unjoin_membership" {{ request('type') === 'unjoin_membership' ? 'selected' : '' }}>UNJOIN MEMBERSHIP (KUJITOA UANACHAMA)</option>
+                                <option value="ura_mobile" {{ request('type') === 'ura_mobile' ? 'selected' : '' }}>URA MOBILE (URA MOBILE)</option>
+                                <option value="sick_for_30_days" {{ request('type') === 'sick_for_30_days' ? 'selected' : '' }}>SICK LEAVE 30+ DAYS (UGONJWA SIKU 30)</option>
+                                <option value="condolences" {{ request('type') === 'condolences' ? 'selected' : '' }}>CONDOLENCES (RAMBIRAMBI)</option>
+                                <option value="injured_at_work" {{ request('type') === 'injured_at_work' ? 'selected' : '' }}>WORK INJURY (KUUMIA KAZINI)</option>
+                                <option value="benefit_from_disasters" {{ request('type') === 'benefit_from_disasters' ? 'selected' : '' }}>RESIDENTIAL DISASTER (MAJANGA YA ASILI)</option>
+                                <option value="join_membership" {{ request('type') === 'join_membership' ? 'selected' : '' }}>JOIN MEMBERSHIP (KUJIUNGA UANACHAMA)</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold text-dark">
-                                <i class="fas fa-calendar me-1"></i>From Date
+                            From Date
                             </label>
                             <input type="date" class="form-control" name="date_from" id="modalDateFrom" value="{{ request('date_from') }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold text-dark">
-                                <i class="fas fa-calendar me-1"></i>To Date
+                              To Date
                             </label>
                             <input type="date" class="form-control" name="date_to" id="modalDateTo" value="{{ request('date_to') }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold text-dark">
-                                <i class="fas fa-flag me-1"></i>Status
+                                Status
                             </label>
                             <select class="form-select" name="status">
                                 <option value="">All Status</option>
@@ -1011,7 +1025,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold text-dark">
-                                <i class="fas fa-list-ol me-1"></i>Items Per Page
+                                Items Per Page
                             </label>
                             <select class="form-select" name="per_page">
                                 <option value="15" {{ request('per_page', 15) == '15' ? 'selected' : '' }}>15</option>
@@ -1054,6 +1068,103 @@
                     <i class="fas fa-search me-1"></i>Apply Filters
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- PDF Export Filter Modal -->
+<div class="modal fade" id="pdfExportModal" tabindex="-1" aria-labelledby="pdfExportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border: none; border-radius: 12px; overflow: hidden;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #17479E 0%, #87CEEB 100%); border: none;">
+                <h5 class="modal-title text-white fw-bold" id="pdfExportModalLabel">
+                    <i class="fas fa-filter me-2"></i>PDF Export Filters
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="GET" action="{{ route('enquiries.export.pdf') }}" id="pdfExportForm" onsubmit="return validatePdfExport()">
+                <!-- Preserve current filters -->
+                @if(request('type'))
+                    <input type="hidden" name="type" value="{{ request('type') }}">
+                @endif
+                @if(request('status'))
+                    <input type="hidden" name="status" value="{{ request('status') }}">
+                @endif
+                @if(request('search'))
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+
+                <div class="modal-body p-4">
+                    <div class="alert alert-info border-0 mb-4" style="background: rgba(23, 71, 158, 0.1);">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <small>Select date range for your PDF report. Default is "This Week" for faster processing.</small>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-calendar me-2" style="color: #17479E;"></i>Date Range
+                        </label>
+                        <select class="form-select" name="date_range" id="pdfDateRange" style="border: 2px solid rgba(23, 71, 158, 0.2); border-radius: 8px;">
+                            <option value="today">Today</option>
+                            <option value="this_week" selected>This Week (Default)</option>
+                            <option value="this_month">This Month</option>
+                            <option value="jan_to_june">January to June</option>
+                            <option value="july_to_dec">July to December</option>
+                            <option value="this_year">This Year</option>
+                            <option value="lifetime" data-warning="true">Lifetime (All Time) ⚠️</option>
+                        </select>
+                        <small class="text-muted mt-1 d-block">
+                            <i class="fas fa-lightbulb"></i> Maximum 2000 recent records will be exported
+                        </small>
+                    </div>
+
+                    <!-- Warning for Lifetime -->
+                    <div id="lifetimeWarning" class="alert alert-warning border-0 mb-3" style="display: none;">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Warning:</strong> Selecting "Lifetime" may take a very long time to process if you have many enquiries. Consider using a specific date range for faster results.
+                    </div>
+
+                    <!-- Current Filters Display -->
+                    @if(request()->hasAny(['type', 'status', 'search']))
+                    <div class="p-3 mb-3" style="background: rgba(0, 188, 212, 0.1); border-radius: 8px; border-left: 4px solid #00BCD4;">
+                        <h6 class="mb-2 fw-bold" style="color: #17479E;">
+                            <i class="fas fa-filter me-2"></i>Active Filters
+                        </h6>
+                        @if(request('type'))
+                            <p class="mb-1 small"><strong>Type:</strong> {{ ucfirst(str_replace('_', ' ', request('type'))) }}</p>
+                        @endif
+                        @if(request('status'))
+                            <p class="mb-1 small"><strong>Status:</strong> {{ ucfirst(request('status')) }}</p>
+                        @endif
+                        @if(request('search'))
+                            <p class="mb-0 small"><strong>Search:</strong> {{ request('search') }}</p>
+                        @endif
+                    </div>
+                    @endif
+
+                    <!-- Preview Summary -->
+                    <div class="p-3" style="background: rgba(0, 188, 212, 0.1); border-radius: 8px; border-left: 4px solid #00BCD4;">
+                        <h6 class="mb-2 fw-bold" style="color: #17479E;">
+                            <i class="fas fa-file-pdf me-2"></i>Export Preview
+                        </h6>
+                        <p class="mb-1 small">
+                            <strong>Total Enquiries:</strong> {{ number_format($analytics['total'] ?? 0) }}
+                        </p>
+                        <p class="mb-0 small text-muted">
+                            <i class="fas fa-info-circle me-1"></i>PDF will include selected date range + active filters
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #f8f9fa; border: none;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px;">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #17479E 0%, #87CEEB 100%); border: none; border-radius: 8px;">
+                        <i class="fas fa-download me-1"></i>Generate PDF
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -1372,6 +1483,74 @@ function clearModalFilters() {
     form.reset();
     window.location.href = window.location.pathname;
 }
+
+// Export Progress
+function showExportProgress() {
+    document.getElementById('exportProgress').style.display = 'flex';
+    setTimeout(() => {
+        document.getElementById('exportProgress').style.display = 'none';
+    }, 3000);
+}
+
+// PDF Export Date Range Change Handler
+document.addEventListener('DOMContentLoaded', function() {
+    const dateRangeSelect = document.getElementById('pdfDateRange');
+    const lifetimeWarning = document.getElementById('lifetimeWarning');
+
+    if (dateRangeSelect && lifetimeWarning) {
+        dateRangeSelect.addEventListener('change', function() {
+            if (this.value === 'lifetime') {
+                lifetimeWarning.style.display = 'block';
+            } else {
+                lifetimeWarning.style.display = 'none';
+            }
+        });
+    }
+});
+
+// PDF Export Form Validation with Confirmation
+function validatePdfExport() {
+    const dateRange = document.getElementById('pdfDateRange').value;
+
+    if (dateRange === 'lifetime') {
+        const confirmed = confirm(
+            '⚠️ WARNING: LIFETIME EXPORT\n\n' +
+            'Exporting all enquiries may take a VERY LONG TIME and could fail if there are too many records.\n\n' +
+            'Maximum 2000 recent records will be exported.\n\n' +
+            'RECOMMENDATION: Use a specific date range (This Week, This Month, etc.) for faster results.\n\n' +
+            'Do you want to continue with Lifetime export?'
+        );
+
+        if (!confirmed) {
+            return false; // Cancel form submission
+        }
+    }
+
+    // Show progress overlay
+    showExportProgress();
+    return true; // Allow form submission
+}
+
+// Custom Excel Export
+function exportCustomExcel() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('export', 'excel');
+    window.location.href = '{{ route("enquiries.index") }}?' + params.toString();
+}
+
+// Custom PDF Export
+function exportCustomPDF() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('export', 'pdf');
+    window.location.href = '{{ route("enquiries.index") }}?' + params.toString();
+}
 </script>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
 
 @endsection

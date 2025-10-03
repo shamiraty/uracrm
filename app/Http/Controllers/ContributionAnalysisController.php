@@ -14,10 +14,7 @@ class ContributionAnalysisController extends Controller
         // Fetch distinct department names for the dropdown
         $departments = DB::table('deduction_details')->distinct()->pluck('deptName');
 
-        $deductions = []; // Initialize as empty array
-        $count = 0;
-
-        // Base query with grouping by checkNumber (only executed if filters are present)
+        // Base query with grouping by checkNumber
         $query = DB::table('deduction_details')
             ->select(
                 'checkNumber',
@@ -34,37 +31,34 @@ class ContributionAnalysisController extends Controller
             ->where('deductionCode', '=', 667)
             ->groupBy('checkNumber');
 
-        // Apply filters only if any filter is filled
-        if ($request->filled('deptName') || $request->filled('checkDate') || ($request->filled('deduction_filter') && $request->filled('deduction_min'))) {
-            // Apply department filter
-            if ($request->filled('deptName')) {
-                $query->where('deptName', $request->deptName);
-            }
-            // Apply check date filter
-            if ($request->filled('checkDate')) {
-                $query->whereDate('checkDate', $request->checkDate);
-            }
-            // Apply deduction amount filter
-            if ($request->filled('deduction_filter') && $request->filled('deduction_min')) {
-                $deductionMin = $request->deduction_min;
-                if ($request->deduction_filter == 'greater') {
-                    $query->where('deductionAmount', '>', $deductionMin);
-                } elseif ($request->deduction_filter == 'less') {
-                    $query->where('deductionAmount', '<', $deductionMin);
-                } elseif ($request->deduction_filter == 'between' && $request->filled('deduction_max')) {
-                    $query->whereBetween('deductionAmount', [$deductionMin, $request->deduction_max]);
-                } elseif ($request->deduction_filter == 'exact') {
-                    $query->where('deductionAmount', $deductionMin);
-                } elseif ($request->deduction_filter == 'greater_or_equal') {
-                    $query->where('deductionAmount', '>=', $deductionMin);
-                } elseif ($request->deduction_filter == 'less_or_equal') {
-                    $query->where('deductionAmount', '<=', $deductionMin);
-                }
-            }
-
-            $deductions = $query->get();
-            $count = $deductions->count();
+        // Apply department filter
+        if ($request->filled('deptName')) {
+            $query->where('deptName', $request->deptName);
         }
+        // Apply check date filter
+        if ($request->filled('checkDate')) {
+            $query->whereDate('checkDate', $request->checkDate);
+        }
+        // Apply deduction amount filter
+        if ($request->filled('deduction_filter') && $request->filled('deduction_min')) {
+            $deductionMin = $request->deduction_min;
+            if ($request->deduction_filter == 'greater') {
+                $query->where('deductionAmount', '>', $deductionMin);
+            } elseif ($request->deduction_filter == 'less') {
+                $query->where('deductionAmount', '<', $deductionMin);
+            } elseif ($request->deduction_filter == 'between' && $request->filled('deduction_max')) {
+                $query->whereBetween('deductionAmount', [$deductionMin, $request->deduction_max]);
+            } elseif ($request->deduction_filter == 'exact') {
+                $query->where('deductionAmount', $deductionMin);
+            } elseif ($request->deduction_filter == 'greater_or_equal') {
+                $query->where('deductionAmount', '>=', $deductionMin);
+            } elseif ($request->deduction_filter == 'less_or_equal') {
+                $query->where('deductionAmount', '<=', $deductionMin);
+            }
+        }
+
+        $deductions = $query->get();
+        $count = $deductions->count();
 
         return view('deductions.contribution_analysis', compact('departments', 'deductions', 'count'));
     }

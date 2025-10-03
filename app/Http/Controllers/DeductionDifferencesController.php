@@ -18,6 +18,7 @@ class DeductionDifferencesController extends Controller
 
         $differences = [];
 
+        // Only process if date range is provided
         if ($request->filled('start_date') && $request->filled('end_date')) {
             $startDate = $request->start_date;
             $endDate = $request->end_date;

@@ -2,44 +2,61 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Branch Manager Report - {{ $branch->name }}</title>
+    <title>Branch Manager Report - {{ strtoupper($branch->name) }}</title>
     <style>
         @page {
-            margin: 100px 50px;
+            margin: 80px 40px;
         }
         body {
             font-family: 'DejaVu Sans', sans-serif;
-            font-size: 10pt;
+            font-size: 9pt;
             color: #333;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
             border-bottom: 3px solid #17479e;
         }
         .header h1 {
             color: #17479e;
             margin: 0;
-            font-size: 24pt;
+            font-size: 22pt;
+            text-transform: uppercase;
         }
         .header h2 {
             color: #666;
             margin: 5px 0;
-            font-size: 16pt;
+            font-size: 14pt;
             font-weight: normal;
         }
+        .header p {
+            margin: 8px 0 0 0;
+            color: #666;
+            font-size: 9pt;
+        }
         .info-box {
-            background: #f8f9fa;
-            padding: 15px;
+             
+            padding: 12px 15px;
             margin-bottom: 20px;
             border-left: 4px solid #17479e;
         }
         .info-box p {
-            margin: 5px 0;
+            margin: 4px 0;
+            font-size: 9pt;
         }
-        .analytics-section {
-            margin-bottom: 30px;
+        .info-box strong {
+            color: #17479e;
+        }
+        .section-title {
+            color: #17479e;
+            font-size: 13pt;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #17479e;
+            text-transform: uppercase;
+            font-weight: bold;
         }
         .analytics-grid {
             display: table;
@@ -48,136 +65,125 @@
         }
         .analytics-item {
             display: table-cell;
-            width: 20%;
             text-align: center;
             padding: 15px;
             background: #f8f9fa;
-            border: 2px solid #dee2e6;
+            border: 2px solid #17479e;
+            border-right: none;
+        }
+        .analytics-item:last-child {
+            border-right: 2px solid #17479e;
         }
         .analytics-item h3 {
             margin: 0;
             color: #17479e;
-            font-size: 24pt;
+            font-size: 22pt;
+            font-weight: bold;
         }
         .analytics-item p {
             margin: 5px 0 0 0;
             color: #666;
-            font-size: 9pt;
+            font-size: 8pt;
+            text-transform: uppercase;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
             border: 2px solid #17479e;
+            font-size: 7pt;
         }
         table thead {
             background: #17479e;
             color: white;
         }
-        table th, table td {
-            padding: 10px;
+        table th {
+            padding: 6px 4px;
             text-align: left;
-            border: 1px solid #333;
-            font-size: 9pt;
+            border: 1px solid #fff;
+            font-size: 7pt;
+            font-weight: bold;
             text-transform: uppercase;
         }
-        table th {
-            font-weight: bold;
-            border: 1px solid #fff;
+        table td {
+            padding: 5px 4px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+            font-size: 7pt;
         }
         table tbody tr:nth-child(even) {
             background: #f8f9fa;
         }
-        table tbody tr {
-            border-bottom: 1px solid #333;
-        }
-        .status-text {
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .status-pending {
-            color: #856404;
-        }
-        .status-assigned {
-            color: #0c5460;
-        }
-        .status-approved {
-            color: #155724;
-        }
-        .status-rejected {
-            color: #721c24;
+        table tbody tr:nth-child(odd) {
+            background: #fff;
         }
         .footer {
             text-align: center;
             margin-top: 30px;
-            padding-top: 20px;
+            padding-top: 15px;
             border-top: 2px solid #dee2e6;
             font-size: 8pt;
             color: #666;
-        }
-        .section-title {
-            color: #17479e;
-            font-size: 14pt;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #17479e;
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <h1>Branch Manager Report</h1>
-        <h2>USALAMA WA RAIA SACCOS (URA SACCOS)</h2>
-        <p style="margin-top: 5px;">URA - CRM SYSTEM</p>
-        <p style="font-size: 8pt;">Makao Makuu: Dar es Salaam | Generated on {{ date('d F Y, H:i:s') }}</p>
+        <h1>SUMMARY REPORT</h1>
+        <h1>URA SACCOS {{ strtoupper($branch->name) }}</h1>
+        <H2> {{ strtoupper(date('d F Y, H:i:s')) }}</H2>
     </div>
 
     <!-- Branch Information -->
     <div class="info-box">
-        <p><strong>Branch:</strong> {{ $branch->name }}</p>
-        <p><strong>District:</strong> {{ $branch->district->name ?? 'N/A' }}</p>
-        <p><strong>Region:</strong> {{ $branch->region->name ?? 'N/A' }}</p>
-        <p><strong>Report Generated By:</strong> {{ auth()->user()->name }} ({{ auth()->user()->email }})</p>
-        <p><strong>Report Date:</strong> {{ date('d F Y, H:i:s') }}</p>
+        <p><strong>BRANCH:</strong> {{ strtoupper($branch->name) }}</p>
+        <p><strong>DISTRICT:</strong> {{ strtoupper($branch->district->name ?? 'N/A') }}</p>
+        <p><strong>REGION:</strong> {{ strtoupper($branch->region->name ?? 'N/A') }}</p>
+        <p><strong>REPORT GENERATED BY:</strong> {{ strtoupper(auth()->user()->name) }} ({{ auth()->user()->email }})</p>
+        <p><strong>REPORT DATE:</strong> {{ strtoupper(date('d F Y, H:i:s')) }}</p>
     </div>
 
     <!-- Analytics Overview -->
-    <h3 class="section-title">ENQUIRY STATISTICS</h3>
+    <h3 class="section-title">Enquiry Statistics</h3>
     <div class="analytics-grid">
-        <div class="analytics-item" style="border-right: none;">
+        <div class="analytics-item">
             <h3>{{ number_format($analytics['total']) }}</h3>
             <p>Total Enquiries</p>
         </div>
-        <div class="analytics-item" style="border-right: none;">
+        <div class="analytics-item">
             <h3>{{ number_format($analytics['pending']) }}</h3>
             <p>Pending</p>
         </div>
-        <div class="analytics-item" style="border-right: none;">
+        <div class="analytics-item">
             <h3>{{ number_format($analytics['assigned']) }}</h3>
             <p>Assigned</p>
         </div>
-        <div class="analytics-item" style="border-right: none;">
+        <div class="analytics-item">
             <h3>{{ number_format($analytics['approved']) }}</h3>
             <p>Approved</p>
         </div>
     </div>
 
     <!-- Enquiries Table -->
-    <h3 class="section-title">ENQUIRY DETAILS</h3>
+    <h3 class="section-title">Complete Enquiry Details</h3>
+    <p style="margin-bottom: 10px; font-size: 9pt; color: #666;">
+        <strong>Total Records:</strong> {{ number_format($enquiries->count()) }} |
+        <strong>Branch:</strong> {{ strtoupper($branch->name) }}
+    </p>
+
     <table>
         <thead>
             <tr>
-                <th style="width: 4%;">#</th>
-                <th style="width: 9%;">Date</th>
-                <th style="width: 11%;">Check No</th>
-                <th style="width: 16%;">Member</th>
-                <th style="width: 14%;">Type</th>
-                <th style="width: 13%;">Region</th>
-                <th style="width: 13%;">District</th>
-                <th style="width: 12%;">Registered By</th>
-                <th style="width: 8%;">Status</th>
+                <th style="width: 3%;">#</th>
+                <th style="width: 8%;">DATE</th>
+                <th style="width: 10%;">CHECK NO</th>
+                <th style="width: 14%;">MEMBER</th>
+                <th style="width: 13%;">TYPE</th>
+                <th style="width: 11%;">REGION</th>
+                <th style="width: 11%;">DISTRICT</th>
+                <th style="width: 13%;">REGISTERED BY</th>
+                <th style="width: 9%;">STATUS</th>
             </tr>
         </thead>
         <tbody>
@@ -195,20 +201,18 @@
             </tr>
             @empty
             <tr>
-                <td colspan="9" style="text-align: center; padding: 30px; color: #999;">
-                    No enquiries found
+                <td colspan="10" style="text-align: center; padding: 30px; color: #999;">
+                    NO ENQUIRIES FOUND
                 </td>
             </tr>
             @endforelse
         </tbody>
     </table>
 
-
     <!-- Footer -->
     <div class="footer">
         <p><strong>USALAMA WA RAIA SACCOS (URA SACCOS) - CRM SYSTEM</strong></p>
-        <p>This is a computer-generated report. Generated on {{ date('d F Y, H:i:s') }}</p>
-        <p>&copy; {{ date('Y') }} URA SACCOS. All rights reserved. | Makao Makuu: Dar es Salaam</p>
+        <p>Generated on {{ date('d F Y, H:i:s') }}</p>
     </div>
 </body>
 </html>

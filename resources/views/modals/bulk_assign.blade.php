@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title fw-bold">
+                <h5 class="modal-title fw-bold text-white">
                     <i class="fas fa-users me-2"></i>Bulk Assign Enquiries
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -11,7 +11,7 @@
                 <div class="alert alert-success d-flex align-items-center">
                     <i class="fas fa-info-circle me-3"></i>
                     <div>
-                        <strong>Bulk Assignment</strong><br>
+                       
                         <small>Assign <span id="bulkAssignCount" class="fw-bold">0</span> selected enquiries to a user</small>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                         <label class="form-label fw-semibold">
                             <i class="mdi mdi-account me-1"></i>Select User for Assignment
                         </label>
-                        <select class="form-select" id="bulkAssignUserId" required>
+                        <select class="form-select text-uppercase text-primary" id="bulkAssignUserId" required>
                             <option value="">Choose user...</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}">
@@ -37,7 +37,7 @@
                 </form>
             </div>
             <div class="modal-footer border-top-0 bg-light">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
                     <i class="mdi mdi-close me-1"></i>Cancel
                 </button>
                 <button type="button" class="btn btn-success" onclick="bulkAssignEnquiries()">

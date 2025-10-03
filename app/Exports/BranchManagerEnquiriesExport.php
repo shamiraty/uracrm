@@ -48,9 +48,9 @@ class BranchManagerEnquiriesExport implements FromCollection, WithHeadings, With
             'benefit_from_disasters' => 'benefit',
             'retirement' => 'retirement',
             'share_enquiry' => 'share',
-            'unjoin_membership' => 'membershipChange',
-            'join_membership' => 'membershipChange',
-            'ura_mobile' => 'uraMobile',
+            'unjoin_membership' => 'membershipChanges',
+            'join_membership' => 'membershipChanges',
+            'ura_mobile' => null,
         ];
 
         return $relationships[$type] ?? null;
@@ -92,24 +92,35 @@ class BranchManagerEnquiriesExport implements FromCollection, WithHeadings, With
 
     private function getTypeSpecificHeadings($type)
     {
-        $headings = [
-            'loan_application' => ['Loan Type', 'Loan Amount', 'Loan Period', 'Purpose'],
-            'refund' => ['Refund Amount', 'Refund Type', 'Reason'],
-            'withdraw_savings' => ['Withdrawal Amount', 'Withdrawal Type', 'Reason'],
-            'withdraw_deposit' => ['Withdrawal Amount', 'Withdrawal Type', 'Reason'],
-            'deduction_add' => ['From Month', 'To Month', 'Deduction Type'],
-            'condolences' => ['Relationship', 'Date of Death', 'Death Certificate'],
-            'injured_at_work' => ['Injury Date', 'Injury Description', 'Hospital'],
-            'sick_for_30_days' => ['Start Date', 'End Date', 'Medical Certificate'],
-            'benefit_from_disasters' => ['Disaster Type', 'Disaster Date', 'Damage Description'],
-            'retirement' => ['Retirement Date', 'Retirement Type', 'Years of Service'],
-            'share_enquiry' => ['Share Amount', 'Share Type'],
-            'unjoin_membership' => ['Change Type', 'Reason', 'Category'],
-            'join_membership' => ['Change Type', 'Category'],
-            'ura_mobile' => ['Mobile Number', 'Network', 'Status'],
-        ];
-
-        return $headings[$type] ?? [];
+        switch ($type) {
+            case 'loan_application':
+                return ['Loan Type', 'Loan Category', 'Interest Rate (%)', 'Monthly Deduction'];
+            case 'refund':
+                return ['Refund Amount', 'Reason'];
+            case 'withdraw_savings':
+            case 'withdraw_deposit':
+                return ['Withdrawal Amount', 'Reason'];
+            case 'deduction_add':
+                return ['From Amount', 'To Amount', 'Changes', 'Status'];
+            case 'retirement':
+                return ['Retirement Date', 'Years of Service'];
+            case 'share_enquiry':
+                return ['Share Amount'];
+            case 'condolences':
+                return ['Deceased Name', 'Relationship', 'Date of Death'];
+            case 'injured_at_work':
+                return ['Injury Description', 'Injury Date'];
+            case 'sick_for_30_days':
+                return ['Start Date', 'End Date', 'Days'];
+            case 'benefit_from_disasters':
+                return ['Disaster Type', 'Description'];
+            case 'unjoin_membership':
+                return ['Category', 'Reason'];
+            case 'join_membership':
+                return ['Membership Status', 'Category'];
+            default:
+                return [];
+        }
     }
 
     public function map($enquiry): array
@@ -153,16 +164,15 @@ class BranchManagerEnquiriesExport implements FromCollection, WithHeadings, With
                 $loan = $enquiry->loanApplication;
                 return [
                     $loan->loan_type ?? 'N/A',
-                    $loan->loan_amount ?? 'N/A',
-                    $loan->loan_period ?? 'N/A',
-                    $loan->purpose ?? 'N/A',
+                    $loan->loan_category ?? 'N/A',
+                    $loan->interest_rate ?? 'N/A',
+                    $loan->monthly_deduction ? number_format($loan->monthly_deduction) : 'N/A',
                 ];
 
             case 'refund':
                 $refund = $enquiry->refund;
                 return [
-                    $refund->refund_amount ?? 'N/A',
-                    $refund->refund_type ?? 'N/A',
+                    $refund ? number_format($refund->amount) : 'N/A',
                     $refund->reason ?? 'N/A',
                 ];
 
@@ -170,81 +180,74 @@ class BranchManagerEnquiriesExport implements FromCollection, WithHeadings, With
             case 'withdraw_deposit':
                 $withdrawal = $enquiry->withdrawal;
                 return [
-                    $withdrawal->amount ?? 'N/A',
-                    $withdrawal->type ?? 'N/A',
+                    $withdrawal ? number_format($withdrawal->amount) : 'N/A',
                     $withdrawal->reason ?? 'N/A',
                 ];
 
             case 'deduction_add':
                 $deduction = $enquiry->deduction;
                 return [
-                    $deduction->from ?? 'N/A',
-                    $deduction->to ?? 'N/A',
-                    $deduction->deduction_type ?? 'N/A',
-                ];
-
-            case 'condolences':
-                $condolence = $enquiry->condolence;
-                return [
-                    $condolence->relationship ?? 'N/A',
-                    $condolence->date_of_death ?? 'N/A',
-                    $condolence->death_certificate ?? 'N/A',
-                ];
-
-            case 'injured_at_work':
-                $injury = $enquiry->injury;
-                return [
-                    $injury->injury_date ?? 'N/A',
-                    $injury->injury_description ?? 'N/A',
-                    $injury->hospital ?? 'N/A',
-                ];
-
-            case 'sick_for_30_days':
-                $sickLeave = $enquiry->sickLeave;
-                return [
-                    $sickLeave->start_date ?? 'N/A',
-                    $sickLeave->end_date ?? 'N/A',
-                    $sickLeave->medical_certificate ?? 'N/A',
-                ];
-
-            case 'benefit_from_disasters':
-                $benefit = $enquiry->benefit;
-                return [
-                    $benefit->disaster_type ?? 'N/A',
-                    $benefit->disaster_date ?? 'N/A',
-                    $benefit->damage_description ?? 'N/A',
+                    $deduction ? number_format($deduction->from_amount) : 'N/A',
+                    $deduction ? number_format($deduction->to_amount) : 'N/A',
+                    $deduction ? number_format($deduction->changes) : 'N/A',
+                    $deduction->status ?? 'N/A',
                 ];
 
             case 'retirement':
                 $retirement = $enquiry->retirement;
                 return [
                     $retirement->retirement_date ?? 'N/A',
-                    $retirement->retirement_type ?? 'N/A',
                     $retirement->years_of_service ?? 'N/A',
                 ];
 
             case 'share_enquiry':
                 $share = $enquiry->share;
                 return [
-                    $share->share_amount ?? 'N/A',
-                    $share->share_type ?? 'N/A',
+                    $share ? number_format($share->amount) : 'N/A',
+                ];
+
+            case 'condolences':
+                $condolence = $enquiry->condolence;
+                return [
+                    $condolence->deceased_name ?? 'N/A',
+                    $condolence->relationship ?? 'N/A',
+                    $condolence->date_of_death ?? 'N/A',
+                ];
+
+            case 'injured_at_work':
+                $injury = $enquiry->injury;
+                return [
+                    $injury->description ?? 'N/A',
+                    $injury->injury_date ?? 'N/A',
+                ];
+
+            case 'sick_for_30_days':
+                $sickLeave = $enquiry->sickLeave;
+                return [
+                    $sickLeave->startdate ?? 'N/A',
+                    $sickLeave->enddate ?? 'N/A',
+                    $sickLeave->days ?? 'N/A',
+                ];
+
+            case 'benefit_from_disasters':
+                $benefit = $enquiry->benefit;
+                return [
+                    $benefit->disaster_type ?? 'N/A',
+                    $benefit->description ?? 'N/A',
                 ];
 
             case 'unjoin_membership':
-            case 'join_membership':
-                $membership = $enquiry->membershipChange;
+                $membership = $enquiry->membershipChanges;
                 return [
-                    $membership->action ?? 'N/A',
-                    $membership->reason ?? 'N/A',
                     $membership->category ?? 'N/A',
+                    $membership->reason ?? 'N/A',
                 ];
 
-            case 'ura_mobile':
-                $mobile = $enquiry->uraMobile;
+            case 'join_membership':
+                $membership = $enquiry->membershipChanges;
                 return [
-                    $mobile->mobile_number ?? 'N/A',
-                    $mobile->network ?? 'N/A',
-                    $mobile->status ?? 'N/A',
+                    $membership->membership_status ?? 'N/A',
+                    $membership->category ?? 'N/A',
                 ];
 
             default:

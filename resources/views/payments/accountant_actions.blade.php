@@ -159,8 +159,14 @@
                     <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#filterModal">
                         <i class="fas fa-sliders-h me-1"></i>Advanced Filters
                     </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href='{{ route('payment.accountant.dashboard', ['export' => 'excel_general']) }}'">
+                        <i class="fas fa-file-excel me-1"></i>General Report
+                    </button>
                     <button type="button" class="btn btn-success btn-sm" onclick="exportToExcel()">
-                        <i class="fas fa-file-excel me-1"></i>Export Excel
+                        <i class="fas fa-file-excel me-1"></i>Custom Report
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf me-1"></i>PDF Report
                     </button>
                     @if(request()->anyFilled(['search', 'status', 'date_from', 'date_to']))
                         <a href="{{ route('payment.accountant.dashboard') }}" class="btn btn-outline-light btn-sm">
@@ -907,21 +913,21 @@ function exportToExcel() {
                                 <i class="fas fa-info-circle me-1 text-info"></i>Payment Status
                             </label>
                             <select name="status" class="form-select form-select-lg">
-                                <option value="">🔍 All Payment Status</option>
+                                <option value=""> All Payment Status</option>
                                 <option value="assigned_no_payment" {{ request('status') === 'assigned_no_payment' ? 'selected' : '' }}>
-                                    ⏳ Awaiting Initiation
+                                    Awaiting Initiation
                                 </option>
                                 <option value="initiated" {{ request('status') === 'initiated' ? 'selected' : '' }}>
-                                    ▶️ Initiated (Pending Approval)
+                                    Initiated (Pending Approval)
                                 </option>
                                 <option value="approved" {{ request('status') === 'approved' ? 'selected' : '' }}>
-                                    ✅ Approved (Ready for Payment)
+                                    Approved (Ready for Payment)
                                 </option>
                                 <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>
-                                    💰 Paid (Completed)
+                                    Paid (Completed)
                                 </option>
                                 <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>
-                                    ❌ Rejected
+                                     Rejected
                                 </option>
                             </select>
                         </div>
@@ -956,10 +962,33 @@ function exportToExcel() {
                             <input type="date" name="date_to" id="dateTo" value="{{ request('date_to') }}"
                                    class="form-control form-control-lg">
                         </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold text-dark">
+                                <i class="fas fa-list-alt me-1 text-primary"></i>Enquiry Type (Accountant)
+                            </label>
+                         <select name="type" class="form-select form-select-lg">
+    <option value="">ALL ENQUIRY TYPES</option>
+    <option value="refund" {{ request('type') === 'refund' ? 'selected' : '' }}>REFUND (KUREJESHEWA FEDHA)</option>
+    <option value="share_enquiry" {{ request('type') === 'share_enquiry' ? 'selected' : '' }}>SHARE ENQUIRY (KUNUNUA HISA)</option>
+    <option value="retirement" {{ request('type') === 'retirement' ? 'selected' : '' }}>RETIREMENT (KUSTAAFU KAZI)</option>
+    <option value="deduction_add" {{ request('type') === 'deduction_add' ? 'selected' : '' }}>ADD DEDUCTION OF SAVINGS (KUONGEZA/KUPUNGUZA AKIBA)</option>
+    <option value="withdraw_savings" {{ request('type') === 'withdraw_savings' ? 'selected' : '' }}>WITHDRAW SAVINGS (KUOMBA SEHEMU YA AKIBA)</option>
+    <option value="withdraw_deposit" {{ request('type') === 'withdraw_deposit' ? 'selected' : '' }}>WITHDRAW DEPOSIT (KUTOA AMANA)</option>
+    <option value="unjoin_membership" {{ request('type') === 'unjoin_membership' ? 'selected' : '' }}>UNJOIN MEMBERSHIP (KUJITOA UANACHAMA)</option>
+    <option value="ura_mobile" {{ request('type') === 'ura_mobile' ? 'selected' : '' }}>URA MOBILE (URA MOBILE)</option>
+    <option value="sick_for_30_days" {{ request('type') === 'sick_for_30_days' ? 'selected' : '' }}>SICK LEAVE 30+ DAYS (UGONJWA SIKU 30)</option>
+    <option value="condolences" {{ request('type') === 'condolences' ? 'selected' : '' }}>CONDOLENCES (RAMBIRAMBI)</option>
+    <option value="injured_at_work" {{ request('type') === 'injured_at_work' ? 'selected' : '' }}>WORK INJURY (KUUMIA KAZINI)</option>
+    <option value="residential_disaster" {{ request('type') === 'residential_disaster' ? 'selected' : '' }}>RESIDENTIAL DISASTER (MAJANGA YA ASILI)</option>
+    <option value="join_membership" {{ request('type') === 'join_membership' ? 'selected' : '' }}>JOIN MEMBERSHIP (KUJIUNGA UANACHAMA)</option>
+</select>
+                            <small class="form-text text-muted">Filter by specific enquiry type to see detailed child table fields in exports</small>
+                        </div>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer border-top-0 bg-light">
+            <div class="modal-footer border-top-0 bg-light d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="fas fa-times me-1"></i>Cancel
                 </button>
@@ -1025,6 +1054,12 @@ document.getElementById('quickDateRange').addEventListener('change', function() 
 
 function applyFilters() {
     document.getElementById('filterForm').submit();
+}
+
+function exportToPDF() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('export', 'pdf');
+    window.location.href = `{{ route('payment.accountant.dashboard') }}?${params.toString()}`;
 }
 </script>
 

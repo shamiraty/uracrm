@@ -324,7 +324,7 @@ class DeductionApiController extends Controller
     }
 
     // Ikiwa action ni "view", tumia pagination
-    $contributions = $query->paginate(100);
+    $contributions = $query->paginate(15);
 
     return view('deductions.contributions', compact(
         'contributions', 'date', 'checkNumber', 'firstName', 'middleName', 'lastName'
@@ -435,15 +435,15 @@ public function listMembers(Request $request)
         return response()->stream($callback, 200, $headers);
     }
 
-    // Paginate the results (e.g., 100 per page)
-    $members = $query->distinct()->paginate(100);
+    // Paginate the results (e.g., 15 per page)
+    $members = $query->distinct()->paginate(15);
 
     return view('deductions.members_list', compact(
-        'members', 
-        'date', 
-        'checkNumber', 
-        'firstName', 
-        'middleName', 
+        'members',
+        'date',
+        'checkNumber',
+        'firstName',
+        'middleName',
         'lastName'
     ));
 }
@@ -647,7 +647,7 @@ public function listSalaryLoans(Request $request)
 
 
     // Ikiwa action ni "view", tumia pagination
-    $salaryLoans = $query->distinct()->paginate(100); // Fetch unique records
+    $salaryLoans = $query->distinct()->paginate(15); // Fetch unique records
 
     return view('deductions.salary_loans_list', compact(
         'salaryLoans', 'date', 'checkNumber', 'firstName', 'middleName', 'lastName'
